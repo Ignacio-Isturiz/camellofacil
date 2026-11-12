@@ -1,0 +1,46 @@
+# Entorno local completo: base de datos + backend + frontend.
+# Los valores vienen del archivo .env (copia de .env.example).
+services:
+  db:
+    image: postgres:17
+    container_name: camellofacil-db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5433:5432" # 5433 para no chocar con un PostgreSQL instalado en el equipo
+    volumes:
+      - camellofacil-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: camellofacil-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Dentro de Docker la base se llama "db" y usa el puerto interno 5432
+      DB_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      FRONTEND_URL: ${FRONTEND_URL}
+      API_DOCS_ENABLED: ${API_DOCS_ENABLED}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+
+  frontend:
+    build: ./frontend
+    container_name: camellofacil-frontend
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-4200}:80"
+
+volumes:
+  camellofacil-db-data:

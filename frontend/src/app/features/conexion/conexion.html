@@ -1,0 +1,16 @@
+<main class="conexion">
+  <h1>{{ 'conexion.titulo' | transloco }}</h1>
+
+  @switch (estado()) {
+    @case ('cargando') {
+      <p>{{ 'conexion.cargando' | transloco }}</p>
+    }
+    @case ('ok') {
+      <p class="ok" role="status">{{ mensaje() }}</p>
+    }
+    @case ('error') {
+      <p class="error" role="alert">{{ 'conexion.error' | transloco }}</p>
+      <button type="button" (click)="comprobarConexion()">{{ 'conexion.reintentar' | transloco }}</button>
+    }
+  }
+</main>

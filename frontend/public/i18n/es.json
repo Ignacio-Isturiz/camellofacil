@@ -1,0 +1,8 @@
+{
+  "conexion": {
+    "titulo": "Conexión con el backend",
+    "cargando": "Comprobando conexión…",
+    "error": "No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.",
+    "reintentar": "Reintentar"
+  }
+}

@@ -1,0 +1,40 @@
+# Secretos y configuración local (nunca se suben)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Backend (Maven / Java)
+target/
+*.log
+HELP.md
+
+# Frontend (Angular / Node)
+node_modules/
+dist/
+.angular/
+.sass-cache/
+coverage/
+npm-debug.log*
+
+# IDEs
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+.vs/
+
+# Configuración local de Claude Code
+.claude/settings.local.json
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+#documentos
+.cronograma
+.elicitacion-requisitos
+.frontend-design

@@ -1,0 +1,8 @@
+{
+  "conexion": {
+    "titulo": "Backend connection",
+    "cargando": "Checking connection…",
+    "error": "Could not reach the server. Please try again later.",
+    "reintentar": "Retry"
+  }
+}
