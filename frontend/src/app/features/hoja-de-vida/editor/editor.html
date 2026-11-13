@@ -1,0 +1,151 @@
+@switch (estado()) {
+  @case ('cargando') {
+    <div class="cargando" aria-busy="true">
+      <p role="status">{{ 'hoja.editor.preparando' | transloco }}</p>
+      <div class="esq" aria-hidden="true"><span class="bloque"></span><span class="bloque bloque--lado"></span></div>
+    </div>
+  }
+  @case ('error') {
+    <app-aviso-error (reintentar)="cargar()" />
+  }
+  @default {
+    @if (formulario(); as f) {
+      <app-migas-hoja [actual]="'hoja.editor.migas' | transloco" />
+
+      <header class="cabecera">
+        <div>
+          <h1>{{ 'hoja.editor.titulo' | transloco }}</h1>
+          @if (plantilla(); as p) {
+            <p>{{ 'hoja.editor.sobrePlantilla' | transloco: { nombre: p.nombre } }}</p>
+          }
+        </div>
+        <p class="estado" aria-live="polite" [class.estado--error]="guardado() === 'error'">
+          @switch (guardado()) {
+            @case ('guardando') { {{ 'hoja.editor.guardando' | transloco }} }
+            @case ('pendiente') { {{ 'hoja.editor.pendiente' | transloco }} }
+            @case ('error') { {{ 'hoja.editor.errorGuardado' | transloco }} }
+            @default {
+              @if (guardadoEn()) { <app-icono nombre="check" style="--tam: 14px" />{{ 'hoja.editor.guardado' | transloco }} }
+            }
+          }
+        </p>
+      </header>
+
+      <div class="cuerpo">
+        <div class="secciones">
+          <!-- Contacto -->
+          <details class="seccion tarjeta" [open]="abiertas().has('contacto')" (toggle)="alternar('contacto', $event)">
+            <summary>{{ 'hoja.revisar.secciones.contacto' | transloco }}</summary>
+            <div class="seccion__cuerpo">
+              @if (guia('contacto'); as g) {
+                <p class="guia"><strong>{{ g.que }}</strong> <span>{{ 'hoja.editor.ejemplo' | transloco }}: {{ g.ejemplo }}</span></p>
+              }
+              <div class="rejilla">
+                <app-campo-extraido [control]="f.controls.nombre" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.nombre' | transloco" idCampo="ed-nombre" autocompletar="name" />
+                <app-campo-extraido [control]="f.controls.telefono" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.telefono' | transloco" idCampo="ed-telefono" tipo="tel" autocompletar="tel" />
+                <app-campo-extraido [control]="f.controls.ciudad" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.ciudad' | transloco" idCampo="ed-ciudad" [placeholder]="'hoja.revisar.ejCiudad' | transloco" autocompletar="address-level2" />
+              </div>
+            </div>
+          </details>
+
+          <!-- Perfil -->
+          <details class="seccion tarjeta" [open]="abiertas().has('perfil')" (toggle)="alternar('perfil', $event)">
+            <summary>{{ 'hoja.revisar.secciones.perfil' | transloco }}</summary>
+            <div class="seccion__cuerpo">
+              @if (guia('perfil'); as g) {
+                <p class="guia"><strong>{{ g.que }}</strong> <span>{{ 'hoja.editor.ejemplo' | transloco }}: {{ g.ejemplo }}</span></p>
+              }
+              <app-campo-extraido [control]="f.controls.perfil" [campo]="campoLeido" [etiqueta]="'hoja.revisar.secciones.perfil' | transloco" idCampo="ed-perfil" tipo="textarea" />
+            </div>
+          </details>
+
+          <!-- Experiencia -->
+          <details class="seccion tarjeta" [open]="abiertas().has('experiencia')" (toggle)="alternar('experiencia', $event)">
+            <summary>{{ 'hoja.revisar.secciones.experiencia' | transloco }}</summary>
+            <div class="seccion__cuerpo">
+              @if (guia('experiencia'); as g) {
+                <p class="guia"><strong>{{ g.que }}</strong> <span>{{ 'hoja.editor.ejemplo' | transloco }}: {{ g.ejemplo }}</span></p>
+              }
+              @for (g of f.controls.experiencia.controls; track g.controls.id.value; let i = $index) {
+                <div class="item">
+                  <div class="rejilla">
+                    <app-campo-extraido [control]="g.controls.cargo" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.cargo' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-cargo'" />
+                    <app-campo-extraido [control]="g.controls.organizacion" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.organizacion' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-org'" />
+                    <app-campo-extraido [control]="g.controls.inicio" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.inicio' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-ini'" tipo="month" />
+                    <app-campo-extraido [control]="g.controls.fin" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.fin' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-fin'" tipo="month" />
+                  </div>
+                  <app-campo-extraido [control]="g.controls.descripcion" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.descripcion' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-desc'" tipo="textarea" />
+                  <button type="button" class="enlace" (click)="quitarExperiencia(i)">{{ 'hoja.revisar.quitar' | transloco }}</button>
+                </div>
+              }
+              <button type="button" class="enlace" (click)="agregarExperiencia()">
+                <app-icono nombre="mas" style="--tam: 16px" />{{ 'hoja.revisar.agregarExperiencia' | transloco }}
+              </button>
+            </div>
+          </details>
+
+          <!-- Educación -->
+          <details class="seccion tarjeta" [open]="abiertas().has('educacion')" (toggle)="alternar('educacion', $event)">
+            <summary>{{ 'hoja.revisar.secciones.educacion' | transloco }}</summary>
+            <div class="seccion__cuerpo">
+              @if (guia('educacion'); as g) {
+                <p class="guia"><strong>{{ g.que }}</strong> <span>{{ 'hoja.editor.ejemplo' | transloco }}: {{ g.ejemplo }}</span></p>
+              }
+              @for (g of f.controls.educacion.controls; track g.controls.id.value; let i = $index) {
+                <div class="item">
+                  <div class="rejilla">
+                    <app-campo-extraido [control]="g.controls.titulo" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.titulo' | transloco" [idCampo]="'ed-edu-' + g.controls.id.value + '-tit'" />
+                    <app-campo-extraido [control]="g.controls.institucion" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.institucion' | transloco" [idCampo]="'ed-edu-' + g.controls.id.value + '-inst'" />
+                    <app-campo-extraido [control]="g.controls.inicio" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.inicio' | transloco" [idCampo]="'ed-edu-' + g.controls.id.value + '-ini'" tipo="month" />
+                    <app-campo-extraido [control]="g.controls.fin" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.fin' | transloco" [idCampo]="'ed-edu-' + g.controls.id.value + '-fin'" tipo="month" />
+                  </div>
+                  <button type="button" class="enlace" (click)="quitarEducacion(i)">{{ 'hoja.revisar.quitar' | transloco }}</button>
+                </div>
+              }
+              <button type="button" class="enlace" (click)="agregarEducacion()">
+                <app-icono nombre="mas" style="--tam: 16px" />{{ 'hoja.editor.agregarEducacion' | transloco }}
+              </button>
+            </div>
+          </details>
+
+          <!-- Habilidades -->
+          <details class="seccion tarjeta" [open]="abiertas().has('habilidades')" (toggle)="alternar('habilidades', $event)">
+            <summary>{{ 'hoja.revisar.secciones.habilidades' | transloco }}</summary>
+            <div class="seccion__cuerpo">
+              @if (guia('habilidades'); as g) {
+                <p class="guia"><strong>{{ g.que }}</strong> <span>{{ 'hoja.editor.ejemplo' | transloco }}: {{ g.ejemplo }}</span></p>
+              }
+              <app-campo-extraido [control]="f.controls.habilidades" [campo]="campoLeido" [etiqueta]="'hoja.revisar.secciones.habilidades' | transloco" idCampo="ed-habilidades" tipo="textarea" />
+            </div>
+          </details>
+        </div>
+
+        <!-- Vista previa en vivo (escritorio) -->
+        <aside class="previa" [attr.aria-label]="'hoja.revisar.vistaPrevia' | transloco">
+          @if (documento(); as d) {
+            <app-documento-hoja [documento]="d" [estilo]="plantilla()?.estilo ?? 'harvard'" />
+          }
+        </aside>
+      </div>
+
+      <div class="barra">
+        <button type="button" class="boton boton--borde boton--pequeno ver-previa" (click)="verPrevia()">
+          <app-icono nombre="ojo" style="--tam: 16px" />{{ 'hoja.editor.verPrevia' | transloco }}
+        </button>
+        @if (falloVersion()) {
+          <span class="barra__error" role="alert">{{ 'hoja.editor.errorVersion' | transloco }}</span>
+        }
+        <button type="button" class="boton boton--primario boton--pequeno" [disabled]="guardandoVersion() || f.invalid" (click)="guardarComoVersion()">
+          <app-icono nombre="check" style="--tam: 16px" />{{ 'hoja.editor.guardarVersion' | transloco }}
+        </button>
+      </div>
+
+      <!-- Vista previa (móvil: hoja desde abajo) -->
+      <app-dialogo #dialogoPrevia [titulo]="'hoja.revisar.vistaPrevia' | transloco">
+        @if (documento(); as d) {
+          <app-documento-hoja [documento]="d" [estilo]="plantilla()?.estilo ?? 'harvard'" />
+        }
+      </app-dialogo>
+    }
+  }
+}

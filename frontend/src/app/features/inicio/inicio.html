@@ -1,0 +1,199 @@
+<section class="banner" aria-labelledby="inicio-titulo">
+  <div class="banner__texto">
+    <p class="banner__fecha">{{ hoy() }}</p>
+    <h1 id="inicio-titulo">{{ 'inicio.hola' | transloco: { nombre: nombre() } }}</h1>
+    @switch (servicio.estadoResumen()) {
+      @case ('cargando') {
+        <span class="banner__linea bloque" aria-hidden="true"></span>
+        <span class="solo-lectores" role="status">{{ 'inicio.cargando' | transloco }}</span>
+      }
+      @case ('listo') {
+        @if (servicio.resumen(); as r) {
+          <p class="banner__bajada">
+            {{ (r.vacantesNuevas === 1 ? 'inicio.nuevasUna' : 'inicio.nuevas') | transloco: { n: r.vacantesNuevas } }}
+          </p>
+        }
+      }
+    }
+  </div>
+  <img class="banner__camello" src="images/camello-hero-640.webp" alt="" width="320" height="320" />
+</section>
+
+<div class="rejilla">
+  <section class="principal" aria-labelledby="recomendadas-titulo">
+    <header class="principal__cabecera">
+      <h2 id="recomendadas-titulo">{{ 'inicio.recomendadasHoy' | transloco }}</h2>
+      <a routerLink="/vacantes" class="enlace-ver">
+        {{ 'inicio.verTodas' | transloco }}
+        <app-icono nombre="chevron-der" style="--tam: 14px" />
+      </a>
+    </header>
+
+    @switch (servicio.estadoResumen()) {
+      @case ('cargando') {
+        <div class="tarjetas" aria-hidden="true">
+          @for (n of [1, 2, 3, 4]; track n) {
+            <div class="tarjeta esq">
+              <span class="bloque esq__a"></span>
+              <span class="bloque esq__b"></span>
+              <span class="bloque esq__c"></span>
+              <span class="bloque esq__d"></span>
+            </div>
+          }
+        </div>
+      }
+      @case ('error') {
+        <app-aviso-error (reintentar)="servicio.cargarResumen()" />
+      }
+      @case ('listo') {
+        @if (servicio.resumen()?.recomendadas?.length) {
+          <div class="tarjetas">
+            @for (v of servicio.resumen()?.recomendadas; track v.id) {
+              <app-tarjeta-recomendada [vacante]="v" [guardada]="guardadas().has(v.id)" (guardar)="alternarGuardada(v.id)" />
+            }
+          </div>
+        } @else {
+          <div class="tarjeta vacio">
+            <h3>{{ 'inicio.vacioTitulo' | transloco }}</h3>
+            <p>{{ 'inicio.vacioDetalle' | transloco }}</p>
+            <a routerLink="/hoja-de-vida" class="boton boton--borde boton--pequeno">{{ 'inicio.vacioBoton' | transloco }}</a>
+          </div>
+        }
+      }
+    }
+  </section>
+
+  <aside class="lateral">
+    <!-- ¿Qué estás buscando? -->
+    <section class="tarjeta panel" aria-labelledby="busq-titulo">
+      <header class="panel__cabecera">
+        <h2 id="busq-titulo">{{ 'inicio.busqueda.titulo' | transloco }}</h2>
+        @if (servicio.estadoResumen() === 'listo') {
+          <button type="button" class="panel__editar" (click)="editarBusqueda()">
+            <app-icono nombre="lapiz" style="--tam: 14px" />{{ 'inicio.busqueda.editar' | transloco }}
+          </button>
+        }
+      </header>
+      @switch (servicio.estadoResumen()) {
+        @case ('cargando') {
+          <span class="bloque esq__c" aria-hidden="true"></span>
+          <span class="bloque esq__d" aria-hidden="true"></span>
+        }
+        @case ('error') {
+          <p class="panel__nota">{{ 'inicio.sinDatos' | transloco }}</p>
+        }
+        @case ('listo') {
+          @if (servicio.resumen()?.busqueda; as b) {
+            <p class="panel__cita">«{{ b.texto }}»</p>
+            @if (b.etiquetas.length) {
+              <ul class="chips">
+                @for (e of b.etiquetas; track e) {
+                  <li class="chip">{{ e }}</li>
+                }
+              </ul>
+            }
+          } @else {
+            <p class="panel__nota">{{ 'inicio.busqueda.vacio' | transloco }}</p>
+          }
+        }
+      }
+    </section>
+
+    <!-- Adaptaciones de hoy -->
+    <section class="tarjeta panel panel--oro" aria-labelledby="adapt-titulo">
+      <h2 id="adapt-titulo" class="panel__titulo">
+        <app-icono nombre="estrella" style="--tam: 16px" />{{ 'inicio.adaptaciones.titulo' | transloco }}
+      </h2>
+      @switch (servicio.estadoCupo()) {
+        @case ('cargando') {
+          <span class="bloque esq__c" aria-hidden="true"></span>
+        }
+        @case ('error') {
+          <p class="panel__nota">
+            {{ 'inicio.sinDatos' | transloco }}
+            <button type="button" class="panel__editar" (click)="servicio.cargarCupo()">{{ 'hoja.error.reintentar' | transloco }}</button>
+          </p>
+        }
+        @case ('listo') {
+          <div class="barras" aria-hidden="true">
+            @for (llena of barras(); track $index) {
+              <span class="barra" [class.barra--llena]="llena"></span>
+            }
+          </div>
+          <p class="panel__nota">
+            {{ 'inicio.adaptaciones.quedan' | transloco: { n: restantes(), total: servicio.cupo()?.limite } }}
+          </p>
+        }
+      }
+    </section>
+
+    <!-- Últimas postulaciones -->
+    <section class="tarjeta panel" aria-labelledby="ult-titulo">
+      <header class="panel__cabecera">
+        <h2 id="ult-titulo">{{ 'inicio.ultimas.titulo' | transloco }}</h2>
+        <a routerLink="/postulaciones" class="panel__editar">{{ 'inicio.ultimas.verTodos' | transloco }}</a>
+      </header>
+      @switch (servicio.estadoUltimas()) {
+        @case ('cargando') {
+          <span class="bloque esq__c" aria-hidden="true"></span>
+          <span class="bloque esq__d" aria-hidden="true"></span>
+        }
+        @case ('error') {
+          <p class="panel__nota">
+            {{ 'inicio.sinDatos' | transloco }}
+            <button type="button" class="panel__editar" (click)="servicio.cargarUltimas()">{{ 'hoja.error.reintentar' | transloco }}</button>
+          </p>
+        }
+        @case ('listo') {
+          @if (servicio.ultimas().length) {
+            <ul class="ultimas">
+              @for (p of servicio.ultimas(); track p.id) {
+                <li>
+                  <strong>{{ p.cargo }}</strong>
+                  <span><i class="punto" aria-hidden="true"></i>{{ 'postulaciones.diste' | transloco }}</span>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="panel__nota">{{ 'inicio.ultimas.vacio' | transloco }}</p>
+          }
+        }
+      }
+    </section>
+  </aside>
+</div>
+
+<app-dialogo #dlgBusqueda [titulo]="'inicio.busqueda.titulo' | transloco">
+  <form class="form" (submit)="$event.preventDefault(); guardarBusqueda()" id="form-busqueda">
+    <label class="campo__etiqueta" for="busq-texto">{{ 'inicio.busqueda.texto' | transloco }}</label>
+    <textarea
+      id="busq-texto"
+      class="area"
+      rows="4"
+      maxlength="400"
+      [value]="textoBusqueda()"
+      (input)="textoBusqueda.set($any($event.target).value)"
+    ></textarea>
+    <label class="campo__etiqueta" for="busq-etiquetas">{{ 'inicio.busqueda.etiquetas' | transloco }}</label>
+    <div class="campo__caja">
+      <input
+        id="busq-etiquetas"
+        class="campo__entrada"
+        type="text"
+        autocomplete="off"
+        [value]="etiquetasBusqueda()"
+        (input)="etiquetasBusqueda.set($any($event.target).value)"
+      />
+    </div>
+    <p class="form__ayuda">{{ 'inicio.busqueda.ayuda' | transloco }}</p>
+    @if (falloGuardar()) {
+      <p class="form__error" role="alert">{{ 'inicio.busqueda.error' | transloco }}</p>
+    }
+  </form>
+  <ng-container pie>
+    <button type="button" class="boton boton--borde boton--pequeno" (click)="cancelar()">{{ 'hoja.versiones.cancelar' | transloco }}</button>
+    <button type="submit" form="form-busqueda" class="boton boton--primario boton--pequeno" [disabled]="guardando() || !textoBusqueda().trim()">
+      {{ 'inicio.busqueda.guardar' | transloco }}
+    </button>
+  </ng-container>
+</app-dialogo>

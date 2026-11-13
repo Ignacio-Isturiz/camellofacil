@@ -1,0 +1,82 @@
+<app-marco-autenticacion prefijo="auth.registro">
+  <section class="auth">
+    <div class="auth__cabecera">
+      <a routerLink="/" class="auth__volver">
+        <app-icono nombre="chevron-izq" style="--tam: 16px" />
+        {{ 'auth.comun.volverInicio' | transloco }}
+      </a>
+      <span class="auth__paso">{{ 'auth.comun.paso' | transloco: { actual: 1, total: 3 } }}</span>
+    </div>
+    <div class="progreso" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="1">
+      <span class="progreso__relleno" style="width: 33.4%"></span>
+    </div>
+
+    <div>
+      <h1>{{ 'auth.registro.titulo' | transloco }}</h1>
+      <p class="auth__bajada">{{ 'auth.registro.bajada' | transloco }}</p>
+    </div>
+
+    <form class="auth__form" [formGroup]="formulario" (ngSubmit)="enviar()" novalidate>
+      <app-campo-correo
+        [control]="formulario.controls.correo"
+        idCampo="registro-correo"
+        ayuda="auth.registro.ayudaCorreo"
+        [mostrarErrores]="intentado()"
+      />
+
+      <div class="fuerza">
+        <app-campo-contrasena
+          [control]="formulario.controls.contrasena"
+          idCampo="registro-contrasena"
+          autocompletar="new-password"
+          [mostrarErrores]="intentado()"
+        />
+        <div class="fuerza__barras" aria-hidden="true">
+          <span [class.activa]="nivel() >= 1"></span>
+          <span [class.activa]="nivel() >= 2"></span>
+        </div>
+        <ul class="fuerza__reglas">
+          @for (r of reglas(); track r.clave) {
+            <li [class.cumple]="r.cumple">
+              <app-icono [nombre]="r.cumple ? 'check' : 'info'" style="--tam: 14px" />
+              {{ 'auth.registro.reglas.' + r.clave | transloco }}
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div class="campo">
+        <label class="casilla">
+          <input type="checkbox" formControlName="terminos" [attr.aria-invalid]="errorTerminos()" />
+          <span>
+            {{ 'auth.registro.aceptoInicio' | transloco }}
+            <a routerLink="/terminos">{{ 'auth.comun.terminos' | transloco }}</a>
+            {{ 'auth.registro.aceptoY' | transloco }}
+            <a routerLink="/privacidad">{{ 'auth.comun.privacidad' | transloco }}</a>
+            {{ 'auth.registro.aceptoFin' | transloco }}
+          </span>
+        </label>
+        @if (errorTerminos()) {
+          <p class="campo__error" role="alert">{{ 'auth.comun.errores.terminos' | transloco }}</p>
+        }
+      </div>
+
+      <button type="submit" class="boton boton--primario boton--ancho">
+        {{ 'auth.registro.crear' | transloco }}
+      </button>
+    </form>
+
+    <p class="auth__separador"><span>{{ 'auth.login.o' | transloco }}</span></p>
+
+    <!-- Pendiente: conectar con Microsoft cuando el backend lo ofrezca (solo cuentas @unaula.edu.co). -->
+    <button type="button" class="boton boton--borde boton--ancho" (click)="conMicrosoft()">
+      <app-logo-microsoft />
+      {{ 'auth.registro.microsoft' | transloco }}
+    </button>
+
+    <p class="auth__pie">
+      {{ 'auth.registro.yaTienes' | transloco }}
+      <a routerLink="/login">{{ 'auth.registro.iniciarSesion' | transloco }}</a>
+    </p>
+  </section>
+</app-marco-autenticacion>

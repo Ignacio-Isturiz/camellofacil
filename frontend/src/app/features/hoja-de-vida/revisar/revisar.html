@@ -1,0 +1,286 @@
+@switch (estado()) {
+  @case ('cargando') {
+    <div class="cargando" aria-busy="true">
+      <p role="status">{{ 'hoja.cargando.normal' | transloco }}</p>
+      <div class="esq-columnas" aria-hidden="true">
+        <span class="bloque esq-hoja"></span>
+        <span class="bloque esq-form"></span>
+      </div>
+    </div>
+  }
+  @case ('error') {
+    <app-aviso-error (reintentar)="reintentar()" />
+  }
+  @default {
+    @if (formulario(); as f) {
+      @if (datos(); as d) {
+        <app-migas-hoja [actual]="'hoja.revisar.migas' | transloco" />
+
+        <header class="cabecera">
+          <div>
+            <h1>{{ 'hoja.revisar.titulo' | transloco }}</h1>
+            <p>{{ 'hoja.revisar.bajada' | transloco }}</p>
+          </div>
+          <ul class="leyenda" [attr.aria-label]="'hoja.revisar.leyenda' | transloco">
+            <li class="chip chip--leido"><app-icono nombre="check" style="--tam: 13px" />{{ 'hoja.revisar.estados.leido' | transloco }}</li>
+            <li class="chip chip--revisa"><app-icono nombre="info" style="--tam: 13px" />{{ 'hoja.revisar.estados.revisa' | transloco }}</li>
+            <li class="chip chip--no">{{ 'hoja.revisar.estados.noEncontrado' | transloco }}</li>
+          </ul>
+        </header>
+
+        <div class="cuerpo">
+          <section class="previa" [class.previa--abierta]="vistaAbierta()" aria-labelledby="previa-titulo">
+            <div class="previa__cabecera">
+              <p id="previa-titulo" class="previa__titulo">
+                {{ 'hoja.revisar.tuArchivo' | transloco }} · {{ d.archivo.nombre }}
+              </p>
+              <p class="previa__idioma">
+                {{ 'hoja.revisar.idiomaDetectado' | transloco: { idioma: ('hoja.idiomas.' + d.archivo.idioma | transloco) } }}
+              </p>
+            </div>
+            @if (valores(); as v) {
+              <app-vista-previa-hoja [valores]="v" [correo]="d.contacto.correo.valor" [marcas]="marcas()" />
+            }
+            <p class="previa__nota"><app-icono nombre="info" style="--tam: 14px" />{{ 'hoja.revisar.notaMarcado' | transloco }}</p>
+          </section>
+
+          <div class="formulario">
+            <button
+              type="button"
+              class="boton boton--borde boton--pequeno ver-previa"
+              [attr.aria-expanded]="vistaAbierta()"
+              (click)="vistaAbierta.set(!vistaAbierta())"
+            >
+              {{ (vistaAbierta() ? 'hoja.revisar.ocultarPrevia' : 'hoja.revisar.verPrevia') | transloco }}
+            </button>
+
+            <!-- Contacto -->
+            <section class="tarjeta seccion" aria-labelledby="sec-contacto">
+              <div class="seccion__cabecera">
+                <h2 id="sec-contacto">{{ 'hoja.revisar.secciones.contacto' | transloco }}</h2>
+                @if (pendientesContacto() > 0) {
+                  <span class="insignia insignia--revisa">{{ 'hoja.revisar.porRevisar' | transloco: { n: pendientesContacto() } }}</span>
+                } @else {
+                  <span class="insignia insignia--leido">{{ 'hoja.revisar.estados.leido' | transloco }}</span>
+                }
+              </div>
+              <div class="rejilla">
+                <app-campo-extraido
+                  [control]="f.controls.nombre"
+                  [campo]="d.contacto.nombre"
+                  [etiqueta]="'hoja.revisar.campos.nombre' | transloco"
+                  idCampo="rev-nombre"
+                  autocompletar="name"
+                  (resuelto)="resolver('nombre')"
+                />
+                <app-campo-extraido
+                  [control]="correoSoloLectura"
+                  [campo]="d.contacto.correo"
+                  [etiqueta]="'hoja.revisar.campos.correo' | transloco"
+                  idCampo="rev-correo"
+                  tipo="email"
+                  [soloLectura]="true"
+                />
+                <app-campo-extraido
+                  [control]="f.controls.telefono"
+                  [campo]="d.contacto.telefono"
+                  [etiqueta]="'hoja.revisar.campos.telefono' | transloco"
+                  idCampo="rev-telefono"
+                  tipo="tel"
+                  autocompletar="tel"
+                  [ayudaNoEncontrado]="'hoja.revisar.ayudaNoEncontrado' | transloco"
+                  (resuelto)="resolver('telefono')"
+                />
+                <app-campo-extraido
+                  [control]="f.controls.ciudad"
+                  [campo]="d.contacto.ciudad"
+                  [etiqueta]="'hoja.revisar.campos.ciudad' | transloco"
+                  idCampo="rev-ciudad"
+                  [placeholder]="'hoja.revisar.ejCiudad' | transloco"
+                  autocompletar="address-level2"
+                  [ayudaNoEncontrado]="'hoja.revisar.ayudaNoEncontrado' | transloco"
+                  (resuelto)="resolver('ciudad')"
+                />
+              </div>
+            </section>
+
+            <!-- Perfil -->
+            <section class="tarjeta seccion" aria-labelledby="sec-perfil">
+              <div class="seccion__cabecera">
+                <h2 id="sec-perfil">{{ 'hoja.revisar.secciones.perfil' | transloco }}</h2>
+                @if (pendientesPerfil() > 0) {
+                  <span class="insignia insignia--revisa">{{ 'hoja.revisar.porRevisar' | transloco: { n: pendientesPerfil() } }}</span>
+                } @else {
+                  <span class="insignia insignia--leido">{{ 'hoja.revisar.estados.leido' | transloco }}</span>
+                }
+              </div>
+              <app-campo-extraido
+                [control]="f.controls.perfil"
+                [campo]="d.perfil"
+                [etiqueta]="'hoja.revisar.secciones.perfil' | transloco"
+                idCampo="rev-perfil"
+                tipo="textarea"
+                [ayudaNoEncontrado]="'hoja.revisar.ayudaNoEncontrado' | transloco"
+                (resuelto)="resolver('perfil')"
+              />
+            </section>
+
+            <!-- Experiencia -->
+            <section class="tarjeta seccion" aria-labelledby="sec-experiencia">
+              <div class="seccion__cabecera">
+                <h2 id="sec-experiencia">{{ 'hoja.revisar.secciones.experiencia' | transloco }}</h2>
+                @if (pendientesExperiencia() > 0) {
+                  <span class="insignia insignia--revisa">{{ 'hoja.revisar.porRevisar' | transloco: { n: pendientesExperiencia() } }}</span>
+                } @else {
+                  <span class="insignia insignia--leido">{{ 'hoja.revisar.estados.leido' | transloco }}</span>
+                }
+              </div>
+
+              @for (g of f.controls.experiencia.controls; track g.controls.id.value; let i = $index) {
+                @if (metaExperiencia()[i]; as m) {
+                  <div class="item">
+                    <div class="rejilla">
+                      <app-campo-extraido
+                        [control]="g.controls.cargo"
+                        [campo]="m.cargo"
+                        [etiqueta]="'hoja.revisar.campos.cargo' | transloco"
+                        [idCampo]="'rev-exp-' + m.id + '-cargo'"
+                        (resuelto)="resolver('exp.' + m.id + '.cargo')"
+                      />
+                      <app-campo-extraido
+                        [control]="g.controls.organizacion"
+                        [campo]="m.organizacion"
+                        [etiqueta]="'hoja.revisar.campos.organizacion' | transloco"
+                        [idCampo]="'rev-exp-' + m.id + '-org'"
+                        (resuelto)="resolver('exp.' + m.id + '.organizacion')"
+                      />
+                      <app-campo-extraido
+                        [control]="g.controls.inicio"
+                        [campo]="m.inicio"
+                        [etiqueta]="'hoja.revisar.campos.inicio' | transloco"
+                        [idCampo]="'rev-exp-' + m.id + '-inicio'"
+                        tipo="month"
+                        [ayudaNoEncontrado]="'hoja.revisar.ayudaFechas' | transloco"
+                        (resuelto)="resolver('exp.' + m.id + '.inicio')"
+                      />
+                      <app-campo-extraido
+                        [control]="g.controls.fin"
+                        [campo]="m.fin"
+                        [etiqueta]="'hoja.revisar.campos.fin' | transloco"
+                        [idCampo]="'rev-exp-' + m.id + '-fin'"
+                        tipo="month"
+                        [ayudaNoEncontrado]="'hoja.revisar.ayudaFechas' | transloco"
+                        (resuelto)="resolver('exp.' + m.id + '.fin')"
+                      />
+                    </div>
+                    <app-campo-extraido
+                      [control]="g.controls.descripcion"
+                      [campo]="m.descripcion"
+                      [etiqueta]="'hoja.revisar.campos.descripcion' | transloco"
+                      [idCampo]="'rev-exp-' + m.id + '-desc'"
+                      tipo="textarea"
+                      (resuelto)="resolver('exp.' + m.id + '.descripcion')"
+                    />
+                    <button type="button" class="enlace" (click)="quitarExperiencia(i)">{{ 'hoja.revisar.quitar' | transloco }}</button>
+                  </div>
+                }
+              }
+
+              <button type="button" class="enlace enlace--agregar" (click)="agregarExperiencia()">
+                <app-icono nombre="mas" style="--tam: 16px" />{{ 'hoja.revisar.agregarExperiencia' | transloco }}
+              </button>
+            </section>
+
+            <!-- Educación -->
+            <section class="tarjeta seccion" aria-labelledby="sec-educacion">
+              <div class="seccion__cabecera">
+                <h2 id="sec-educacion">{{ 'hoja.revisar.secciones.educacion' | transloco }}</h2>
+                @if (pendientesEducacion() > 0) {
+                  <span class="insignia insignia--revisa">{{ 'hoja.revisar.porRevisar' | transloco: { n: pendientesEducacion() } }}</span>
+                } @else {
+                  <span class="insignia insignia--leido">{{ 'hoja.revisar.estados.leido' | transloco }}</span>
+                }
+              </div>
+              @for (g of f.controls.educacion.controls; track g.controls.id.value; let i = $index) {
+                @if (metaEducacion()[i]; as m) {
+                  <div class="item">
+                    <div class="rejilla">
+                      <app-campo-extraido
+                        [control]="g.controls.titulo"
+                        [campo]="m.titulo"
+                        [etiqueta]="'hoja.revisar.campos.titulo' | transloco"
+                        [idCampo]="'rev-edu-' + m.id + '-titulo'"
+                        (resuelto)="resolver('edu.' + m.id + '.titulo')"
+                      />
+                      <app-campo-extraido
+                        [control]="g.controls.institucion"
+                        [campo]="m.institucion"
+                        [etiqueta]="'hoja.revisar.campos.institucion' | transloco"
+                        [idCampo]="'rev-edu-' + m.id + '-inst'"
+                        (resuelto)="resolver('edu.' + m.id + '.institucion')"
+                      />
+                      <app-campo-extraido
+                        [control]="g.controls.inicio"
+                        [campo]="m.inicio"
+                        [etiqueta]="'hoja.revisar.campos.inicio' | transloco"
+                        [idCampo]="'rev-edu-' + m.id + '-inicio'"
+                        tipo="month"
+                        [ayudaNoEncontrado]="'hoja.revisar.ayudaFechas' | transloco"
+                        (resuelto)="resolver('edu.' + m.id + '.inicio')"
+                      />
+                      <app-campo-extraido
+                        [control]="g.controls.fin"
+                        [campo]="m.fin"
+                        [etiqueta]="'hoja.revisar.campos.fin' | transloco"
+                        [idCampo]="'rev-edu-' + m.id + '-fin'"
+                        tipo="month"
+                        [ayudaNoEncontrado]="'hoja.revisar.ayudaFechas' | transloco"
+                        (resuelto)="resolver('edu.' + m.id + '.fin')"
+                      />
+                    </div>
+                  </div>
+                }
+              }
+            </section>
+
+            <!-- Habilidades -->
+            <section class="tarjeta seccion" aria-labelledby="sec-habilidades">
+              <div class="seccion__cabecera">
+                <h2 id="sec-habilidades">{{ 'hoja.revisar.secciones.habilidades' | transloco }}</h2>
+                @if (pendientesHabilidades() > 0) {
+                  <span class="insignia insignia--revisa">{{ 'hoja.revisar.porRevisar' | transloco: { n: pendientesHabilidades() } }}</span>
+                } @else {
+                  <span class="insignia insignia--leido">{{ 'hoja.revisar.estados.leido' | transloco }}</span>
+                }
+              </div>
+              <app-campo-extraido
+                [control]="f.controls.habilidades"
+                [campo]="d.habilidades"
+                [etiqueta]="'hoja.revisar.secciones.habilidades' | transloco"
+                idCampo="rev-habilidades"
+                tipo="textarea"
+                [ayudaNoEncontrado]="'hoja.revisar.ayudaNoEncontrado' | transloco"
+                (resuelto)="resolver('habilidades')"
+              />
+            </section>
+          </div>
+        </div>
+
+        <div class="barra" role="region" [attr.aria-label]="'hoja.revisar.confirmarAria' | transloco">
+          <p class="barra__texto" aria-live="polite">
+            @if (errorGuardar()) {
+              <span class="barra__error" role="alert">{{ 'hoja.revisar.errorGuardar' | transloco }}</span>
+            } @else if (pendientes() > 0) {
+              {{ (pendientes() === 1 ? 'hoja.revisar.quedaUno' : 'hoja.revisar.quedan') | transloco: { n: pendientes() } }}
+            } @else {
+              {{ 'hoja.revisar.sinPendientes' | transloco }}
+            }
+          </p>
+          <button type="button" class="boton boton--primario" [disabled]="enviando() || f.invalid" (click)="confirmar()">
+            {{ (enviando() ? 'hoja.revisar.enviando' : 'hoja.revisar.confirmar') | transloco }}
+          </button>
+        </div>
+      }
+    }
+  }
+}

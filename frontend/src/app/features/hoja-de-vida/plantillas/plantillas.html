@@ -1,0 +1,89 @@
+<app-migas-hoja [actual]="'hoja.principal.plantillas' | transloco" />
+
+<header class="cabecera">
+  <h1>{{ 'hoja.plantillas.titulo' | transloco }}</h1>
+  <p>{{ 'hoja.plantillas.bajada' | transloco }}</p>
+</header>
+
+<div class="barra">
+  <div class="chips" role="group" [attr.aria-label]="'hoja.plantillas.filtroAria' | transloco">
+    @for (f of filtros; track f) {
+      <button type="button" class="chip" [class.chip--activo]="filtro() === f" [attr.aria-pressed]="filtro() === f" (click)="filtro.set(f)">
+        {{ 'hoja.plantillas.filtros.' + f | transloco }}
+      </button>
+    }
+  </div>
+  <div class="segmento" role="group" [attr.aria-label]="'hoja.plantillas.idiomaAria' | transloco">
+    @for (i of idiomas; track i) {
+      <button type="button" class="segmento__op" [class.segmento__op--activo]="idioma() === i" [attr.aria-pressed]="idioma() === i" (click)="cambiarIdioma(i)">
+        {{ 'hoja.plantillas.idiomas.' + i | transloco }}
+      </button>
+    }
+  </div>
+</div>
+
+@switch (servicio.estadoPlantillas()) {
+  @case ('cargando') {
+    <ul class="rejilla" aria-busy="true">
+      @for (n of [1, 2, 3, 4]; track n) {
+        <li class="tarjeta carta carta--esqueleto" aria-hidden="true"></li>
+      }
+    </ul>
+  }
+  @case ('error') {
+    <app-aviso-error (reintentar)="reintentar()" />
+  }
+  @default {
+    @if (visibles().length === 0) {
+      <p class="tarjeta vacio">{{ 'hoja.plantillas.vacio' | transloco }}</p>
+    } @else {
+      <ul class="rejilla">
+        @for (p of visibles(); track p.id) {
+          <li class="tarjeta carta">
+            <app-miniatura-plantilla [estilo]="p.estilo" />
+            <div class="carta__titulo">
+              <h2>{{ p.nombre }}</h2>
+              <span class="etiqueta">{{ p.idiomas.join(' · ').toUpperCase() }}</span>
+            </div>
+            @if (p.etiqueta) {
+              <span class="destacada">{{ p.etiqueta }}</span>
+            }
+            <p class="carta__detalle">{{ p.descripcion }}</p>
+            <div class="carta__acciones">
+              <button type="button" class="boton boton--borde boton--pequeno" (click)="verPrevia(p)">
+                <app-icono nombre="ojo" style="--tam: 16px" />{{ 'hoja.principal.vistaPrevia' | transloco }}
+              </button>
+              <a routerLink="/hoja-de-vida/editor" [queryParams]="{ plantilla: p.id, idioma: idioma() }" class="boton boton--oro boton--pequeno">
+                {{ 'hoja.principal.usar' | transloco }}
+              </a>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  }
+}
+
+<app-dialogo [titulo]="elegida()?.nombre ?? ''" (cerrado)="alCerrar()">
+  @switch (estadoPrevia()) {
+    @case ('cargando') {
+      <p class="estado" role="status">{{ 'hoja.plantillas.cargandoPrevia' | transloco }}</p>
+    }
+    @case ('error') {
+      <app-aviso-error (reintentar)="reintentarPrevia()" />
+    }
+    @default {
+      @if (documento(); as d) {
+        <p class="nota-previa">{{ 'hoja.plantillas.conTusDatos' | transloco }}</p>
+        <app-documento-hoja [documento]="d" [estilo]="elegida()?.estilo ?? 'harvard'" />
+      }
+    }
+  }
+  <ng-container pie>
+    @if (elegida(); as p) {
+      <a routerLink="/hoja-de-vida/editor" [queryParams]="{ plantilla: p.id, idioma: idioma() }" class="boton boton--oro boton--pequeno">
+        {{ 'hoja.plantillas.usarEsta' | transloco }}
+      </a>
+    }
+  </ng-container>
+</app-dialogo>

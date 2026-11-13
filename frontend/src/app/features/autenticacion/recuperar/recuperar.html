@@ -1,0 +1,27 @@
+<app-marco-autenticacion prefijo="auth.recuperar">
+  <section class="auth">
+    <a routerLink="/login" class="auth__volver">
+      <app-icono nombre="chevron-izq" style="--tam: 16px" />
+      {{ 'auth.recuperar.volver' | transloco }}
+    </a>
+
+    <span class="auth__icono" aria-hidden="true"><app-icono nombre="candado" style="--tam: 22px" /></span>
+
+    <div>
+      <h1>{{ 'auth.recuperar.titulo' | transloco }}</h1>
+      <p class="auth__bajada">{{ 'auth.recuperar.bajada' | transloco }}</p>
+    </div>
+
+    <form class="auth__form" [formGroup]="formulario" (ngSubmit)="enviar()" novalidate>
+      <app-campo-correo [control]="formulario.controls.correo" idCampo="recuperar-correo" [mostrarErrores]="intentado()" />
+
+      <button type="submit" class="boton boton--primario boton--ancho">
+        {{ 'auth.recuperar.enviar' | transloco }}
+      </button>
+    </form>
+
+    @if (enviado()) {
+      <p class="auth__alerta" role="status">{{ 'auth.recuperar.enviado' | transloco }}</p>
+    }
+  </section>
+</app-marco-autenticacion>

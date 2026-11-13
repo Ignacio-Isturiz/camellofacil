@@ -1,0 +1,84 @@
+<a class="salto" href="#contenido-app">{{ 'app.saltar' | transloco }}</a>
+
+<header class="barra">
+  <div class="barra__fila contenedor">
+    <a routerLink="/inicio" class="barra__marca" [attr.aria-label]="'app.inicioAria' | transloco">
+      <app-logo />
+    </a>
+
+    <nav class="nav" [attr.aria-label]="'app.navegacion' | transloco">
+      <a routerLink="/inicio" routerLinkActive="nav__enlace--activo" class="nav__enlace">
+        {{ 'app.inicio' | transloco }}
+      </a>
+      <a routerLink="/vacantes" routerLinkActive="nav__enlace--activo" class="nav__enlace">
+        {{ 'app.vacantes' | transloco }}
+      </a>
+      <a routerLink="/hoja-de-vida" routerLinkActive="nav__enlace--activo" class="nav__enlace">
+        {{ 'app.hojaDeVida' | transloco }}
+      </a>
+      <a routerLink="/postulaciones" routerLinkActive="nav__enlace--activo" class="nav__enlace">
+        {{ 'app.postulaciones' | transloco }}
+      </a>
+    </nav>
+
+    <div class="barra__acciones">
+      <button type="button" class="barra__icono" [attr.aria-label]="'app.notificaciones' | transloco">
+        <app-icono nombre="campana" style="--tam: 20px" />
+      </button>
+
+      <div class="usuario">
+        <button
+          type="button"
+          class="usuario__boton"
+          [attr.aria-label]="'app.menuUsuario' | transloco"
+          [attr.aria-expanded]="menuAbierto()"
+          (click)="menuAbierto.set(!menuAbierto())"
+        >
+          {{ usuario()?.iniciales }}
+        </button>
+        @if (menuAbierto()) {
+          <div class="usuario__menu tarjeta">
+            <p class="usuario__nombre">{{ usuario()?.nombre }}</p>
+            <p class="usuario__correo">{{ usuario()?.correo }}</p>
+            <button type="button" class="boton boton--borde boton--pequeno" (click)="cerrarSesion()">
+              {{ 'app.cerrarSesion' | transloco }}
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="contenido-app" class="contenedor principal">
+  <router-outlet />
+</main>
+
+<!-- Móvil: la navegación principal va abajo, al alcance del pulgar. -->
+<nav class="inferior" [attr.aria-label]="'app.navegacion' | transloco">
+  <a routerLink="/inicio" routerLinkActive="inferior__item--activo" class="inferior__item">
+    <app-icono nombre="casa" style="--tam: 22px" />{{ 'app.inicio' | transloco }}
+  </a>
+  <a routerLink="/vacantes" routerLinkActive="inferior__item--activo" class="inferior__item">
+    <app-icono nombre="maletin" style="--tam: 22px" />{{ 'app.vacantes' | transloco }}
+  </a>
+  <a routerLink="/hoja-de-vida" routerLinkActive="inferior__item--activo" class="inferior__item">
+    <app-icono nombre="documento" style="--tam: 22px" />{{ 'app.hojaDeVida' | transloco }}
+  </a>
+  <a routerLink="/postulaciones" routerLinkActive="inferior__item--activo" class="inferior__item">
+    <app-icono nombre="lista" style="--tam: 22px" />{{ 'app.postulaciones' | transloco }}
+  </a>
+  <span class="inferior__item inferior__item--apagado">
+    <app-icono nombre="usuario" style="--tam: 22px" />{{ 'app.perfil' | transloco }}
+  </span>
+</nav>
+
+<app-toasts />
+
+<footer class="legal contenedor">
+  <p>
+    {{ 'app.legal' | transloco }}
+    · <a routerLink="/terminos">{{ 'auth.comun.terminosCorto' | transloco }}</a>
+    · <a routerLink="/privacidad">{{ 'auth.comun.privacidad' | transloco }}</a>
+  </p>
+</footer>

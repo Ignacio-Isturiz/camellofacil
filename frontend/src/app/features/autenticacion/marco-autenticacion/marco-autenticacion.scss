@@ -1,0 +1,231 @@
+:host {
+  display: block;
+}
+
+.marco {
+  display: grid;
+  min-height: 100dvh;
+}
+
+/* ---------- Panel rojo ---------- */
+.lado {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  padding: 20px var(--gutter) 28px;
+  overflow: hidden;
+  background: var(--rojo);
+  color: var(--blanco);
+}
+
+.lado__logo {
+  position: relative;
+  z-index: 2;
+  justify-self: start;
+  text-decoration: none;
+}
+
+.lado__texto {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+}
+
+.lado__titulo {
+  max-width: 10em;
+  font: 800 28px/1.08 var(--fuente-titulo);
+  letter-spacing: -0.03em;
+}
+
+/* Puntos y camello solo en pantallas anchas; en móvil el panel es una franja con el mensaje. */
+.lado__puntos,
+.lado__camello {
+  display: none;
+}
+
+/* ---------- Burbujas animadas ---------- */
+.burbujas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.burbuja {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.burbuja--oscura {
+  top: 22%;
+  left: -70px;
+  width: 170px;
+  height: 170px;
+  background: var(--rojo-700);
+  animation: flotar-a 14s ease-in-out infinite;
+}
+.burbuja--mostaza {
+  right: -50px;
+  bottom: -90px;
+  width: 260px;
+  height: 260px;
+  background: var(--oro);
+  animation: flotar-b 18s ease-in-out infinite;
+}
+.burbuja--rosa {
+  top: -40px;
+  right: 12%;
+  width: 120px;
+  height: 120px;
+  background: rgb(255 255 255 / 7%);
+  animation: flotar-c 16s ease-in-out infinite;
+}
+.burbuja--oro-chica {
+  top: 46%;
+  right: 8%;
+  width: 34px;
+  height: 34px;
+  background: var(--oro);
+  opacity: 0.85;
+  animation: flotar-d 9s ease-in-out infinite;
+}
+.burbuja--oscura-chica {
+  bottom: 30%;
+  left: 14%;
+  width: 54px;
+  height: 54px;
+  background: var(--rojo-800);
+  animation: flotar-a 11s ease-in-out -4s infinite reverse;
+}
+
+@keyframes flotar-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(28px, -34px) scale(1.08);
+  }
+  66% {
+    transform: translate(-10px, 26px) scale(0.94);
+  }
+}
+@keyframes flotar-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-46px, -38px) scale(1.1);
+  }
+}
+@keyframes flotar-c {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-36px, 30px) scale(1.15);
+  }
+}
+@keyframes flotar-d {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-16px, -22px);
+  }
+  50% {
+    transform: translate(10px, -40px);
+  }
+  75% {
+    transform: translate(18px, -12px);
+  }
+}
+
+/* ---------- Contenido ---------- */
+.contenido {
+  display: grid;
+  place-items: start center;
+  padding: 32px var(--gutter) 48px;
+}
+
+.contenido__caja {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ---------- Escritorio: dos columnas ---------- */
+@media (min-width: 900px) {
+  .marco {
+    grid-template-columns: 54fr 46fr;
+  }
+
+  .lado {
+    align-content: start;
+    gap: 40px;
+    min-height: 100dvh;
+    padding: 36px 48px 0;
+  }
+
+  .lado__titulo {
+    font-size: clamp(36px, 4.2vw, 52px);
+  }
+
+  .lado__puntos {
+    display: grid;
+    gap: 10px;
+    font: 500 15px/22px var(--fuente-texto);
+  }
+  .lado__puntos li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .lado__puntos svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.9;
+  }
+
+  .lado__camello {
+    position: absolute;
+    z-index: 1;
+    right: 4%;
+    bottom: 0;
+    display: block;
+    width: min(56%, 380px);
+    height: auto;
+    pointer-events: none;
+  }
+
+  .burbuja--mostaza {
+    right: -4%;
+    bottom: -60px;
+    width: min(58%, 380px);
+    height: auto;
+    aspect-ratio: 1;
+  }
+  .burbuja--oscura {
+    top: 26%;
+    left: -90px;
+    width: 200px;
+    height: 200px;
+  }
+
+  .contenido {
+    place-items: center;
+    padding: 48px 40px;
+  }
+}

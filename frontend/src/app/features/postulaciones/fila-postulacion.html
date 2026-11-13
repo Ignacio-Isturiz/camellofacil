@@ -1,0 +1,45 @@
+<article class="fila">
+  <span class="logo" [class]="'logo logo--' + tono()" aria-hidden="true">{{ iniciales() }}</span>
+
+  <div class="vacante">
+    <h3>{{ postulacion().cargo }}</h3>
+    <p class="vacante__detalle">{{ postulacion().empresa }} · {{ postulacion().lugar }}</p>
+    <span class="etiqueta">{{ 'postulaciones.tipo.' + postulacion().tipo | transloco }}</span>
+  </div>
+
+  <div class="clic">
+    <span class="marca">
+      <span class="marca__punto" aria-hidden="true"></span>
+      {{ 'postulaciones.diste' | transloco }}
+    </span>
+    <p class="clic__fecha">
+      {{ fecha() }}
+      @if (postulacion().clics > 1) {
+        · {{ 'postulaciones.clics' | transloco: { n: postulacion().clics } }}
+      }
+    </p>
+  </div>
+
+  <div class="hoja">
+    <p class="hoja__etiqueta">{{ 'postulaciones.hojaQueLlevaste' | transloco }}</p>
+    <span class="chip" [class]="'chip chip--' + postulacion().hojaUsada">
+      {{ 'postulaciones.hoja.' + postulacion().hojaUsada | transloco }}
+    </span>
+  </div>
+
+  <div class="acciones">
+    <button type="button" class="boton boton--borde boton--pequeno" (click)="ver.emit()">
+      {{ 'postulaciones.verVacante' | transloco }}
+      <app-icono nombre="externo" style="--tam: 16px" />
+      <span class="solo-lectores">{{ 'postulaciones.nuevaPestana' | transloco }}</span>
+    </button>
+    <button
+      type="button"
+      class="quitar"
+      [attr.aria-label]="'postulaciones.quitar' | transloco: { cargo: postulacion().cargo }"
+      (click)="quitar.emit()"
+    >
+      <app-icono nombre="papelera" style="--tam: 18px" />
+    </button>
+  </div>
+</article>

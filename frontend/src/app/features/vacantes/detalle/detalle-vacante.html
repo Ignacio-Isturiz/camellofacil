@@ -1,0 +1,94 @@
+@if (estado() === 'listo' && !vacante()) {
+  <div class="tarjeta no-encontrada">
+    <h1>{{ 'vacantes.detalle.noEncontrada' | transloco }}</h1>
+    <a routerLink="/vacantes" class="boton boton--primario boton--pequeno">{{ 'vacantes.detalle.volver' | transloco }}</a>
+  </div>
+} @else {
+  <nav class="migas" [attr.aria-label]="'vacantes.detalle.migasAria' | transloco">
+    <a routerLink="/vacantes">{{ 'vacantes.detalle.migas' | transloco }}</a>
+    @if (vacante(); as v) {
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ v.cargo }}</span>
+    }
+  </nav>
+
+  <div class="detalle">
+    @if (vacante(); as v) {
+      <div class="detalle__principal">
+        <section class="tarjeta cabecera">
+          <div class="empresa">
+            <span class="empresa__logo" aria-hidden="true">{{ iniciales() }}</span>
+            <div>
+              <p class="empresa__nombre">{{ v.empresa }}</p>
+              <p class="empresa__fuente">
+                {{ 'vacantes.detalle.via' | transloco: { fuente: v.fuente } }} ·
+                @switch (v.dias) {
+                  @case (0) { {{ 'vacantes.detalle.publicadaHoy' | transloco }} }
+                  @case (1) { {{ 'vacantes.detalle.publicadaAyer' | transloco }} }
+                  @default { {{ 'vacantes.detalle.publicadaHace' | transloco: { n: v.dias } }} }
+                }
+              </p>
+            </div>
+          </div>
+          <h1>{{ v.cargo }}</h1>
+          <div class="cabecera__etiquetas">
+            <span class="etiqueta">{{ 'vacantes.detalle.tipo.' + v.tipo | transloco }}</span>
+            <span class="etiqueta etiqueta--exito">
+              <app-icono nombre="check" style="--tam: 13px" />
+              {{ 'vacantes.tarjeta.coincidencia' | transloco: { n: v.coincidencia } }}
+            </span>
+            <span class="etiqueta etiqueta--neutra"><app-icono nombre="pin" style="--tam: 13px" />{{ v.ciudad }}</span>
+            <span class="etiqueta etiqueta--neutra">
+              <app-icono nombre="maletin" style="--tam: 13px" />{{ 'vacantes.modalidad.' + v.modalidad | transloco }}
+            </span>
+          </div>
+        </section>
+
+        <section class="tarjeta bloque" aria-labelledby="por-que">
+          <h2 id="por-que">{{ 'vacantes.detalle.porQue' | transloco }}</h2>
+          <ul class="razones">
+            @for (r of v.razones; track r.texto) {
+              <li class="razon" [class.razon--aviso]="r.tipo === 'aviso'">
+                <app-icono [nombre]="r.tipo === 'ok' ? 'check' : 'info'" style="--tam: 16px" />
+                <span>
+                  <span class="solo-lectores">{{ (r.tipo === 'ok' ? 'vacantes.detalle.coincide' : 'vacantes.detalle.falta') | transloco }}: </span>
+                  {{ r.texto }}
+                </span>
+              </li>
+            }
+          </ul>
+        </section>
+
+        <section class="tarjeta bloque" aria-labelledby="sobre">
+          <h2 id="sobre">{{ 'vacantes.detalle.sobre.' + v.tipo | transloco }}</h2>
+          <p class="texto">{{ v.descripcion }}</p>
+
+          <h3>{{ 'vacantes.detalle.responsabilidades' | transloco }}</h3>
+          <ul class="puntos">
+            @for (t of v.responsabilidades; track t) {
+              <li>{{ t }}</li>
+            }
+          </ul>
+
+          <h3>{{ 'vacantes.detalle.requisitos' | transloco }}</h3>
+          <ul class="puntos">
+            @for (t of v.requisitos; track t) {
+              <li>{{ t }}</li>
+            }
+          </ul>
+        </section>
+      </div>
+    } @else {
+      <app-esqueleto-detalle />
+    }
+
+    <!-- El panel se ve siempre; sus botones se apagan mientras no hay vacante cargada. -->
+    <app-panel-accion
+      [vacanteId]="id()"
+      [lista]="!!vacante()"
+      [guardada]="guardada()"
+      (guardar)="guardar()"
+      (ocultar)="ocultar()"
+    />
+  </div>
+}

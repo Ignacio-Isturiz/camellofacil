@@ -1,0 +1,93 @@
+:host {
+  display: block;
+  margin-top: 56px;
+}
+
+.pie {
+  color: var(--blanco);
+}
+
+.pie__ola {
+  display: block;
+  width: 100%;
+  height: 40px;
+  fill: var(--rojo);
+  margin-bottom: -1px;
+}
+
+.pie__cuerpo {
+  position: relative;
+  overflow: hidden;
+  padding: 24px 0 32px;
+  background: var(--rojo);
+}
+/* Círculo oscuro decorativo de la esquina inferior izquierda. */
+.pie__cuerpo::before {
+  content: '';
+  position: absolute;
+  left: -80px;
+  bottom: -140px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: var(--rojo-700);
+}
+
+.pie__cuerpo > .contenedor {
+  position: relative;
+}
+
+.pie__fila {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgb(255 255 255 / 20%);
+}
+
+.pie__enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+}
+.pie__enlaces a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font: 500 14px/20px var(--fuente-texto);
+  color: var(--blanco);
+  text-underline-offset: 3px;
+}
+.pie__enlaces a:hover {
+  color: var(--oro-100);
+}
+
+.pie__legal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 20px;
+  font-size: 13px;
+  line-height: 18px;
+  color: rgb(255 255 255 / 88%);
+}
+
+@media (min-width: 768px) {
+  .pie__ola {
+    height: 80px;
+  }
+  .pie__cuerpo {
+    padding-top: 40px;
+  }
+  .pie__fila {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .pie__legal {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 32px;
+  }
+}

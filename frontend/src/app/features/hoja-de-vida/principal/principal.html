@@ -1,0 +1,225 @@
+@if (hoja(); as h) {
+  <header class="cabecera">
+    <h1>{{ 'hoja.principal.titulo' | transloco }}</h1>
+    <p class="cabecera__bajada">{{ 'hoja.principal.bajada' | transloco }}</p>
+  </header>
+
+  <!-- Tableta y móvil: pestañas. En escritorio se ven todas las secciones. -->
+  <div class="pestanas" role="tablist" [attr.aria-label]="'hoja.principal.secciones' | transloco">
+    @for (v of vistas; track v) {
+      <button
+        type="button"
+        role="tab"
+        class="pestana"
+        [class.pestana--activa]="vista() === v"
+        [attr.aria-selected]="vista() === v"
+        (click)="vista.set(v)"
+      >
+        {{ 'hoja.principal.pestanas.' + v | transloco }}
+      </button>
+    }
+    <a routerLink="/hoja-de-vida/editor" class="pestana">{{ 'hoja.principal.pestanas.editar' | transloco }}</a>
+  </div>
+
+  <section class="seccion" [class.seccion--oculta]="vista() !== 'analisis'">
+    @if (archivo(); as a) {
+      <div class="tarjeta archivo">
+        <span class="archivo__icono" aria-hidden="true"><app-icono nombre="documento" style="--tam: 20px" /></span>
+        <div class="archivo__texto">
+          <p class="archivo__nombre">
+            {{ a.nombre }}
+            <span class="insignia-base">{{ 'hoja.principal.base' | transloco }}</span>
+          </p>
+          <p class="archivo__detalle">
+            {{ 'hoja.principal.actualizada' | transloco: { fecha: (a.actualizadaEn | fechaCorta) } }} ·
+            {{ 'hoja.principal.idioma' | transloco: { idioma: ('hoja.idiomas.' + a.idioma | transloco) } }} ·
+            {{ 'hoja.principal.paginas' | transloco: { n: a.paginas } }}
+          </p>
+        </div>
+        <div class="archivo__acciones">
+          <a routerLink="/hoja-de-vida/subir" class="boton boton--borde boton--pequeno">
+            <app-icono nombre="subir" style="--tam: 16px" />{{ 'hoja.principal.reemplazar' | transloco }}
+          </a>
+          @if (versionBase(); as base) {
+            <a class="boton boton--borde boton--pequeno" [href]="urlDescarga(base.id, 'pdf')" download>
+              <app-icono nombre="descargar" style="--tam: 16px" />{{ 'hoja.principal.descargar' | transloco }}
+            </a>
+          } @else {
+            <button type="button" class="boton boton--borde boton--pequeno" disabled>
+              <app-icono nombre="descargar" style="--tam: 16px" />{{ 'hoja.principal.descargar' | transloco }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <div class="puntajes">
+      <app-tarjeta-puntaje [titulo]="'hoja.principal.harvard' | transloco" [puntaje]="h.harvard" />
+      <app-tarjeta-puntaje
+        [titulo]="'hoja.principal.ats' | transloco"
+        [puntaje]="servicio.puntajeAts()"
+        [cargando]="servicio.estadoPuntajeAts() === 'cargando'"
+      >
+        <div class="opcion-ats">
+          <label for="opcion-ats">{{ 'hoja.principal.opcionAts' | transloco }}</label>
+          <select id="opcion-ats" class="seleccion" (change)="cambiarOpcionAts($event)">
+            @for (o of h.opcionesAts; track o.id) {
+              <option [value]="o.id" [selected]="o.id === servicio.puntajeAts()?.opcionId">{{ o.nombre }}</option>
+            }
+          </select>
+          @if (servicio.estadoPuntajeAts() === 'error') {
+            <p class="opcion-ats__error" role="alert">{{ 'hoja.principal.errorAts' | transloco }}</p>
+          }
+        </div>
+      </app-tarjeta-puntaje>
+    </div>
+
+    <section class="tarjeta mejorar" aria-labelledby="mejorar-titulo">
+      <div class="mejorar__cabecera">
+        <div>
+          <h2 id="mejorar-titulo">{{ 'hoja.principal.queMejorar' | transloco }}</h2>
+          <p class="mejorar__bajada">{{ 'hoja.principal.queMejorarDetalle' | transloco }}</p>
+        </div>
+        <div class="tipos" role="tablist" [attr.aria-label]="'hoja.principal.queMejorar' | transloco">
+          @for (t of tipos; track t) {
+            <button
+              type="button"
+              role="tab"
+              class="tipo"
+              [class.tipo--activo]="tipoActivo() === t"
+              [attr.aria-selected]="tipoActivo() === t"
+              (click)="tipoActivo.set(t)"
+            >
+              {{ 'hoja.tipos.' + t | transloco }} ({{ conteos()[t] }})
+            </button>
+          }
+        </div>
+      </div>
+
+      <ul class="observaciones" aria-live="polite">
+        @for (o of observaciones(); track o.id) {
+          <li class="obs" [class]="'obs obs--' + o.tipo">
+            <app-icono [nombre]="o.tipo === 'bien' ? 'check' : o.tipo === 'falta' ? 'alerta' : 'info'" style="--tam: 18px" />
+            <div>
+              <p class="obs__titulo">{{ o.titulo }}</p>
+              <p class="obs__detalle">{{ o.detalle }}</p>
+            </div>
+          </li>
+        } @empty {
+          <li class="obs-vacia">{{ 'hoja.principal.sinObservaciones' | transloco }}</li>
+        }
+      </ul>
+
+      <div class="mejorar__acciones">
+        <a routerLink="/hoja-de-vida/reorganizar" class="boton boton--primario boton--pequeno">
+          {{ 'hoja.principal.reorganizar' | transloco }}
+        </a>
+        <a routerLink="/hoja-de-vida/plantillas" class="boton boton--borde boton--pequeno">
+          <app-icono nombre="lapiz" style="--tam: 16px" />{{ 'hoja.principal.hacerloYo' | transloco }}
+        </a>
+      </div>
+    </section>
+  </section>
+
+  <section class="seccion" [class.seccion--oculta]="vista() !== 'plantillas'" aria-labelledby="plantillas-titulo">
+    <div class="seccion__cabecera">
+      <div>
+        <h2 id="plantillas-titulo">{{ 'hoja.principal.plantillas' | transloco }}</h2>
+        <p class="seccion__bajada">{{ 'hoja.principal.plantillasDetalle' | transloco }}</p>
+      </div>
+      @if (servicio.plantillas().length > 0) {
+        <a routerLink="/hoja-de-vida/plantillas" class="enlace-ver">
+          {{ 'hoja.principal.verPlantillas' | transloco: { n: servicio.plantillas().length } }}
+          <app-icono nombre="chevron-der" style="--tam: 16px" />
+        </a>
+      }
+    </div>
+
+    @switch (servicio.estadoPlantillas()) {
+      @case ('cargando') {
+        <ul class="plantillas" aria-busy="true">
+          @for (n of [1, 2, 3, 4]; track n) {
+            <li class="tarjeta plantilla plantilla--esqueleto" aria-hidden="true"></li>
+          }
+        </ul>
+      }
+      @case ('error') {
+        <app-aviso-error (reintentar)="reintentarPlantillas()" />
+      }
+      @default {
+        @if (plantillasVisibles().length === 0) {
+          <p class="vacio tarjeta">{{ 'hoja.principal.sinPlantillas' | transloco }}</p>
+        } @else {
+          <ul class="plantillas">
+            @for (p of plantillasVisibles(); track p.id) {
+              <li class="tarjeta plantilla">
+                <app-miniatura-plantilla [estilo]="p.estilo" />
+                <div class="plantilla__titulo">
+                  <p class="plantilla__nombre">{{ p.nombre }}</p>
+                  <span class="etiqueta">{{ p.idiomas.join(' · ').toUpperCase() }}</span>
+                </div>
+                <div class="plantilla__acciones">
+                  <a routerLink="/hoja-de-vida/plantillas" [queryParams]="{ vista: p.id }" class="boton boton--borde boton--pequeno">
+                    {{ 'hoja.principal.vistaPrevia' | transloco }}
+                  </a>
+                  <a routerLink="/hoja-de-vida/editor" [queryParams]="{ plantilla: p.id }" class="boton boton--oro boton--pequeno">
+                    {{ 'hoja.principal.usar' | transloco }}
+                  </a>
+                </div>
+              </li>
+            }
+          </ul>
+        }
+      }
+    }
+  </section>
+
+  <section class="seccion" [class.seccion--oculta]="vista() !== 'versiones'" aria-labelledby="versiones-titulo">
+    <div class="tarjeta versiones">
+      <div class="seccion__cabecera">
+        <h2 id="versiones-titulo">{{ 'hoja.principal.versiones' | transloco }}</h2>
+        <a routerLink="/hoja-de-vida/versiones" class="enlace-ver">
+          {{ 'hoja.principal.gestionar' | transloco }}
+          <app-icono nombre="chevron-der" style="--tam: 16px" />
+        </a>
+      </div>
+
+      @switch (servicio.estadoVersiones()) {
+        @case ('cargando') {
+          <div class="versiones__esqueleto" aria-busy="true" aria-hidden="true"></div>
+        }
+        @case ('error') {
+          <app-aviso-error (reintentar)="reintentarVersiones()" />
+        }
+        @default {
+          @if (versionesVisibles().length === 0) {
+            <p class="vacio">{{ 'hoja.principal.sinVersiones' | transloco }}</p>
+          } @else {
+            <ul class="versiones__lista">
+              @for (v of versionesVisibles(); track v.id) {
+                <li class="version">
+                  <div class="version__texto">
+                    <p class="version__nombre">{{ v.nombre }}</p>
+                    @if (v.nota) {
+                      <p class="version__nota">{{ v.nota }}</p>
+                    }
+                  </div>
+                  <span class="etiqueta">{{ 'hoja.versiones.tipo.' + v.tipo | transloco }}</span>
+                  <span class="version__fecha">{{ v.creadaEn | fechaCorta }}</span>
+                  <span class="version__descargas">
+                    <a [href]="urlDescarga(v.id, 'pdf')" download>
+                      <app-icono nombre="descargar" style="--tam: 14px" />PDF
+                    </a>
+                    <a [href]="urlDescarga(v.id, 'docx')" download>
+                      <app-icono nombre="descargar" style="--tam: 14px" />Word
+                    </a>
+                  </span>
+                </li>
+              }
+            </ul>
+          }
+        }
+      }
+    </div>
+  </section>
+}

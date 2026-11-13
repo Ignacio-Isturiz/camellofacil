@@ -1,0 +1,93 @@
+<aside class="lateral">
+  <div class="tarjeta accion">
+    <!-- Escritorio: los dos botones principales. En móvil van en la barra fija de abajo. -->
+    <div class="principales">
+      <button type="button" class="boton boton--primario boton--ancho" [disabled]="!lista()" (click)="preguntarHoja()">
+        {{ 'vacantes.detalle.postular' | transloco }}
+        <app-icono nombre="externo" style="--tam: 18px" />
+        <span class="solo-lectores">{{ 'postulaciones.nuevaPestana' | transloco }}</span>
+      </button>
+
+      @if (!adaptacion()) {
+        <button type="button" class="boton boton--oro boton--ancho" [disabled]="!lista() || cargando() || restantes() === 0" (click)="adaptar()">
+          <app-icono nombre="estrella" style="--tam: 18px" />{{ 'vacantes.adaptar.boton' | transloco }}
+        </button>
+      }
+    </div>
+
+    @if (adaptacion()) {
+      <div class="ya-tienes" role="status">
+        <p class="ya-tienes__titulo"><app-icono nombre="check" style="--tam: 16px" />{{ 'vacantes.adaptar.yaTienes' | transloco }}</p>
+        <div class="ya-tienes__acciones">
+          <a class="boton boton--borde boton--pequeno" [href]="urlDescarga('pdf')" download>
+            <app-icono nombre="descargar" style="--tam: 16px" />PDF
+          </a>
+          <a class="boton boton--borde boton--pequeno" [href]="urlDescarga('docx')" download>
+            <app-icono nombre="descargar" style="--tam: 16px" />Word
+          </a>
+        </div>
+        <button type="button" class="enlace" (click)="verAdaptada()">{{ 'vacantes.adaptar.verCambios' | transloco }}</button>
+      </div>
+    } @else {
+      <p class="accion__nota" aria-live="polite">
+        @if (fallo()) {
+          {{ 'vacantes.adaptar.noSePudoComprobar' | transloco }}
+        } @else if (restantes() === 0) {
+          {{ 'vacantes.adaptar.sinCupo' | transloco }}
+        } @else {
+          {{ 'vacantes.adaptar.soloConLoQueTienes' | transloco }}
+          @if (restantes() !== null) {
+            · {{ 'vacantes.adaptar.teQuedan' | transloco: { n: restantes() } }}
+          }
+        }
+      </p>
+    }
+
+    <div class="accion__botones">
+      <button type="button" class="boton boton--borde boton--pequeno" [disabled]="!lista()" [attr.aria-pressed]="guardada()" (click)="guardar.emit()">
+        <app-icono nombre="guardar" style="--tam: 18px" />
+        {{ (guardada() ? 'vacantes.detalle.guardada' : 'vacantes.detalle.guardar') | transloco }}
+      </button>
+      <button type="button" class="boton boton--borde boton--pequeno" [disabled]="!lista()" (click)="ocultar.emit()">
+        <app-icono nombre="ojo-cerrado" style="--tam: 18px" />{{ 'vacantes.detalle.ocultar' | transloco }}
+      </button>
+      <button type="button" class="boton boton--borde boton--pequeno" [disabled]="!lista()">
+        <app-icono nombre="bandera" style="--tam: 18px" />{{ 'vacantes.detalle.reportar' | transloco }}
+      </button>
+    </div>
+  </div>
+
+  <p class="accion__legal">
+    <app-icono nombre="info" style="--tam: 14px" />
+    {{ 'vacantes.detalle.externa' | transloco }}
+  </p>
+</aside>
+
+<!-- Móvil: barra fija con los dos botones lado a lado -->
+<div class="barra-movil">
+  <button type="button" class="boton boton--primario" [disabled]="!lista()" (click)="preguntarHoja()">
+    {{ 'vacantes.detalle.postular' | transloco }}
+    <app-icono nombre="externo" style="--tam: 16px" />
+  </button>
+  @if (adaptacion()) {
+    <button type="button" class="boton boton--oro" (click)="verAdaptada()">
+      <app-icono nombre="estrella" style="--tam: 16px" />{{ 'vacantes.adaptar.verMovil' | transloco }}
+    </button>
+  } @else {
+    <button type="button" class="boton boton--oro" [disabled]="!lista() || cargando() || restantes() === 0" (click)="adaptar()">
+      <app-icono nombre="estrella" style="--tam: 16px" />{{ 'vacantes.adaptar.botonCorto' | transloco }}
+    </button>
+  }
+</div>
+
+<app-dialogo-adaptar
+  #dlgAdaptar
+  [vacanteId]="vacanteId()"
+  [existente]="adaptacion()"
+  [restantes]="restantes()"
+  (cupo)="restantes.set($event)"
+  (guardada)="alGuardarAdaptacion($event)"
+  (descartada)="alDescartar()"
+  (postular)="postularConAdaptada($event)"
+/>
+<app-dialogo-postular #dlgPostular [tieneAdaptada]="!!adaptacion()" (elegir)="postularCon($event)" />

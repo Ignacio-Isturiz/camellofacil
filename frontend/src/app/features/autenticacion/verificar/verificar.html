@@ -1,0 +1,63 @@
+<app-marco-autenticacion prefijo="auth.verificar">
+  <section class="auth">
+    <div class="auth__cabecera">
+      <a routerLink="/registro" class="auth__volver">
+        <app-icono nombre="chevron-izq" style="--tam: 16px" />
+        {{ 'auth.verificar.cambiarCorreo' | transloco }}
+      </a>
+      <span class="auth__paso">{{ 'auth.comun.paso' | transloco: { actual: 2, total: 3 } }}</span>
+    </div>
+    <div class="progreso" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="2">
+      <span class="progreso__relleno" style="width: 66.7%"></span>
+    </div>
+
+    <span class="auth__icono" aria-hidden="true"><app-icono nombre="sobre" style="--tam: 22px" /></span>
+
+    <div>
+      <h1>{{ 'auth.verificar.titulo' | transloco }}</h1>
+      <p class="auth__bajada">
+        {{ 'auth.verificar.bajada' | transloco }}
+        <strong class="auth__correo">{{ correo ?? ('auth.verificar.correoPorDefecto' | transloco) }}</strong>.
+      </p>
+    </div>
+
+    <div class="campo">
+      <span class="campo__etiqueta" id="codigo-etiqueta">{{ 'auth.verificar.etiquetaCodigo' | transloco }}</span>
+      <div class="codigo" role="group" aria-labelledby="codigo-etiqueta" (paste)="pegar($event)">
+        @for (i of posiciones; track i) {
+          <input
+            #casilla
+            class="codigo__digito"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="1"
+            [attr.autocomplete]="i === 0 ? 'one-time-code' : 'off'"
+            [attr.aria-label]="'auth.verificar.digito' | transloco: { n: i + 1 }"
+            [value]="digitos()[i]"
+            (input)="escribir(i, $event)"
+            (keydown)="teclear(i, $event)"
+            (focus)="$any($event.target).select()"
+          />
+        }
+      </div>
+      <p class="campo__ayuda">{{ 'auth.verificar.ayuda' | transloco }}</p>
+    </div>
+
+    <div class="tarjeta auth__ayuda">
+      <p class="auth__ayuda-titulo">{{ 'auth.verificar.noLlego' | transloco }}</p>
+      <p class="auth__bajada">{{ 'auth.verificar.noLlegoDetalle' | transloco }}</p>
+      <button type="button" class="boton boton--borde boton--pequeno" [disabled]="espera() > 0" (click)="reenviar()">
+        <app-icono nombre="reenviar" style="--tam: 16px" />
+        @if (espera() > 0) {
+          {{ 'auth.verificar.reenviarEn' | transloco: { segundos: espera() } }}
+        } @else {
+          {{ 'auth.verificar.reenviar' | transloco }}
+        }
+      </button>
+      @if (reenviado()) {
+        <p class="auth__alerta" role="status">{{ 'auth.verificar.reenviado' | transloco }}</p>
+      }
+    </div>
+  </section>
+</app-marco-autenticacion>

@@ -1,0 +1,142 @@
+<app-migas-hoja [actual]="'hoja.subir.migas' | transloco" />
+
+<header class="cabecera">
+  <h1>{{ 'hoja.subir.titulo' | transloco }}</h1>
+  <p>{{ 'hoja.subir.bajada' | transloco }}</p>
+</header>
+
+<div class="cuerpo">
+  <section class="tarjeta carga" aria-labelledby="carga-titulo">
+    <h2 id="carga-titulo" class="solo-lectores">{{ 'hoja.subir.zona' | transloco }}</h2>
+
+    <!-- Aviso de progreso para lectores de pantalla -->
+    <p class="solo-lectores" role="status" aria-live="polite">
+      @switch (subida.estado()) {
+        @case ('subiendo') { {{ 'hoja.subir.subiendo' | transloco }} {{ subida.progreso() }} % }
+        @case ('analizando') { {{ 'hoja.subir.analizando' | transloco }} }
+      }
+    </p>
+
+    @switch (subida.estado()) {
+      @case ('subiendo') {
+        <div class="zona zona--estado">
+          <span class="zona__icono"><app-icono nombre="documento" style="--tam: 22px" /></span>
+          <p class="zona__titulo">{{ subida.nombreArchivo() }}</p>
+          <div
+            class="progreso"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [attr.aria-valuenow]="subida.progreso()"
+            [attr.aria-label]="'hoja.subir.subiendo' | transloco"
+          >
+            <span class="progreso__relleno" [style.width.%]="subida.progreso()"></span>
+          </div>
+          <p class="zona__nota">{{ 'hoja.subir.subiendo' | transloco }} {{ subida.progreso() }} %</p>
+          <button type="button" class="boton boton--borde boton--pequeno" (click)="otroArchivo()">
+            {{ 'hoja.subir.cancelar' | transloco }}
+          </button>
+        </div>
+      }
+      @case ('analizando') {
+        <div class="zona zona--estado" aria-busy="true">
+          <span class="giro" aria-hidden="true"></span>
+          <p class="zona__titulo">{{ 'hoja.subir.analizando' | transloco }}</p>
+          <p class="zona__nota">{{ 'hoja.subir.analizandoDetalle' | transloco }}</p>
+        </div>
+      }
+      @case ('error') {
+        <div class="zona zona--error" role="alert">
+          <span class="zona__icono zona__icono--error"><app-icono nombre="alerta" style="--tam: 22px" /></span>
+          <p class="zona__titulo">{{ 'hoja.subir.errores.' + subida.error() + '.titulo' | transloco }}</p>
+          @if (subida.nombreArchivo()) {
+            <p class="zona__nota zona__nota--archivo">{{ subida.nombreArchivo() }}</p>
+          }
+          <ol class="pasos-error">
+            @for (n of erroresPasos; track n) {
+              <li>{{ 'hoja.subir.errores.' + subida.error() + '.paso' + n | transloco }}</li>
+            }
+          </ol>
+          <div class="zona__acciones">
+            <button type="button" class="boton boton--primario boton--pequeno" (click)="otroArchivo()">
+              {{ 'hoja.subir.intentarOtro' | transloco }}
+            </button>
+          </div>
+        </div>
+      }
+      @default {
+        <div
+          class="zona"
+          [class.zona--activa]="autorizado()"
+          [class.zona--sobre]="arrastrando()"
+          (dragover)="sobre($event, true)"
+          (dragleave)="sobre($event, false)"
+          (drop)="soltado($event)"
+        >
+          <span class="zona__icono"><app-icono nombre="subir" style="--tam: 22px" /></span>
+          <p class="zona__titulo">
+            {{ (autorizado() ? 'hoja.subir.arrastra' : 'hoja.subir.marcaAutorizacion') | transloco }}
+          </p>
+          <p class="zona__nota">{{ 'hoja.subir.formatos' | transloco }}</p>
+          <label class="boton boton--borde boton--pequeno" [class.boton--inactivo]="!autorizado()">
+            {{ 'hoja.subir.elegir' | transloco }}
+            <input
+              class="solo-lectores"
+              type="file"
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              [disabled]="!autorizado()"
+              (change)="elegido($event)"
+            />
+          </label>
+        </div>
+      }
+    }
+
+    <div class="autorizacion" [class.autorizacion--bloqueada]="subida.estado() === 'subiendo' || subida.estado() === 'analizando'">
+      <app-icono nombre="escudo" style="--tam: 18px" />
+      <div>
+        <p>
+          <strong>{{ 'hoja.subir.antes' | transloco }}</strong>
+          {{ 'hoja.subir.antesDetalle' | transloco }}
+        </p>
+        <label class="casilla">
+          <input
+            type="checkbox"
+            [checked]="autorizado()"
+            [disabled]="subida.estado() === 'subiendo' || subida.estado() === 'analizando'"
+            (change)="cambiarAutorizacion($event)"
+          />
+          <span>
+            {{ 'hoja.subir.autorizo' | transloco }}
+            <a routerLink="/privacidad">{{ 'hoja.subir.leerPolitica' | transloco }}</a>
+          </span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <aside class="lateral">
+    <section class="tarjeta despues" aria-labelledby="despues-titulo">
+      <h2 id="despues-titulo">{{ 'hoja.subir.despues' | transloco }}</h2>
+      <ol>
+        @for (n of erroresPasos; track n) {
+          <li>
+            <span class="num" aria-hidden="true">{{ n }}</span>
+            <span>
+              <strong>{{ 'hoja.subir.pasos.p' + n + '.titulo' | transloco }}</strong>
+              {{ 'hoja.subir.pasos.p' + n + '.detalle' | transloco }}
+            </span>
+          </li>
+        }
+      </ol>
+    </section>
+
+    <section class="tarjeta sin-hoja">
+      <h2>{{ 'hoja.subir.sinHoja' | transloco }}</h2>
+      <p>{{ 'hoja.subir.sinHojaDetalle' | transloco }}</p>
+      <a routerLink="/hoja-de-vida/plantillas" class="boton boton--oro boton--pequeno">
+        {{ 'hoja.subir.verPlantillas' | transloco }}
+      </a>
+    </section>
+  </aside>
+</div>

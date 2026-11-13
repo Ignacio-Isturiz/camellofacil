@@ -1,0 +1,44 @@
+<div class="marco">
+  <aside class="lado">
+    <!-- Burbujas decorativas: se mueven despacio y no las lee el lector de pantalla. -->
+    <div class="burbujas" aria-hidden="true">
+      <span class="burbuja burbuja--oscura"></span>
+      <span class="burbuja burbuja--mostaza"></span>
+      <span class="burbuja burbuja--rosa"></span>
+      <span class="burbuja burbuja--oro-chica"></span>
+      <span class="burbuja burbuja--oscura-chica"></span>
+    </div>
+
+    <a routerLink="/" class="lado__logo" [attr.aria-label]="'encabezado.inicio' | transloco">
+      <app-logo [claro]="true" />
+    </a>
+
+    <div class="lado__texto">
+      <p class="etiqueta">{{ 'auth.comun.soloUnaula' | transloco }}</p>
+      <p class="lado__titulo">{{ prefijo() + '.panelTitulo' | transloco }}</p>
+      <ul class="lado__puntos">
+        @for (n of puntos; track n) {
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.500 4.500L19 7.500" /></svg>
+            {{ prefijo() + '.punto' + n | transloco }}
+          </li>
+        }
+      </ul>
+    </div>
+
+    <img
+      class="lado__camello"
+      src="images/camello-hero-640.webp"
+      alt=""
+      width="640"
+      height="626"
+      decoding="async"
+    />
+  </aside>
+
+  <main class="contenido" id="contenido">
+    <div class="contenido__caja">
+      <ng-content />
+    </div>
+  </main>
+</div>

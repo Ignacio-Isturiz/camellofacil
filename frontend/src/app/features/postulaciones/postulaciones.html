@@ -1,0 +1,74 @@
+<header class="cabecera">
+  <div>
+    <h1>{{ 'postulaciones.titulo' | transloco }}</h1>
+    <p>{{ 'postulaciones.bajada' | transloco }}</p>
+  </div>
+  @if (servicio.estado() === 'listo' && servicio.clics90() !== null) {
+    <p class="resumen">
+      <strong>{{ 'postulaciones.clicsResumen' | transloco: { n: servicio.clics90() } }}</strong>
+      · {{ 'postulaciones.ultimos90' | transloco }}
+    </p>
+  }
+</header>
+
+<div class="herramientas" role="search">
+  <div class="buscador">
+    <app-icono nombre="lupa" style="--tam: 18px" />
+    <input
+      type="search"
+      autocomplete="off"
+      [attr.aria-label]="'postulaciones.buscar' | transloco"
+      [placeholder]="'postulaciones.buscar' | transloco"
+      [value]="consulta()"
+      (input)="consulta.set($any($event.target).value)"
+    />
+  </div>
+  <label class="orden">
+    <span>{{ 'postulaciones.ordenar' | transloco }}</span>
+    <select class="seleccion" (change)="cambiarOrden($event)">
+      @for (o of ordenes; track o) {
+        <option [value]="o" [selected]="orden() === o">{{ 'postulaciones.orden.' + o | transloco }}</option>
+      }
+    </select>
+  </label>
+</div>
+
+@switch (servicio.estado()) {
+  @case ('cargando') {
+    <ul class="lista tarjeta" aria-busy="true">
+      <li class="solo-lectores" role="status">{{ 'postulaciones.cargando' | transloco }}</li>
+      @for (n of esqueletos; track n) {
+        <li class="esq" aria-hidden="true">
+          <span class="bloque logo-esq"></span>
+          <span class="bloque linea"></span>
+          <span class="bloque linea linea--media"></span>
+          <span class="bloque boton-esq"></span>
+        </li>
+      }
+    </ul>
+  }
+  @case ('error') {
+    <app-aviso-error (reintentar)="recargar()" />
+  }
+  @default {
+    @if (servicio.items().length === 0) {
+      <div class="vacio tarjeta">
+        @if (consulta().trim()) {
+          <h2>{{ 'postulaciones.sinResultados' | transloco }}</h2>
+        } @else {
+          <h2>{{ 'postulaciones.vacioTitulo' | transloco }}</h2>
+          <p>{{ 'postulaciones.vacioDetalle' | transloco }}</p>
+          <a routerLink="/vacantes" class="boton boton--primario boton--pequeno">{{ 'postulaciones.verVacantes' | transloco }}</a>
+        }
+      </div>
+    } @else {
+      <ul class="lista tarjeta" aria-live="polite">
+        @for (p of servicio.items(); track p.id) {
+          <li><app-fila-postulacion [postulacion]="p" (ver)="ver(p)" (quitar)="quitar(p)" /></li>
+        }
+      </ul>
+    }
+  }
+}
+
+<p class="nota">{{ 'postulaciones.nota' | transloco }}</p>

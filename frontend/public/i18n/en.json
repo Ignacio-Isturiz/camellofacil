@@ -4,5 +4,765 @@
     "cargando": "Checking connection…",
     "error": "Could not reach the server. Please try again later.",
     "reintentar": "Retry"
+  },
+  "encabezado": {
+    "inicio": "Camello Fácil, go to home",
+    "navegacion": "Main",
+    "comoFunciona": "How it works",
+    "vacantes": "Jobs",
+    "preguntas": "FAQ",
+    "iniciarSesion": "Log in",
+    "crearCuenta": "Sign up",
+    "abrirMenu": "Open menu",
+    "cerrarMenu": "Close menu"
+  },
+  "pie": {
+    "navegacion": "Footer links",
+    "comoFunciona": "How it works",
+    "terminos": "Terms and conditions",
+    "privacidad": "Privacy policy",
+    "contacto": "Contact",
+    "aviso": "Job listings come from authorized external sources. Camello Fácil does not guarantee hiring. Data is processed under Colombian Law 1581 of 2012."
+  },
+  "auth": {
+    "comun": {
+      "soloUnaula": "Only for the UNAULA community",
+      "volverInicio": "Back to home",
+      "correo": "Institutional email",
+      "correoPlaceholder": "name@unaula.edu.co",
+      "contrasena": "Password",
+      "mostrarContrasena": "Show password",
+      "ocultarContrasena": "Hide password",
+      "paso": "Step {{ actual }} of {{ total }}",
+      "terminos": "Terms and conditions",
+      "privacidad": "Privacy policy",
+      "terminosCorto": "Terms",
+      "errores": {
+        "correoObligatorio": "Enter your institutional email.",
+        "correoDominio": "Use your @unaula.edu.co email.",
+        "contrasenaObligatoria": "Enter your password.",
+        "contrasenaDebil": "The password does not meet the requirements.",
+        "terminos": "You must accept the terms to continue."
+      }
+    },
+    "login": {
+      "panelTitulo": "Your openings for today are waiting for you.",
+      "punto1": "New recommendations every morning",
+      "punto2": "Your résumé tailored to each opening",
+      "punto3": "All your applications in one place",
+      "titulo": "Log in",
+      "bajada": "Use your UNAULA institutional email.",
+      "microsoft": "Sign in with Microsoft",
+      "primeraVez": "First time here?",
+      "crearCuenta": "Create account",
+      "legalInicio": "By signing in you accept the",
+      "legalY": "and the",
+      "legalFin": "(Law 1581 of 2012).",
+      "olvidaste": "Forgot it?",
+      "mantener": "Keep me signed in on this device",
+      "entrar": "Log in",
+      "o": "or"
+    },
+    "registro": {
+      "panelTitulo": "Your internship starts with an account.",
+      "punto1": "Internships for your degree",
+      "punto2": "Harvard and ATS analysis of your résumé",
+      "punto3": "Only with your @unaula.edu.co email",
+      "titulo": "Create your account",
+      "bajada": "Then you confirm your email with a code and complete your profile.",
+      "microsoft": "Create account with Microsoft",
+      "yaTienes": "Already have an account?",
+      "iniciarSesion": "Log in",
+      "ayudaCorreo": "We will send you a 6-digit code to confirm it. Only @unaula.edu.co emails are accepted.",
+      "reglas": {
+        "longitud": "8 characters or more",
+        "mayuscula": "One uppercase letter",
+        "numero": "One number",
+        "minuscula": "One lowercase letter"
+      },
+      "aceptoInicio": "I accept the",
+      "aceptoY": "and the",
+      "aceptoFin": "(Law 1581 of 2012).",
+      "crear": "Create account"
+    },
+    "verificar": {
+      "panelTitulo": "One code and you are in: we confirm you are from UNAULA.",
+      "punto1": "The code arrives at your institutional email",
+      "punto2": "It expires in 15 minutes",
+      "punto3": "If it does not arrive, you can ask for another",
+      "cambiarCorreo": "Change email",
+      "titulo": "Check your email",
+      "bajada": "Enter the 6-digit code we sent to",
+      "correoPorDefecto": "your institutional email",
+      "etiquetaCodigo": "Verification code",
+      "digito": "Digit {{ n }} of 6",
+      "ayuda": "You can paste the whole code. It is checked as soon as you type the last digit.",
+      "noLlego": "Did not get it?",
+      "noLlegoDetalle": "Check your spam folder or the Other tab in Outlook.",
+      "reenviar": "Resend code",
+      "reenviarEn": "Resend in {{ segundos }} s",
+      "reenviado": "We sent you a new code."
+    },
+    "recuperar": {
+      "panelTitulo": "Recover your access in two minutes.",
+      "punto1": "We send a secure link to your email",
+      "punto2": "The link expires in 30 minutes",
+      "punto3": "Your data and applications stay intact",
+      "volver": "Back to log in",
+      "titulo": "Forgot your password?",
+      "bajada": "Enter your institutional email and we will send you a link to create a new one.",
+      "enviar": "Send link",
+      "enviado": "If that email is registered, you will receive a link to create a new password."
+    }
+  },
+  "landing": {
+    "portada": {
+      "exclusivo": "Exclusive to the UNAULA community",
+      "tituloInicio": "Find the internship that",
+      "tituloResalte": "fits you.",
+      "descripcion": "Internships and jobs for your degree, recommended every day based on your résumé. And we help you tailor it to each opening without making anything up.",
+      "crearCuenta": "Create my account",
+      "verComoFunciona": "See how it works",
+      "notaCorreo": "Only with your @unaula.edu.co email",
+      "notaPracticas": "Internships first",
+      "altCamello": "Camello, the Camello Fácil mascot, wearing sunglasses and a red hoodie, giving a thumbs up and holding a laptop.",
+      "tarjetaHoja": "Your résumé · Harvard",
+      "tarjetaTipo": "Internship",
+      "tarjetaCargo": "Data analysis intern",
+      "tarjetaLugar": "Medellín · Hybrid"
+    },
+    "pasos": {
+      "sobretitulo": "How it works",
+      "titulo": "It's easy, just follow these steps",
+      "paso": "Step",
+      "cuenta": {
+        "titulo": "Create your account",
+        "detalle": "With your institutional email, in under two minutes."
+      },
+      "hoja": {
+        "titulo": "Upload your résumé",
+        "detalle": "We check it against Harvard and ATS and tell you what to improve."
+      },
+      "vacantes": {
+        "titulo": "Get job matches",
+        "detalle": "Every day, based on what you look for and your résumé."
+      },
+      "postula": {
+        "titulo": "Tailor and apply",
+        "detalle": "Adjust your résumé to the opening and finish on the original site."
+      }
+    },
+    "vacantes": {
+      "sobretitulo": "Featured jobs",
+      "titulo": "Opportunities for you",
+      "descripcion": "Some of the most recent openings for UNAULA students and alumni.",
+      "verTodas": "See all jobs",
+      "tipoPractica": "Internship"
+    },
+    "carreras": {
+      "lista": "UNAULA degrees",
+      "nombres": {
+        "derecho": "Law",
+        "contaduria": "Public Accounting",
+        "administracion": "Business Administration",
+        "economia": "Economics",
+        "informatica": "Computer Engineering",
+        "industrial": "Industrial Engineering",
+        "datos": "Data Science and Business Intelligence Engineering"
+      }
+    },
+    "preguntas": {
+      "sobretitulo": "Frequently asked questions",
+      "titulo": "What people ask us most",
+      "otraDuda": "Another question?",
+      "escribenos": "Write to us",
+      "registro": {
+        "pregunta": "Who can sign up?",
+        "respuesta": "UNAULA students and alumni with an email ending in @unaula.edu.co. When you sign up you confirm your email with a code."
+      },
+      "vacantes": {
+        "pregunta": "Where do the jobs come from?",
+        "respuesta": "From authorized external sources that we check automatically. Applying is always completed on the original job page."
+      },
+      "inventa": {
+        "pregunta": "Does the platform make up information in my résumé?",
+        "respuesta": "No. It only reorganizes, highlights and improves the wording of what you already have. If an opening asks for something that is not in your résumé, we show it as a suggestion."
+      },
+      "datos": {
+        "pregunta": "What do you do with my data?",
+        "respuesta": "We use it only to analyze your résumé and recommend jobs, with your authorization. You can view, correct, download or delete it from your profile."
+      },
+      "garantia": {
+        "pregunta": "Do you guarantee an internship?",
+        "respuesta": "No. We help you find openings and present a better résumé; the hiring decision belongs to each company."
+      }
+    }
+  },
+  "app": {
+    "saltar": "Skip to content",
+    "inicioAria": "Camello Fácil, go to home",
+    "navegacion": "Main",
+    "inicio": "Home",
+    "vacantes": "Jobs",
+    "hojaDeVida": "Résumé",
+    "postulaciones": "Applications",
+    "proximamente": "Coming soon",
+    "notificaciones": "Notifications",
+    "menuUsuario": "User menu",
+    "cerrarSesion": "Log out",
+    "legal": "Job listings come from authorized external sources. Camello Fácil does not guarantee hiring.",
+    "perfil": "Profile"
+  },
+  "vacantes": {
+    "modalidad": {
+      "presencial": "On-site",
+      "hibrido": "Hybrid",
+      "remoto": "Remote"
+    },
+    "lista": {
+      "titulo": "Jobs",
+      "bajada": "We show internships for your degree. Change the filters whenever you like.",
+      "buscarPlaceholder": "Title, company or keyword",
+      "buscar": "Search",
+      "filtros": "Filters",
+      "limpiar": "Clear",
+      "limpiarFiltros": "Clear filters",
+      "carrera": "Degree",
+      "todasCarreras": "All degrees",
+      "modalidad": "Work mode",
+      "ciudad": "City",
+      "fecha": "Posted",
+      "fechas": {
+        "cualquiera": "Any time",
+        "hoy": "Today",
+        "semana": "Past week",
+        "mes": "Past month"
+      },
+      "resultados": "{{ n }} jobs",
+      "resultadoUno": "1 job",
+      "ordenar": "Sort by",
+      "orden": {
+        "relevantes": "Most relevant",
+        "recientes": "Most recent"
+      },
+      "cargarMas": "Load more jobs",
+      "cargando": "Loading jobs…",
+      "error": "We could not load the jobs. Please try again in a few minutes.",
+      "vacio": "We found no jobs with these filters."
+    },
+    "tarjeta": {
+      "practica": "Internship",
+      "profesional": "Professional",
+      "coincidencia": "{{ n }} % match",
+      "verYPostular": "View and apply",
+      "guardar": "Save job",
+      "quitarGuardada": "Remove from saved",
+      "ocultar": "Hide job",
+      "hoy": "Today",
+      "ayer": "Yesterday",
+      "hace": "{{ n }} days ago"
+    },
+    "detalle": {
+      "migasAria": "Breadcrumb",
+      "migas": "Jobs",
+      "via": "Via {{ fuente }}",
+      "publicadaHoy": "posted today",
+      "publicadaAyer": "posted yesterday",
+      "publicadaHace": "posted {{ n }} days ago",
+      "tipo": {
+        "practica": "Professional internship",
+        "profesional": "Professional job"
+      },
+      "porQue": "Why we recommend it",
+      "coincide": "Matches",
+      "falta": "Missing",
+      "sobre": {
+        "practica": "About the internship",
+        "profesional": "About the role"
+      },
+      "responsabilidades": "Responsibilities",
+      "requisitos": "Requirements",
+      "postular": "Apply",
+      "guardar": "Save",
+      "guardada": "Saved",
+      "ocultar": "Hide",
+      "reportar": "Report",
+      "externa": "Job from an authorized external source. Camello Fácil does not guarantee hiring.",
+      "noEncontrada": "We could not find this job.",
+      "volver": "Back to jobs"
+    },
+    "postular": {
+      "titulo": "Apply",
+      "pregunta": "Which résumé are you taking?",
+      "adaptada": "Tailored résumé",
+      "adaptadaDetalle": "Adjusted to this job, only with what you already have.",
+      "base": "Base résumé",
+      "baseDetalle": "Your usual résumé, unchanged.",
+      "nota": "The original job page opens in another tab and your application ends there. We save the click in My applications.",
+      "confirmar": "Apply",
+      "guardado": "Saved in My applications.",
+      "verHistorial": "View",
+      "error": "We could not record your click. Please try again."
+    },
+    "adaptar": {
+      "boton": "Tailor résumé",
+      "botonCorto": "Tailor résumé",
+      "verMovil": "My tailored résumé",
+      "soloConLoQueTienes": "Only with what you already have, nothing made up",
+      "teQuedan": "{{ n }} left today",
+      "sinCupo": "You used today's tailorings. Come back tomorrow.",
+      "noSePudoComprobar": "We could not check your tailorings right now.",
+      "yaTienes": "You have your résumé tailored to this job",
+      "verCambios": "See changes or edit",
+      "titulo": "Résumé tailored to this job",
+      "adaptando": "Tailoring your résumé…",
+      "sinInventar": "Tailoring only reorders and better words what is already in your résumé. It never adds information.",
+      "limite": "You used today's tailorings. Come back tomorrow.",
+      "error": "We could not tailor your résumé right now.",
+      "base": "Base résumé",
+      "adaptada": "Tailored to the job",
+      "avisosTitulo": "The job asks for this and it is not in your résumé (we do not add it):",
+      "editar": "Edit",
+      "sinCupoRegenerar": "You have no tailorings left today to regenerate.",
+      "errorAccion": "We could not complete the action. Please try again.",
+      "guardar": "Save tailored résumé",
+      "guardarYPostular": "Save and apply",
+      "postularConEsta": "Apply with this résumé",
+      "guardadaAviso": "We saved your tailored résumé.",
+      "descartadaAviso": "You discarded the tailoring."
+    }
+  },
+  "hoja": {
+    "nivel": {
+      "bajo": "Low compliance",
+      "medio": "Medium compliance",
+      "alto": "High compliance"
+    },
+    "error": {
+      "titulo": "We could not load this information",
+      "detalle": "Check your connection and try again. If it keeps failing, come back in a few minutes.",
+      "reintentar": "Retry",
+      "accesoTitulo": "You don't have access to this yet",
+      "accesoDetalle": "Your session isn't allowed to see it. If you just signed in, sign out and sign in again.",
+      "noDisponibleTitulo": "This feature isn't available yet",
+      "noDisponibleDetalle": "The server doesn't offer this information yet. It isn't your connection.",
+      "servidorTitulo": "The server isn't responding right now",
+      "servidorDetalle": "It may be starting up. Try again in a minute."
+    },
+    "cargando": {
+      "normal": "Loading your résumé…",
+      "despertando": "Getting your space ready… this can take a few seconds."
+    },
+    "idiomas": {
+      "es": "Spanish",
+      "en": "English"
+    },
+    "tipos": {
+      "falta": "Missing",
+      "mejorar": "Improve",
+      "bien": "Good"
+    },
+    "versiones": {
+      "titulo": "My versions",
+      "bajada": "The base résumé feeds your recommendations and tailoring. Tailored ones stay linked to their job.",
+      "subirNueva": "Upload new",
+      "crearDesdePlantilla": "Create from template",
+      "filtros": {
+        "todas": "All",
+        "base": "Base and reorganized",
+        "adaptadas": "Tailored to jobs"
+      },
+      "vacio": "There are no versions in this list.",
+      "ver": "View",
+      "masAcciones": "More actions for {{ nombre }}",
+      "usarComoBase": "Use as base résumé",
+      "renombrar": "Rename",
+      "duplicar": "Duplicate",
+      "eliminar": "Delete",
+      "noEliminaBase": "The base résumé cannot be deleted. Replace it or use another version as base.",
+      "noEliminaUsada": "It cannot be deleted because it was used in an application.",
+      "nombreVersion": "Version name",
+      "cancelar": "Cancel",
+      "guardar": "Save",
+      "confirmarEliminar": "Delete “{{ nombre }}”? This cannot be undone.",
+      "eliminarDefinitivo": "Yes, delete",
+      "errorAccion": "We could not complete the action. Please try again.",
+      "tipo": {
+        "base": "Base",
+        "reorganizada": "Reorganized",
+        "adaptada": "Tailored"
+      }
+    },
+    "subir": {
+      "migas": "Upload résumé",
+      "titulo": "Upload your résumé",
+      "bajada": "It is the base of everything: with it we recommend jobs and improve it without making anything up.",
+      "zona": "Area to upload your résumé",
+      "marcaAutorizacion": "Check the authorization to enable uploading",
+      "arrastra": "Drag your résumé here or choose a file",
+      "formatos": "PDF or Word (.doc, .docx) · max 5 MB · Spanish or English",
+      "elegir": "Choose file",
+      "cancelar": "Cancel",
+      "subiendo": "Uploading",
+      "analizando": "Analyzing your résumé…",
+      "analizandoDetalle": "We are reading your information. Do not close this page.",
+      "intentarOtro": "Choose another file",
+      "antes": "Before uploading:",
+      "antesDetalle": "your résumé is processed with automated artificial intelligence tools to analyze it and recommend jobs. Only you and the administrator can see it.",
+      "autorizo": "I authorize the processing of my data for these purposes.",
+      "leerPolitica": "Read policy",
+      "despues": "What happens next",
+      "pasos": {
+        "p1": {
+          "titulo": "We read your information:",
+          "detalle": "contact, profile, education, experience, skills and languages."
+        },
+        "p2": {
+          "titulo": "You review it",
+          "detalle": "and fix what did not come out right."
+        },
+        "p3": {
+          "titulo": "You get your analysis",
+          "detalle": "Harvard and ATS, with what to improve."
+        }
+      },
+      "sinHoja": "Don't have a résumé?",
+      "sinHojaDetalle": "Create it from scratch with a Harvard or ATS template, filling in the fields.",
+      "verPlantillas": "See templates",
+      "errores": {
+        "formato": {
+          "titulo": "That format cannot be read",
+          "paso1": "Use a PDF or Word file (.doc or .docx).",
+          "paso2": "If your résumé is an image or a photo, create it with a template.",
+          "paso3": "Choose the file again."
+        },
+        "peso": {
+          "titulo": "The file is larger than 5 MB",
+          "paso1": "Save the résumé again as a PDF, without heavy images.",
+          "paso2": "Check that the final file is under 5 MB.",
+          "paso3": "Choose the file again."
+        },
+        "ilegible": {
+          "titulo": "We could not read your résumé",
+          "paso1": "Check that the file is not damaged or password-protected.",
+          "paso2": "If it is a scan or a photo, the text cannot be read: create it with a template.",
+          "paso3": "Save the file as a PDF with selectable text and upload it again."
+        },
+        "conexion": {
+          "titulo": "The connection was lost",
+          "paso1": "Check your internet connection.",
+          "paso2": "Your file was not fully uploaded.",
+          "paso3": "When the connection is back, choose the file again."
+        },
+        "servidor": {
+          "titulo": "We could not process your résumé right now",
+          "paso1": "It is not your file: there was a problem on our side.",
+          "paso2": "Wait a few minutes.",
+          "paso3": "Try again. If it keeps failing, write to us."
+        }
+      }
+    },
+    "primera": {
+      "faltaPoco": "Almost there",
+      "faltaPocoDetalle": "You already uploaded your résumé; you just need to confirm the data we read.",
+      "pendientes": "{{ n }} to review",
+      "revisarDatos": "Review data",
+      "titulo": "Let's start with your résumé",
+      "bajada": "Everything in Camello Fácil starts from it: with your résumé we recommend internships and help you improve it, without making anything up.",
+      "tengo": "I already have a résumé",
+      "tengoDetalle": "We read it, analyze it and you confirm the data.",
+      "recomendado": "Recommended",
+      "autorizo": "I authorize my résumé to be processed with automated artificial intelligence tools to analyze it, reorganize it and recommend jobs to me.",
+      "comoUsamos": "How we use your data",
+      "zonaActiva": "Choose your file",
+      "zonaBloqueada": "First check the authorization above",
+      "formatos": "PDF or Word · max 5 MB · Spanish or English",
+      "noTengo": "I don't have a résumé yet",
+      "noTengoDetalle": "Create it here, section by section, on a template.",
+      "ventaja1": "Harvard and ATS formats, in Spanish or English",
+      "ventaja2": "We tell you what goes in each section, with examples",
+      "ventaja3": "When you save it, it becomes your base résumé",
+      "crearConPlantilla": "Create with a template",
+      "verPlantillas": "See templates",
+      "escaneo": "Is your résumé a photo or a scan? It is usually read poorly: better to create it here.",
+      "asiFunciona": "How it works",
+      "pasos": {
+        "sube": {
+          "titulo": "Upload or create your résumé",
+          "detalle": "PDF or Word, or from a template."
+        },
+        "confirma": {
+          "titulo": "Confirm what we read",
+          "detalle": "You fix what is needed. Nothing is made up."
+        },
+        "recibe": {
+          "titulo": "Get scores and jobs",
+          "detalle": "Harvard, ATS and internships every day."
+        }
+      },
+      "seActiva": "What turns on with your résumé",
+      "seActivaAlSubir": "Turns on when you upload your résumé",
+      "bloqueos": {
+        "harvard": {
+          "etiqueta": "Harvard",
+          "titulo": "Your Harvard score",
+          "detalle": "How faithful your résumé is to the format."
+        },
+        "ats": {
+          "etiqueta": "ATS",
+          "titulo": "Your ATS score",
+          "detalle": "Whether automatic filters read it well."
+        },
+        "mejorar": {
+          "etiqueta": "What to improve",
+          "titulo": "Recommendations",
+          "detalle": "What is missing and what to reorganize."
+        },
+        "vacantes": {
+          "etiqueta": "Jobs of the day",
+          "titulo": "Internships for you",
+          "detalle": "With a % match and the reason."
+        }
+      }
+    },
+    "principal": {
+      "titulo": "My résumé",
+      "bajada": "Your base résumé is the starting point for everything. Here you see how it meets Harvard and ATS.",
+      "secciones": "Résumé sections",
+      "pestanas": {
+        "analisis": "Analysis",
+        "plantillas": "Templates",
+        "versiones": "Versions",
+        "editar": "Edit"
+      },
+      "base": "Base",
+      "actualizada": "Updated {{ fecha }}",
+      "idioma": "Detected language: {{ idioma }}",
+      "paginas": "{{ n }} pg.",
+      "reemplazar": "Replace",
+      "descargar": "Download",
+      "harvard": "Harvard format",
+      "ats": "ATS criteria",
+      "opcionAts": "ATS option to evaluate",
+      "errorAts": "We could not recalculate the score with that option.",
+      "queMejorar": "What to improve",
+      "queMejorarDetalle": "Recommendations based only on what is already in your résumé.",
+      "sinObservaciones": "Nothing here.",
+      "reorganizar": "Reorganize in Harvard format",
+      "hacerloYo": "Do it myself with a template",
+      "plantillas": "Templates",
+      "plantillasDetalle": "Pick one, see the preview and edit it with your information.",
+      "verPlantillas": "See all {{ n }} templates",
+      "sinPlantillas": "There are no templates available yet.",
+      "vistaPrevia": "Preview",
+      "usar": "Use",
+      "versiones": "My versions",
+      "gestionar": "Manage versions",
+      "sinVersiones": "You have no saved versions yet."
+    },
+    "revisar": {
+      "migas": "Review data",
+      "titulo": "Review what we read",
+      "bajada": "Fix what is not right. We will use exactly this information to analyze and tailor your résumé.",
+      "leyenda": "Meaning of the colors",
+      "estados": {
+        "leido": "Read",
+        "revisa": "Check",
+        "noEncontrado": "Not found"
+      },
+      "tuArchivo": "Your file",
+      "idiomaDetectado": "detected language: {{ idioma }}",
+      "notaMarcado": "What is marked in gold is what you should check.",
+      "vistaPrevia": "Preview of your résumé",
+      "verPrevia": "See how it looks",
+      "ocultarPrevia": "Hide preview",
+      "secciones": {
+        "contacto": "Contact",
+        "perfil": "Profile",
+        "experiencia": "Experience",
+        "educacion": "Education",
+        "habilidades": "Skills"
+      },
+      "campos": {
+        "nombre": "Name",
+        "correo": "Email",
+        "telefono": "Phone",
+        "ciudad": "City",
+        "cargo": "Job title",
+        "organizacion": "Organization",
+        "inicio": "Start",
+        "fin": "End",
+        "descripcion": "Description",
+        "titulo": "Degree or program",
+        "institucion": "Institution"
+      },
+      "porRevisar": "{{ n }} to review",
+      "noEncontradaEtiqueta": "(not found)",
+      "ejCiudad": "E.g.: Medellín",
+      "ayudaNoEncontrado": "We did not find this. Add it if you remember; if not, you can leave it empty.",
+      "ayudaFechas": "We did not find the date. Add it if you remember; if not, you can leave it empty.",
+      "sinDato": "(no data)",
+      "sinFechas": "(no dates)",
+      "agregarExperiencia": "Add experience",
+      "quitar": "Remove",
+      "confirmarAria": "Confirm data",
+      "quedaUno": "You have 1 item left to review (you can continue anyway)",
+      "quedan": "You have {{ n }} items left to review (you can continue anyway)",
+      "sinPendientes": "Nothing left to review",
+      "confirmar": "Confirm and analyze",
+      "enviando": "Saving…",
+      "errorGuardar": "We could not save your changes. Please try again."
+    },
+    "dialogo": {
+      "cerrar": "Close"
+    },
+    "plantillas": {
+      "titulo": "Choose a template",
+      "bajada": "All are free to use. See how it looks with your data before choosing.",
+      "filtroAria": "Template type",
+      "filtros": {
+        "todas": "All",
+        "harvard": "Harvard",
+        "ats": "ATS"
+      },
+      "idiomaAria": "Template language",
+      "idiomas": {
+        "es": "Spanish",
+        "en": "English"
+      },
+      "vacio": "There are no templates with these filters.",
+      "cargandoPrevia": "Preparing the preview…",
+      "conTusDatos": "This is how it looks with your résumé information.",
+      "usarEsta": "Use this template"
+    },
+    "reorganizar": {
+      "migas": "Reorganize",
+      "titulo": "Reorganize in {{ formato }} format",
+      "bajada": "We only move and better word what is already in your résumé. We never add information.",
+      "formato": "Format",
+      "formatos": {
+        "harvard": "Harvard",
+        "ats": "ATS"
+      },
+      "idioma": "Language",
+      "vista": "View",
+      "vistas": {
+        "lado": "Side by side",
+        "cambios": "Changes only"
+      },
+      "leyenda": "Meaning of the highlights",
+      "texto": "Text",
+      "redaccionAjustada": "wording adjusted",
+      "movido": "moved",
+      "preparando": "Preparing the proposal…",
+      "original": "Original",
+      "reorganizada": "Reorganized",
+      "cambios": "Changes ({{ n }})",
+      "revertir": "Revert",
+      "aplicar": "Apply",
+      "sinCambios": "There are no changes to propose: your résumé is already in this format.",
+      "noInventamos": "We do not make things up:",
+      "descartar": "Discard",
+      "regenerar": "Regenerate",
+      "editarAntes": "Edit before saving",
+      "aceptar": "Accept and save version",
+      "errorGuardar": "We could not save the version. Please try again."
+    },
+    "editor": {
+      "migas": "Editor",
+      "titulo": "Résumé editor",
+      "sobrePlantilla": "Template: {{ nombre }}",
+      "preparando": "Getting your editor ready…",
+      "guardando": "Saving…",
+      "pendiente": "Unsaved changes…",
+      "errorGuardado": "Could not save. We will retry with your next change.",
+      "guardado": "Changes saved",
+      "ejemplo": "Example",
+      "agregarEducacion": "Add education",
+      "verPrevia": "See preview",
+      "errorVersion": "We could not save your résumé. Please try again.",
+      "guardarVersion": "Save as version"
+    }
+  },
+  "postulaciones": {
+    "titulo": "My applications",
+    "bajada": "The jobs where you clicked “Apply”. This way you keep track of where you applied.",
+    "clicsResumen": "{{ n }} clicks on apply",
+    "ultimos90": "last 90 days",
+    "buscar": "Search by title or company",
+    "ordenar": "Sort by",
+    "orden": {
+      "recientes": "Most recent",
+      "antiguas": "Oldest",
+      "cargoAZ": "Title A–Z",
+      "cargoZA": "Title Z–A"
+    },
+    "cargando": "Loading your applications…",
+    "sinResultados": "We found no applications for that search.",
+    "vacioTitulo": "You have not clicked “Apply” yet",
+    "vacioDetalle": "When you do, your history will be here so you keep track of where you applied.",
+    "verVacantes": "See internships",
+    "nota": "Jobs come from external sources and Camello Fácil does not guarantee hiring. We keep your clicks for 90 days; you can remove any of them whenever you like.",
+    "hoy": "Today",
+    "ayer": "Yesterday",
+    "tipo": {
+      "practica": "Internship",
+      "profesional": "Professional"
+    },
+    "diste": "You clicked apply",
+    "clics": "{{ n }} clicks",
+    "hojaQueLlevaste": "Résumé you took",
+    "hoja": {
+      "base": "Base résumé",
+      "adaptada": "Tailored"
+    },
+    "verVacante": "View job",
+    "nuevaPestana": "(opens in a new tab)",
+    "quitar": "Remove “{{ cargo }}” from history",
+    "quitada": "Removed from your history.",
+    "deshacer": "Undo",
+    "restaurada": "Back in your history.",
+    "errorAbrir": "We could not open the job. Please try again.",
+    "errorQuitar": "We could not remove it from your history. Please try again.",
+    "errorRestaurar": "We could not undo it. Please try again."
+  },
+  "inicio": {
+    "hola": "Hi, {{ nombre }}",
+    "nuevas": "You have {{ n }} new jobs that match your search and your résumé.",
+    "nuevasUna": "You have 1 new job that matches your search and your résumé.",
+    "cargando": "Loading your summary…",
+    "recomendadasHoy": "Recommended today",
+    "verTodas": "See all jobs",
+    "nueva": "New",
+    "porQue": "Why:",
+    "teSirvio": "Was it useful?",
+    "si": "Yes",
+    "no": "No",
+    "gracias": "Thanks for your answer",
+    "errorVoto": "We could not save your answer. Please try again.",
+    "sinDatos": "We could not load this right now.",
+    "vacioTitulo": "No recommendations for today yet",
+    "vacioDetalle": "When your résumé is ready, you will see the jobs that match you best here.",
+    "vacioBoton": "Go to my résumé",
+    "busqueda": {
+      "titulo": "What are you looking for?",
+      "editar": "Edit",
+      "vacio": "You haven't told us what you look for yet. Use “Edit” to say it.",
+      "texto": "Tell us what you are looking for",
+      "etiquetas": "Tags",
+      "ayuda": "Separate tags with commas. Maximum 8.",
+      "guardar": "Save",
+      "guardada": "We saved what you are looking for.",
+      "error": "We could not save the changes. Please try again."
+    },
+    "adaptaciones": {
+      "titulo": "Today's tailorings",
+      "quedan": "You have {{ n }} of {{ total }} left. They renew every day."
+    },
+    "ultimas": {
+      "titulo": "Latest applications",
+      "verTodos": "See all",
+      "vacio": "You have not clicked “Apply” yet."
+    }
   }
 }

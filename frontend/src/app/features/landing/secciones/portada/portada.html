@@ -1,0 +1,70 @@
+<section class="portada" aria-labelledby="portada-titulo">
+  <div class="contenedor portada__fila">
+    <div class="portada__texto">
+      <p class="sobretitulo portada__exclusivo">
+        <app-icono nombre="birrete" style="--tam: 16px" />
+        {{ 'landing.portada.exclusivo' | transloco }}
+      </p>
+
+      <h1 id="portada-titulo">
+        {{ 'landing.portada.tituloInicio' | transloco }}
+        <mark>{{ 'landing.portada.tituloResalte' | transloco }}</mark>
+      </h1>
+
+      <p class="portada__lead">{{ 'landing.portada.descripcion' | transloco }}</p>
+
+      <div class="portada__acciones">
+        <a routerLink="/registro" class="boton boton--primario">
+          {{ 'landing.portada.crearCuenta' | transloco }}
+          <app-icono nombre="flecha" />
+        </a>
+        <a routerLink="/" fragment="como-funciona" class="boton boton--borde">{{
+          'landing.portada.verComoFunciona' | transloco
+        }}</a>
+      </div>
+
+      <ul class="portada__notas">
+        <li>
+          <app-icono nombre="check" style="--tam: 18px" />
+          {{ 'landing.portada.notaCorreo' | transloco }}
+        </li>
+        <li>
+          <app-icono nombre="check" style="--tam: 18px" />
+          {{ 'landing.portada.notaPracticas' | transloco }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="portada__visual">
+      <img
+        class="portada__camello"
+        src="images/camello-hero.webp"
+        srcset="images/camello-hero-640.webp 640w, images/camello-hero.webp 1268w"
+        sizes="(min-width: 1024px) 520px, 80vw"
+        width="1268"
+        height="1241"
+        fetchpriority="high"
+        [alt]="'landing.portada.altCamello' | transloco"
+      />
+
+      <div class="tarjeta portada__hoja" aria-hidden="true">
+        <span class="portada__hoja-rotulo">{{ 'landing.portada.tarjetaHoja' | transloco }}</span>
+        <span class="portada__puntaje">86<small>/100</small></span>
+        <span class="portada__barra"><span class="portada__barra-relleno"></span></span>
+      </div>
+
+      <div class="tarjeta portada__vacante" aria-hidden="true">
+        <div class="portada__vacante-etiquetas">
+          <span class="etiqueta">{{ 'landing.portada.tarjetaTipo' | transloco }}</span>
+          <span class="etiqueta etiqueta--exito">
+            <app-icono nombre="check" style="--tam: 14px" />
+            92 %
+          </span>
+        </div>
+        <strong>{{ 'landing.portada.tarjetaCargo' | transloco }}</strong>
+        <span class="portada__vacante-lugar">{{ 'landing.portada.tarjetaLugar' | transloco }}</span>
+      </div>
+    </div>
+  </div>
+
+</section>

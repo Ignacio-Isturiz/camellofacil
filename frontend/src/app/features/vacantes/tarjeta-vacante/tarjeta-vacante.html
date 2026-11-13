@@ -1,0 +1,54 @@
+<article class="tarjeta vac">
+  <div class="vac__cuerpo">
+    <div class="vac__etiquetas">
+      <span class="etiqueta">{{ 'vacantes.tarjeta.' + vacante().tipo | transloco }}</span>
+      <span class="etiqueta etiqueta--exito">
+        <app-icono nombre="check" style="--tam: 13px" />
+        {{ 'vacantes.tarjeta.coincidencia' | transloco: { n: vacante().coincidencia } }}
+      </span>
+    </div>
+
+    <h3 class="vac__cargo">
+      <a [routerLink]="['/vacantes', vacante().id]">{{ vacante().cargo }}</a>
+    </h3>
+    <p class="vac__empresa">{{ vacante().empresa }}</p>
+
+    <ul class="vac__datos">
+      <li><app-icono nombre="pin" style="--tam: 14px" />{{ vacante().ciudad }}</li>
+      <li><app-icono nombre="maletin" style="--tam: 14px" />{{ 'vacantes.modalidad.' + vacante().modalidad | transloco }}</li>
+      <li>
+        <app-icono nombre="reloj" style="--tam: 14px" />
+        @switch (vacante().dias) {
+          @case (0) { {{ 'vacantes.tarjeta.hoy' | transloco }} }
+          @case (1) { {{ 'vacantes.tarjeta.ayer' | transloco }} }
+          @default { {{ 'vacantes.tarjeta.hace' | transloco: { n: vacante().dias } }} }
+        }
+      </li>
+      <li><app-icono nombre="externo" style="--tam: 14px" />{{ vacante().fuente }}</li>
+    </ul>
+  </div>
+
+  <div class="vac__acciones">
+    <button
+      type="button"
+      class="vac__icono"
+      [class.vac__icono--activo]="guardada()"
+      [attr.aria-pressed]="guardada()"
+      [attr.aria-label]="(guardada() ? 'vacantes.tarjeta.quitarGuardada' : 'vacantes.tarjeta.guardar') | transloco"
+      (click)="guardar.emit()"
+    >
+      <app-icono nombre="guardar" style="--tam: 18px" />
+    </button>
+    <button
+      type="button"
+      class="vac__icono"
+      [attr.aria-label]="'vacantes.tarjeta.ocultar' | transloco"
+      (click)="ocultar.emit()"
+    >
+      <app-icono nombre="ojo-cerrado" style="--tam: 18px" />
+    </button>
+    <a [routerLink]="['/vacantes', vacante().id]" class="boton boton--primario boton--pequeno vac__ver">
+      {{ 'vacantes.tarjeta.verYPostular' | transloco }}
+    </a>
+  </div>
+</article>

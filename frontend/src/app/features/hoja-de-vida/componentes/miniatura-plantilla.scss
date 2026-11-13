@@ -1,0 +1,65 @@
+:host {
+  display: block;
+}
+
+.hoja {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  aspect-ratio: 3 / 4;
+  padding: 12% 10%;
+  border: 1px solid var(--gris-300);
+  border-radius: 6px;
+  background: var(--blanco);
+}
+
+.linea {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--gris-300);
+}
+.titulo {
+  width: 45%;
+  height: 5px;
+  background: var(--tinta);
+}
+.sub {
+  width: 60%;
+}
+.seccion {
+  width: 28%;
+  height: 5px;
+  margin-top: 5px;
+  background: var(--tinta);
+}
+.texto {
+  width: 100%;
+}
+.corta {
+  width: 70%;
+}
+
+/* Harvard: encabezado centrado. */
+.hoja--harvard .titulo,
+.hoja--harvard .sub {
+  justify-self: center;
+}
+
+/* ATS moderno: acento de color en los títulos. */
+.hoja--ats-moderno .titulo,
+.hoja--ats-moderno .seccion {
+  background: var(--rojo);
+}
+
+/* ATS compacto: más texto y menos aire. */
+.hoja--ats-compacto {
+  gap: 3px;
+  padding: 8% 8%;
+}
+.hoja--ats-compacto .texto {
+  height: 3px;
+}
+.hoja--ats-clasico .titulo {
+  background: var(--gris-600);
+}

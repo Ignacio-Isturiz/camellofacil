@@ -1,0 +1,173 @@
+:host {
+  display: block;
+  padding-top: 72px;
+}
+
+/* Color de la cúpula de la ilustración (fila inferior de la imagen): el panel de abajo la continúa. */
+.escena {
+  --cupula: #ece0c8;
+  --solape: 24px; /* cuánto se funde la imagen con el panel para que no se vea costura */
+  position: relative;
+}
+
+/* Móvil: el título va arriba, luego la imagen y debajo la cúpula con las tarjetas apiladas. */
+.escena__titulo {
+  margin-bottom: 8px;
+}
+h2 {
+  margin-top: 12px;
+}
+
+.escena__marco {
+  position: relative;
+  z-index: 1;
+  overflow: hidden; /* en móvil se recortan los lados de la imagen para que el camello se vea más grande */
+}
+
+.escena__imagen {
+  display: block;
+  width: 150%;
+  max-width: none;
+  margin-left: -25%;
+  height: auto;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--solape)), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--solape)), transparent);
+}
+
+.escena__cupula {
+  margin-top: calc(var(--solape) * -1);
+  padding: var(--solape) 16px 20px;
+  border-radius: 0 0 28px 28px;
+  background: var(--cupula);
+}
+
+.escena__lista {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 12px;
+}
+
+.paso {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 24px 20px;
+  text-align: center;
+}
+
+.paso p {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--gris-600);
+}
+
+.paso__cabecera {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.paso__numero {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--oro-200);
+  font: 700 15px/1 var(--fuente-titulo);
+}
+.paso--final .paso__numero {
+  background: var(--rojo);
+  color: var(--blanco);
+}
+
+.paso__icono {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--rojo);
+  color: var(--blanco);
+}
+
+@media (min-width: 640px) {
+  .escena__marco {
+    overflow: visible;
+  }
+  .escena__imagen {
+    width: 100%;
+    margin-left: 0;
+  }
+  .escena__cupula {
+    padding-inline: 24px;
+  }
+  .escena__lista {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :host {
+    padding-top: 56px;
+  }
+
+  /* Escritorio: la escena se reduce y se centra (la imagen escala con su ancho). El título cae sobre el
+     espacio vacío a la izquierda del camello y las tarjetas suben hasta la parte visible de la cúpula,
+     para que parezca que están sobre la joroba. */
+  .escena {
+    max-width: 880px;
+    margin-inline: auto;
+  }
+
+  .escena__titulo {
+    position: absolute;
+    z-index: 2;
+    top: 5%;
+    left: 0;
+    max-width: 31%;
+    margin: 0;
+  }
+  .escena__titulo h2 {
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  .escena__cupula {
+    padding: var(--solape) 8% 32px;
+  }
+  .escena__lista {
+    margin-top: -12%; /* el % es del ancho de la cúpula */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  /* Tarjetas más compactas para el ancho reducido. */
+  .paso {
+    gap: 6px;
+    padding: 18px 12px;
+  }
+  .paso h3 {
+    font-size: 17px;
+    line-height: 22px;
+  }
+  .paso p {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  /* Línea punteada que une un paso con el siguiente. */
+  .paso:not(.paso--final)::after {
+    content: '';
+    position: absolute;
+    top: 34px;
+    left: 100%;
+    width: 14px;
+    border-top: 2px dashed var(--oro-700);
+  }
+}

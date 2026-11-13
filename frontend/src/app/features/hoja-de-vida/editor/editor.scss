@@ -1,0 +1,184 @@
+@use '../../../shared/esqueleto/esqueleto';
+
+:host {
+  display: grid;
+  gap: 16px;
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+.cargando {
+  display: grid;
+  gap: 12px;
+  color: var(--gris-600);
+  font-size: 14px;
+}
+.esq {
+  display: grid;
+  gap: 16px;
+}
+.esq .bloque {
+  height: 280px;
+  border-radius: 16px;
+}
+
+.cabecera {
+  display: grid;
+  gap: 8px;
+}
+.cabecera h1 {
+  font-size: 28px;
+  line-height: 34px;
+}
+.cabecera p {
+  margin-top: 2px;
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+.cabecera .estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 20px;
+  color: var(--exito);
+  font-size: 12px;
+}
+.cabecera .estado--error {
+  color: var(--error);
+}
+
+.cuerpo {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+.secciones {
+  display: grid;
+  gap: 12px;
+}
+
+/* Acordeón nativo: cada sección se abre y se cierra con teclado y lector de pantalla sin código extra. */
+.seccion summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: 0 20px;
+  font: 700 15px/22px var(--fuente-titulo);
+  cursor: pointer;
+  list-style: none;
+}
+.seccion summary::-webkit-details-marker {
+  display: none;
+}
+.seccion summary::after {
+  content: '+';
+  color: var(--rojo);
+  font-size: 20px;
+}
+.seccion[open] summary::after {
+  content: '–';
+}
+.seccion__cuerpo {
+  display: grid;
+  gap: 14px;
+  padding: 0 20px 20px;
+}
+
+.guia {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fbf6e3;
+  color: var(--oro-700);
+  font-size: 12px;
+  line-height: 18px;
+}
+.guia strong {
+  display: block;
+  color: var(--tinta);
+}
+
+.rejilla {
+  display: grid;
+  gap: 14px;
+}
+.item {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--gris-300);
+  border-radius: 14px;
+}
+.enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  padding: 6px 0;
+  border: 0;
+  background: transparent;
+  color: var(--rojo);
+  font: 600 13px/20px var(--fuente-texto);
+  cursor: pointer;
+}
+.enlace:hover {
+  text-decoration: underline;
+}
+
+/* La vista previa va aparte en escritorio y en una hoja desde abajo en móvil. */
+.previa {
+  display: none;
+}
+
+.barra {
+  position: sticky;
+  bottom: 64px;
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 12px var(--gutter);
+  background: var(--blanco);
+  border-top: 1px solid rgb(217 207 188 / 55%);
+  box-shadow: 0 -6px 16px rgb(28 27 26 / 6%);
+}
+.barra__error {
+  color: var(--error);
+  font-size: 13px;
+}
+
+@media (min-width: 640px) {
+  .rejilla {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 768px) {
+  .barra {
+    bottom: 0;
+  }
+}
+@media (min-width: 900px) {
+  .cabecera {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+  .cuerpo {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .previa {
+    display: block;
+    position: sticky;
+    top: calc(var(--alto-header) + 16px);
+  }
+  .ver-previa {
+    display: none;
+  }
+  .barra {
+    justify-content: flex-end;
+  }
+}

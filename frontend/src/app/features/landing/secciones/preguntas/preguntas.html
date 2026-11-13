@@ -1,0 +1,38 @@
+<section id="preguntas" class="preguntas contenedor" aria-labelledby="preguntas-titulo">
+  <div class="preguntas__intro">
+    <p class="sobretitulo">{{ 'landing.preguntas.sobretitulo' | transloco }}</p>
+    <h2 id="preguntas-titulo">{{ 'landing.preguntas.titulo' | transloco }}</h2>
+    <p class="preguntas__otra">
+      {{ 'landing.preguntas.otraDuda' | transloco }}
+      <a routerLink="/contacto">{{ 'landing.preguntas.escribenos' | transloco }}</a>.
+    </p>
+  </div>
+
+  <ul class="preguntas__lista">
+    @for (c of claves; track c) {
+      <li class="tarjeta pregunta" [class.pregunta--abierta]="abierta() === c">
+        <h3>
+          <button
+            type="button"
+            class="pregunta__boton"
+            [id]="'pregunta-' + c"
+            [attr.aria-expanded]="abierta() === c"
+            [attr.aria-controls]="'respuesta-' + c"
+            (click)="alternar(c)"
+          >
+            {{ 'landing.preguntas.' + c + '.pregunta' | transloco }}
+            <app-icono nombre="chevron-abajo" class="pregunta__icono" />
+          </button>
+        </h3>
+        <div
+          class="pregunta__panel"
+          role="region"
+          [id]="'respuesta-' + c"
+          [attr.aria-labelledby]="'pregunta-' + c"
+        >
+          <p>{{ 'landing.preguntas.' + c + '.respuesta' | transloco }}</p>
+        </div>
+      </li>
+    }
+  </ul>
+</section>

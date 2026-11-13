@@ -1,0 +1,160 @@
+:host {
+  display: block;
+}
+
+.rec {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  padding: 16px 18px;
+}
+
+.rec__tope {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rec__etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+.etiqueta {
+  font-size: 12px;
+  padding: 1px 10px;
+}
+
+.rec__nueva {
+  background: var(--rojo);
+  color: var(--blanco);
+  font: 700 12px/20px var(--fuente-titulo);
+  padding: 1px 10px;
+  border-radius: var(--radio-pildora);
+}
+
+.rec__guardar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -8px -10px -8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--gris-600);
+  cursor: pointer;
+  border-radius: 10px;
+  /* Está por encima del enlace que cubre toda la tarjeta. */
+  position: relative;
+  z-index: 1;
+}
+.rec__guardar:hover {
+  color: var(--tinta);
+}
+.rec__guardar--activo {
+  color: var(--rojo);
+}
+
+.rec__cargo {
+  margin-top: 6px;
+  font-size: 17px;
+  line-height: 22px;
+}
+.rec__cargo a {
+  text-decoration: none;
+}
+.rec__cargo a:hover {
+  color: var(--rojo);
+}
+/* Toda la tarjeta responde al clic en el título. */
+.rec__cargo a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.rec__empresa {
+  color: var(--gris-600);
+  font-size: 13px;
+}
+
+.rec__datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 2px;
+  color: var(--gris-600);
+  font-size: 12px;
+}
+.rec__datos li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rec__porque {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--gris-100);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.rec__pie {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+  position: relative;
+  z-index: 1;
+}
+.rec__sirvio,
+.rec__gracias {
+  color: var(--gris-600);
+  font-size: 12px;
+}
+.rec__gracias {
+  color: var(--exito);
+  font-weight: 600;
+}
+.rec__votos {
+  display: flex;
+  gap: 4px;
+}
+.rec__voto {
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--rojo);
+  font: 700 13px/1 var(--fuente-titulo);
+  cursor: pointer;
+  border-radius: 10px;
+}
+.rec__voto:hover:not(:disabled) {
+  background: var(--rojo-50);
+}
+.rec__voto:disabled {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+.rec__ir {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--rojo-50);
+  color: var(--rojo);
+}
+.rec__ir:hover {
+  background: var(--rojo);
+  color: var(--blanco);
+}
