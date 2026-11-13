@@ -1,0 +1,40 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 700 20px/1 var(--fuente-titulo);
+  letter-spacing: -0.03em;
+  color: var(--tinta);
+}
+
+.marca {
+  width: 36px;
+  height: 36px;
+}
+.fondo {
+  fill: var(--rojo);
+}
+.m {
+  fill: none;
+  stroke: var(--blanco);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.nombre b {
+  color: var(--rojo);
+  font-weight: 800;
+}
+
+:host(.claro) {
+  color: var(--blanco);
+}
+:host(.claro) .fondo {
+  fill: var(--blanco);
+}
+:host(.claro) .m {
+  stroke: var(--rojo);
+}
+:host(.claro) .nombre b {
+  color: var(--blanco);
+}

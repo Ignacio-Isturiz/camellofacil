@@ -1,0 +1,238 @@
+:host {
+  display: grid;
+  gap: 16px;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+.cabecera {
+  display: grid;
+  gap: 12px;
+}
+.cabecera h1 {
+  font-size: 28px;
+  line-height: 34px;
+}
+.cabecera p {
+  margin-top: 4px;
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+.cabecera__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pestanas {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--gris-300);
+}
+.pestana {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--gris-600);
+  font: 600 13px/20px var(--fuente-texto);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.pestana--activa {
+  border-bottom-color: var(--rojo);
+  color: var(--rojo);
+}
+
+.lista {
+  display: grid;
+  gap: 10px;
+}
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  padding: 14px 16px;
+}
+.fila--base {
+  border-color: var(--rojo);
+}
+.fila--esqueleto {
+  min-height: 64px;
+  background: linear-gradient(90deg, var(--gris-100) 25%, #fbf8f1 50%, var(--gris-100) 75%);
+  background-size: 200% 100%;
+  animation: brillo 1.4s ease-in-out infinite;
+}
+@keyframes brillo {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fila--esqueleto {
+    animation: none !important;
+  }
+}
+.fila__icono {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--gris-100);
+}
+.fila--base .fila__icono {
+  background: var(--rojo-50);
+  color: var(--rojo);
+}
+.fila__texto {
+  flex: 1;
+  min-width: 180px;
+}
+.fila__nombre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font: 700 14px/20px var(--fuente-titulo);
+  overflow-wrap: anywhere;
+}
+.insignia-base {
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--rojo);
+  color: var(--blanco);
+  font: 700 11px/18px var(--fuente-texto);
+}
+.fila__detalle {
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+.fila .etiqueta {
+  padding: 0 8px;
+  font-size: 11px;
+}
+.fila__puntajes {
+  font-size: 12px;
+  color: var(--gris-600);
+}
+.fila__puntajes strong {
+  color: var(--tinta);
+}
+.fila__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.fila__acciones .boton {
+  padding: 0 12px;
+  font-size: 13px;
+}
+.mas {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.mas:hover {
+  background: var(--gris-100);
+}
+
+.vacio {
+  padding: 24px;
+  color: var(--gris-600);
+}
+.estado {
+  color: var(--gris-600);
+  font-size: 13px;
+}
+
+/* ---------- Diálogo de acciones ---------- */
+.menu {
+  display: grid;
+  gap: 4px;
+}
+.menu__op {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  text-align: left;
+  font: 600 14px/20px var(--fuente-texto);
+  cursor: pointer;
+}
+.menu__op:hover:not(:disabled) {
+  background: var(--gris-100);
+}
+.menu__op:disabled {
+  color: var(--gris-600);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.menu__op--peligro:not(:disabled) {
+  color: var(--error);
+}
+.menu__nota {
+  padding: 0 14px 8px;
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.forma {
+  display: grid;
+  gap: 12px;
+}
+.forma label {
+  font: 600 13px/20px var(--fuente-texto);
+}
+.entrada {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 10px;
+  font: 400 14px/20px var(--fuente-texto);
+}
+.entrada:focus {
+  outline: none;
+  border-color: var(--oro-700);
+  box-shadow: 0 0 0 3px rgb(203 179 91 / 35%);
+}
+.forma__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.error {
+  margin-top: 12px;
+  color: var(--error);
+  font-size: 13px;
+}
+
+@media (min-width: 768px) {
+  .cabecera {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+}

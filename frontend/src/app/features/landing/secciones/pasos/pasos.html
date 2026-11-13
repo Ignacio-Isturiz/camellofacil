@@ -1,0 +1,39 @@
+<section id="como-funciona" class="pasos contenedor" aria-labelledby="pasos-titulo">
+  <div class="escena">
+    <div class="escena__titulo">
+      <p class="sobretitulo">{{ 'landing.pasos.sobretitulo' | transloco }}</p>
+      <h2 id="pasos-titulo">{{ 'landing.pasos.titulo' | transloco }}</h2>
+    </div>
+
+    <div class="escena__marco">
+      <!-- La imagen se usa tal cual: el camello asomándose por su joroba. -->
+      <img
+        class="escena__imagen"
+        src="images/camello-joroba.webp"
+        alt=""
+        width="1200"
+        height="800"
+        loading="lazy"
+      />
+    </div>
+
+
+    <!-- Continúa la cúpula hacia abajo; las tarjetas quedan sobre ella. -->
+    <div class="escena__cupula">
+      <ol class="escena__lista">
+        @for (p of pasos; track p.clave; let i = $index) {
+          <li class="tarjeta paso" [class.paso--final]="i === pasos.length - 1">
+            <div class="paso__cabecera">
+              <span class="paso__numero" aria-hidden="true">{{ i + 1 }}</span>
+              <span class="paso__icono" aria-hidden="true"><app-icono [nombre]="p.icono" style="--tam: 22px" /></span>
+            </div>
+            <h3>
+              <span class="solo-lectores">{{ 'landing.pasos.paso' | transloco }} {{ i + 1 }}: </span>{{ 'landing.pasos.' + p.clave + '.titulo' | transloco }}
+            </h3>
+            <p>{{ 'landing.pasos.' + p.clave + '.detalle' | transloco }}</p>
+          </li>
+        }
+      </ol>
+    </div>
+  </div>
+</section>

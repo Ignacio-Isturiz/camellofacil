@@ -1,0 +1,242 @@
+@use '../../../shared/esqueleto/esqueleto';
+
+:host {
+  display: grid;
+  gap: 16px;
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+h2 {
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.cabecera h1 {
+  font-size: 28px;
+  line-height: 34px;
+}
+.cabecera p {
+  margin-top: 4px;
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* ---------- Controles ---------- */
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 24px;
+  padding: 14px 18px;
+}
+.control {
+  display: grid;
+  gap: 4px;
+}
+.control label,
+.control > span {
+  font: 600 11px/16px var(--fuente-texto);
+}
+.seleccion {
+  min-width: 160px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 10px;
+  background: var(--blanco);
+  font: 400 13px/20px var(--fuente-texto);
+}
+.segmento {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--gris-100);
+}
+.segmento__op {
+  min-height: 34px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  font: 600 12px/18px var(--fuente-texto);
+  cursor: pointer;
+}
+.segmento__op--activo {
+  background: var(--blanco);
+  color: var(--rojo);
+  box-shadow: var(--sombra-1);
+}
+.leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-left: auto;
+  color: var(--gris-600);
+  font-size: 11px;
+}
+.muestra {
+  padding: 0 4px;
+  border-radius: 3px;
+  color: var(--tinta);
+}
+.muestra--redaccion {
+  background: #d8efe1;
+  box-shadow: 0 0 0 1px #9fd2b6;
+}
+.muestra--movido {
+  background: var(--oro-200);
+}
+
+/* ---------- Carga ---------- */
+.esq {
+  display: grid;
+  gap: 10px;
+  color: var(--gris-600);
+  font-size: 14px;
+}
+.esq__cols {
+  display: grid;
+  gap: 16px;
+}
+.esq .bloque {
+  height: 260px;
+  border-radius: 8px;
+}
+
+/* ---------- Comparación ---------- */
+.cuerpo {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+.panel {
+  display: grid;
+  gap: 8px;
+}
+.panel__titulo {
+  color: var(--gris-600);
+  font: 700 11px/16px var(--fuente-texto);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.panel__titulo--verde {
+  color: var(--exito);
+}
+.panel--nueva ::ng-deep .hoja {
+  outline: 2px solid var(--exito);
+}
+
+.cambios {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+.cambios ul {
+  display: grid;
+  gap: 8px;
+}
+.cambio {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #d8efe1;
+}
+.cambio--movido {
+  background: #fbf6e3;
+}
+.cambio--revertido {
+  opacity: 0.65;
+  background: var(--gris-100);
+}
+.cambio__texto {
+  flex: 1;
+  min-width: 0;
+}
+.cambio__titulo {
+  font: 700 13px/18px var(--fuente-texto);
+}
+.cambio__detalle {
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+.cambio__boton {
+  padding: 4px 0 4px 6px;
+  border: 0;
+  background: transparent;
+  color: var(--rojo);
+  font: 700 12px/18px var(--fuente-texto);
+  cursor: pointer;
+}
+.cambio__boton:disabled {
+  opacity: 0.5;
+}
+.cambios__vacio {
+  color: var(--gris-600);
+  font-size: 13px;
+}
+.avisos {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--oro);
+  border-radius: 12px;
+  background: #fbf6e3;
+  color: var(--oro-700);
+  font-size: 12px;
+  line-height: 18px;
+}
+.avisos__titulo {
+  color: var(--tinta);
+  font-weight: 700;
+}
+
+/* ---------- Barra de acciones ---------- */
+.barra {
+  position: sticky;
+  bottom: 64px;
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 12px var(--gutter);
+  background: var(--blanco);
+  border-top: 1px solid rgb(217 207 188 / 55%);
+  box-shadow: 0 -6px 16px rgb(28 27 26 / 6%);
+}
+.barra__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.barra__error {
+  color: var(--error);
+  font-size: 13px;
+}
+
+@media (min-width: 768px) {
+  .barra {
+    bottom: 0;
+  }
+}
+
+@media (min-width: 1000px) {
+  .cuerpo {
+    grid-template-columns: 1fr 1fr 280px;
+  }
+  .panel--sola {
+    grid-column: 1 / span 2;
+  }
+  .esq__cols {
+    grid-template-columns: 1fr 1fr 280px;
+  }
+}

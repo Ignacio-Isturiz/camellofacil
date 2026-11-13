@@ -1,0 +1,126 @@
+<app-migas-hoja [actual]="'hoja.reorganizar.migas' | transloco" />
+
+<header class="cabecera">
+  <h1>{{ 'hoja.reorganizar.titulo' | transloco: { formato: ('hoja.reorganizar.formatos.' + formato() | transloco) } }}</h1>
+  <p>{{ 'hoja.reorganizar.bajada' | transloco }}</p>
+</header>
+
+<div class="controles tarjeta">
+  <div class="control">
+    <label for="formato">{{ 'hoja.reorganizar.formato' | transloco }}</label>
+    <select id="formato" class="seleccion" (change)="elegirFormato($event)">
+      @for (f of formatos; track f) {
+        <option [value]="f" [selected]="formato() === f">{{ 'hoja.reorganizar.formatos.' + f | transloco }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="control">
+    <span id="idioma-et">{{ 'hoja.reorganizar.idioma' | transloco }}</span>
+    <div class="segmento" role="group" aria-labelledby="idioma-et">
+      @for (i of idiomas; track i) {
+        <button type="button" class="segmento__op" [class.segmento__op--activo]="idioma() === i" [attr.aria-pressed]="idioma() === i" (click)="elegirIdioma(i)">
+          {{ 'hoja.plantillas.idiomas.' + i | transloco }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="control">
+    <span id="vista-et">{{ 'hoja.reorganizar.vista' | transloco }}</span>
+    <div class="segmento" role="group" aria-labelledby="vista-et">
+      @for (v of vistas; track v) {
+        <button type="button" class="segmento__op" [class.segmento__op--activo]="vista() === v" [attr.aria-pressed]="vista() === v" (click)="vista.set(v)">
+          {{ 'hoja.reorganizar.vistas.' + v | transloco }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <ul class="leyenda" aria-label="{{ 'hoja.reorganizar.leyenda' | transloco }}">
+    <li><span class="muestra muestra--redaccion">{{ 'hoja.reorganizar.texto' | transloco }}</span> {{ 'hoja.reorganizar.redaccionAjustada' | transloco }}</li>
+    <li><span class="muestra muestra--movido">{{ 'hoja.reorganizar.texto' | transloco }}</span> {{ 'hoja.reorganizar.movido' | transloco }}</li>
+  </ul>
+</div>
+
+@switch (estado()) {
+  @case ('cargando') {
+    <div class="esq" aria-busy="true">
+      <p role="status">{{ 'hoja.reorganizar.preparando' | transloco }}</p>
+      <div class="esq__cols" aria-hidden="true">
+        <span class="bloque"></span><span class="bloque"></span><span class="bloque bloque--lado"></span>
+      </div>
+    </div>
+  }
+  @case ('error') {
+    <app-aviso-error (reintentar)="proponer()" />
+  }
+  @default {
+    @if (propuesta(); as p) {
+      <div class="cuerpo">
+        @if (vista() === 'lado') {
+          <section class="panel" aria-labelledby="orig-titulo">
+            <p id="orig-titulo" class="panel__titulo">{{ 'hoja.reorganizar.original' | transloco }}</p>
+            <app-documento-hoja [documento]="p.original" [estilo]="'harvard'" />
+          </section>
+        }
+        <section class="panel panel--nueva" [class.panel--sola]="vista() === 'cambios'" aria-labelledby="nueva-titulo">
+          <p id="nueva-titulo" class="panel__titulo panel__titulo--verde">
+            {{ 'hoja.reorganizar.reorganizada' | transloco }} · {{ 'hoja.reorganizar.formatos.' + p.formato | transloco | uppercase }} · {{ 'hoja.plantillas.idiomas.' + p.idioma | transloco | uppercase }}
+          </p>
+          <app-documento-hoja [documento]="p.propuesta" [estilo]="estiloDocumento()" [original]="p.original" [soloCambios]="vista() === 'cambios'" />
+        </section>
+
+        <aside class="cambios tarjeta" aria-labelledby="cambios-titulo">
+          <h2 id="cambios-titulo">{{ 'hoja.reorganizar.cambios' | transloco: { n: p.cambios.length } }}</h2>
+          <ul>
+            @for (c of p.cambios; track c.id) {
+              <li class="cambio" [class]="'cambio cambio--' + c.tipo" [class.cambio--revertido]="!c.aplicado">
+                <app-icono [nombre]="icono(c)" style="--tam: 16px" />
+                <div class="cambio__texto">
+                  <p class="cambio__titulo">{{ c.titulo }}</p>
+                  <p class="cambio__detalle">{{ c.detalle }}</p>
+                </div>
+                <button type="button" class="cambio__boton" [disabled]="cambiando() === c.id" (click)="alternar(c)">
+                  {{ (c.aplicado ? 'hoja.reorganizar.revertir' : 'hoja.reorganizar.aplicar') | transloco }}
+                </button>
+              </li>
+            } @empty {
+              <li class="cambios__vacio">{{ 'hoja.reorganizar.sinCambios' | transloco }}</li>
+            }
+          </ul>
+
+          @if (p.avisos.length > 0) {
+            <div class="avisos" role="note">
+              <app-icono nombre="info" style="--tam: 16px" />
+              <div>
+                <p class="avisos__titulo">{{ 'hoja.reorganizar.noInventamos' | transloco }}</p>
+                @for (a of p.avisos; track a) {
+                  <p>{{ a }}</p>
+                }
+              </div>
+            </div>
+          }
+        </aside>
+      </div>
+
+      <div class="barra">
+        <button type="button" class="boton boton--texto" (click)="descartar()">{{ 'hoja.reorganizar.descartar' | transloco }}</button>
+        @if (falloGuardar()) {
+          <span class="barra__error" role="alert">{{ 'hoja.reorganizar.errorGuardar' | transloco }}</span>
+        }
+        <div class="barra__acciones">
+          <button type="button" class="boton boton--borde boton--pequeno" [disabled]="guardando()" (click)="proponer()">
+            <app-icono nombre="reenviar" style="--tam: 16px" />{{ 'hoja.reorganizar.regenerar' | transloco }}
+          </button>
+          <button type="button" class="boton boton--borde boton--pequeno" [disabled]="guardando()" (click)="aceptar(true)">
+            <app-icono nombre="lapiz" style="--tam: 16px" />{{ 'hoja.reorganizar.editarAntes' | transloco }}
+          </button>
+          <button type="button" class="boton boton--primario boton--pequeno" [disabled]="guardando()" (click)="aceptar(false)">
+            <app-icono nombre="check" style="--tam: 16px" />{{ 'hoja.reorganizar.aceptar' | transloco }}
+          </button>
+        </div>
+      </div>
+    }
+  }
+}

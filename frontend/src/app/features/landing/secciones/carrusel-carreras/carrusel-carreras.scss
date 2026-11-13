@@ -1,0 +1,78 @@
+:host {
+  display: block;
+  margin-top: 40px;
+}
+
+.carrusel {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-radius: var(--radio-pildora);
+}
+
+/* Ventana con los bordes desvanecidos; el contenido corre dentro. */
+.carrusel__ventana {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 40px), transparent);
+}
+
+.carrusel__pista {
+  display: flex;
+  width: max-content;
+  animation: desplazar 50s linear infinite;
+}
+/* Cada grupo termina con un hueco igual al que separa los elementos: el bucle queda continuo. */
+.carrusel__grupo {
+  display: flex;
+  gap: 12px;
+  padding-right: 12px;
+}
+
+.carrera {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 20px 6px 6px;
+  border: 1px solid var(--gris-300);
+  border-radius: var(--radio-pildora);
+  background: var(--fondo);
+  white-space: nowrap;
+}
+
+.carrera__icono {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--oro-200);
+  color: var(--oro-700);
+}
+
+.carrera__nombre {
+  font: 600 15px/20px var(--fuente-texto);
+}
+
+@keyframes desplazar {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* La regla global de «reducir movimiento» acorta todas las animaciones; el carrusel debe seguir corriendo siempre. */
+@media (prefers-reduced-motion: reduce) {
+  .carrusel__pista {
+    animation-duration: 50s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  :host {
+    margin-top: 56px;
+  }
+}

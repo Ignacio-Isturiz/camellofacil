@@ -1,0 +1,121 @@
+<app-dialogo #dialogo [ancho]="true" [titulo]="(estado() === 'adaptando' ? 'vacantes.adaptar.adaptando' : 'vacantes.adaptar.titulo') | transloco">
+  @switch (estado()) {
+    @case ('adaptando') {
+      <div class="estado" aria-busy="true">
+        <span class="giro" aria-hidden="true"></span>
+        <p role="status">{{ 'vacantes.adaptar.adaptando' | transloco }}</p>
+        <p class="estado__nota">{{ 'vacantes.adaptar.sinInventar' | transloco }}</p>
+      </div>
+    }
+    @case ('limite') {
+      <div class="estado" role="alert">
+        <app-icono nombre="info" style="--tam: 24px" />
+        <p>{{ 'vacantes.adaptar.limite' | transloco }}</p>
+      </div>
+    }
+    @case ('error') {
+      <div class="estado" role="alert">
+        <app-icono nombre="alerta" style="--tam: 24px" />
+        <p>{{ 'vacantes.adaptar.error' | transloco }}</p>
+        <button type="button" class="boton boton--borde boton--pequeno" (click)="generar()">{{ 'hoja.error.reintentar' | transloco }}</button>
+      </div>
+    }
+    @default {
+      @if (adaptacion(); as a) {
+        <p class="regla">{{ 'vacantes.adaptar.sinInventar' | transloco }}</p>
+
+        <ul class="leyenda" [attr.aria-label]="'hoja.reorganizar.leyenda' | transloco">
+          <li><span class="muestra muestra--redaccion">{{ 'hoja.reorganizar.texto' | transloco }}</span> {{ 'hoja.reorganizar.redaccionAjustada' | transloco }}</li>
+          <li><span class="muestra muestra--movido">{{ 'hoja.reorganizar.texto' | transloco }}</span> {{ 'hoja.reorganizar.movido' | transloco }}</li>
+        </ul>
+
+        <div class="comparacion">
+          <section aria-labelledby="ad-base">
+            <p id="ad-base" class="titulo-panel">{{ 'vacantes.adaptar.base' | transloco }}</p>
+            <app-documento-hoja [documento]="a.original" />
+          </section>
+          <section aria-labelledby="ad-adaptada">
+            <p id="ad-adaptada" class="titulo-panel titulo-panel--verde">{{ 'vacantes.adaptar.adaptada' | transloco }}</p>
+            <app-documento-hoja [documento]="a.adaptada" [original]="a.original" />
+          </section>
+        </div>
+
+        @if (a.cambios.length > 0) {
+          <section aria-labelledby="ad-cambios" class="cambios">
+            <h3 id="ad-cambios">{{ 'hoja.reorganizar.cambios' | transloco: { n: a.cambios.length } }}</h3>
+            <ul>
+              @for (c of a.cambios; track c.id) {
+                <li class="cambio">
+                  <app-icono [nombre]="icono(c)" style="--tam: 16px" />
+                  <div>
+                    <p class="cambio__titulo">{{ c.titulo }}</p>
+                    <p class="cambio__detalle">{{ c.detalle }}</p>
+                  </div>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        @if (a.avisos.length > 0) {
+          <div class="avisos" role="note">
+            <app-icono nombre="info" style="--tam: 16px" />
+            <div>
+              <p class="avisos__titulo">{{ 'vacantes.adaptar.avisosTitulo' | transloco }}</p>
+              @for (av of a.avisos; track av) {
+                <p>{{ av }}</p>
+              }
+            </div>
+          </div>
+        }
+
+        <div class="acciones">
+          <button type="button" class="boton boton--borde boton--pequeno" (click)="editar()">
+            <app-icono nombre="lapiz" style="--tam: 16px" />{{ 'vacantes.adaptar.editar' | transloco }}
+          </button>
+          <button
+            type="button"
+            class="boton boton--borde boton--pequeno"
+            [disabled]="restantes() === 0 || trabajando()"
+            [attr.aria-describedby]="restantes() === 0 ? 'ad-sin-cupo' : null"
+            (click)="generar()"
+          >
+            <app-icono nombre="reenviar" style="--tam: 16px" />{{ 'hoja.reorganizar.regenerar' | transloco }}
+          </button>
+          @if (!yaGuardada()) {
+            <button type="button" class="boton boton--borde boton--pequeno" [disabled]="trabajando()" (click)="descartar()">
+              {{ 'hoja.reorganizar.descartar' | transloco }}
+            </button>
+          }
+          <a class="boton boton--borde boton--pequeno" [href]="urlDescarga('pdf')" download>
+            <app-icono nombre="descargar" style="--tam: 16px" />PDF
+          </a>
+          <a class="boton boton--borde boton--pequeno" [href]="urlDescarga('docx')" download>
+            <app-icono nombre="descargar" style="--tam: 16px" />Word
+          </a>
+        </div>
+        @if (restantes() === 0) {
+          <p id="ad-sin-cupo" class="nota">{{ 'vacantes.adaptar.sinCupoRegenerar' | transloco }}</p>
+        }
+        @if (falloAccion()) {
+          <p class="error" role="alert">{{ 'vacantes.adaptar.errorAccion' | transloco }}</p>
+        }
+      }
+    }
+  }
+
+  <ng-container pie>
+    @if (estado() === 'listo' && adaptacion()) {
+      @if (!yaGuardada()) {
+        <button type="button" class="boton boton--borde boton--pequeno" [disabled]="trabajando()" (click)="guardar()">
+          {{ 'vacantes.adaptar.guardar' | transloco }}
+        </button>
+      }
+      <button type="button" class="boton boton--primario boton--pequeno" [disabled]="trabajando()" (click)="guardarYPostular()">
+        {{ (yaGuardada() ? 'vacantes.adaptar.postularConEsta' : 'vacantes.adaptar.guardarYPostular') | transloco }}
+      </button>
+    } @else if (estado() !== 'adaptando') {
+      <button type="button" class="boton boton--borde boton--pequeno" (click)="cerrar()">{{ 'hoja.dialogo.cerrar' | transloco }}</button>
+    }
+  </ng-container>
+</app-dialogo>

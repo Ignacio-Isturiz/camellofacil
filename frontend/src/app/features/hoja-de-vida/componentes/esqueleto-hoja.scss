@@ -1,0 +1,59 @@
+@use '../../../shared/esqueleto/esqueleto';
+
+:host {
+  display: block;
+}
+
+.esq {
+  display: grid;
+  gap: 16px;
+}
+.caja {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+}
+.fila {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.col {
+  display: grid;
+  flex: 1;
+  gap: 6px;
+}
+.dos {
+  display: grid;
+  gap: 16px;
+}
+.icono {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.linea {
+  width: 100%;
+  height: 14px;
+}
+.media {
+  width: 45%;
+}
+.corta {
+  width: 30%;
+}
+.numero {
+  width: 90px;
+  height: 36px;
+}
+.bloque-alto {
+  height: 52px;
+  border-radius: 12px;
+}
+
+@media (min-width: 768px) {
+  .dos {
+    grid-template-columns: 1fr 1fr;
+  }
+}

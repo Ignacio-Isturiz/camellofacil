@@ -1,0 +1,65 @@
+<article class="hoja" [attr.aria-label]="'hoja.revisar.vistaPrevia' | transloco">
+  <header class="hoja__cabecera">
+    <h3 [class.marca]="marcado('nombre')">{{ valores().nombre }}</h3>
+    <p class="hoja__contacto">
+      @if (correo()) {
+        <span>{{ correo() }}</span>
+      }
+      @if (valores().telefono || marcado('telefono')) {
+        <span [class.marca]="marcado('telefono')">{{ valores().telefono || ('hoja.revisar.sinDato' | transloco) }}</span>
+      }
+      @if (valores().ciudad) {
+        <span [class.marca]="marcado('ciudad')">{{ valores().ciudad }}</span>
+      }
+    </p>
+  </header>
+
+  @if (valores().perfil) {
+    <section>
+      <h4>{{ 'hoja.revisar.secciones.perfil' | transloco }}</h4>
+      <p [class.marca]="marcado('perfil')">{{ valores().perfil }}</p>
+    </section>
+  }
+
+  @if (valores().experiencia.length > 0) {
+    <section>
+      <h4>{{ 'hoja.revisar.secciones.experiencia' | transloco }}</h4>
+      @for (e of valores().experiencia; track e.id) {
+        <p>
+          <strong>{{ e.cargo }}</strong>@if (e.organizacion) {, {{ e.organizacion }}}
+          @if (rango(e.inicio, e.fin); as r) {
+            · <span [class.marca]="marcado('exp.' + e.id + '.inicio') || marcado('exp.' + e.id + '.fin')">{{ r }}</span>
+          } @else {
+            · <span class="tenue" [class.marca]="marcado('exp.' + e.id + '.inicio') || marcado('exp.' + e.id + '.fin')">
+              {{ 'hoja.revisar.sinFechas' | transloco }}
+            </span>
+          }
+        </p>
+        @if (e.descripcion) {
+          <p class="detalle">{{ e.descripcion }}</p>
+        }
+      }
+    </section>
+  }
+
+  @if (valores().educacion.length > 0) {
+    <section>
+      <h4>{{ 'hoja.revisar.secciones.educacion' | transloco }}</h4>
+      @for (e of valores().educacion; track e.id) {
+        <p>
+          {{ e.institucion }}@if (e.titulo) { · {{ e.titulo }}}
+          @if (rango(e.inicio, e.fin); as r) {
+            · {{ r }}
+          }
+        </p>
+      }
+    </section>
+  }
+
+  @if (valores().habilidades) {
+    <section>
+      <h4>{{ 'hoja.revisar.secciones.habilidades' | transloco }}</h4>
+      <p [class.marca]="marcado('habilidades')">{{ valores().habilidades }}</p>
+    </section>
+  }
+</article>

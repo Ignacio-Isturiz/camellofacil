@@ -1,0 +1,144 @@
+:host {
+  display: block;
+  padding-top: 72px;
+}
+
+.destacadas {
+  display: grid;
+  gap: 28px;
+}
+
+.destacadas__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+h2 {
+  margin-top: 12px;
+}
+.destacadas__texto {
+  max-width: 34em;
+  margin-top: 12px;
+  color: var(--gris-600);
+}
+
+.destacadas__todas {
+  justify-self: center;
+}
+
+.destacadas__lista {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.vacante {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 18px 18px 14px;
+  transition:
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+.vacante:hover {
+  box-shadow: var(--sombra-2);
+  transform: translateY(-2px);
+}
+.vacante:has(:focus-visible) {
+  outline: 3px solid var(--oro-700);
+  outline-offset: 2px;
+}
+
+.vacante__cabecera {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 6px;
+}
+.vacante__guardar {
+  color: var(--gris-600);
+}
+
+.vacante__logo {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  font: 700 15px/1 var(--fuente-titulo);
+}
+.vacante__logo[data-tono='rojo'] {
+  background: var(--rojo-50);
+  color: var(--rojo);
+}
+.vacante__logo[data-tono='oro'] {
+  background: #faf6e6;
+  color: var(--oro-700);
+}
+.vacante__logo[data-tono='verde'] {
+  background: var(--exito-50);
+  color: var(--exito);
+}
+
+.vacante__cargo {
+  font-size: 16px;
+  line-height: 22px;
+}
+/* El enlace cubre toda la tarjeta: un solo destino táctil grande. */
+.vacante__enlace {
+  text-decoration: none;
+}
+.vacante__enlace::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radio-tarjeta);
+}
+.vacante__enlace:focus-visible {
+  outline: none;
+}
+
+.vacante__empresa {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--gris-600);
+}
+.vacante__lugar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.vacante__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--gris-600);
+}
+.vacante__ir {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--rojo-50);
+  color: var(--rojo);
+}
+
+@media (min-width: 768px) {
+  .destacadas__lista {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}

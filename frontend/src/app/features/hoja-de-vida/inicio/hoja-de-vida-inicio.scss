@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.cargando {
+  display: grid;
+  gap: 16px;
+  max-width: 880px;
+  margin-inline: auto;
+}
+.cargando__aviso {
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 20px;
+}

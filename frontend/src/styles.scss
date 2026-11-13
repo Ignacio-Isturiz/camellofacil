@@ -1,1 +1,559 @@
-/* You can add global styles to this file, and also import other style files */
+/* Sistema de diseño Camello Fácil (camello-fundamentos.pdf).
+   Tokens, base y piezas reutilizables (botones, chips, etiquetas). */
+
+:root {
+  /* Color */
+  --rojo: #9e1b1b;
+  --rojo-700: #7e1515;
+  --rojo-800: #5f1010;
+  --rojo-50: #fbf1f1;
+  --oro: #cbb35b;
+  --oro-100: #f2eac9;
+  --oro-200: #f0e0a0;
+  --oro-700: #7a6420;
+  --tinta: #1c1b1a;
+  --gris-600: #5f5b55;
+  --gris-300: #d9cfbc;
+  --gris-100: #f5efe3;
+  --fondo: #faf5ec;
+  --blanco: #ffffff;
+  --exito: #1e7a46;
+  --exito-50: #e6f3ec;
+  --error: #b42318;
+
+  /* Tipografía */
+  --fuente-titulo: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --fuente-texto: 'Inter', system-ui, sans-serif;
+
+  /* Forma y elevación */
+  --radio-tarjeta: 20px;
+  --radio-pildora: 999px;
+  --sombra-1: 0 1px 2px rgb(28 27 26 / 5%), 0 6px 20px rgb(28 27 26 / 6%);
+  --sombra-2: 0 2px 4px rgb(28 27 26 / 6%), 0 14px 32px rgb(28 27 26 / 10%);
+
+  /* Espaciado (múltiplos de 8) y contenedor */
+  --gutter: 16px;
+  --alto-header: 64px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+    --alto-header: 72px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: calc(var(--alto-header) + 16px);
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--tinta);
+  font-family: var(--fuente-texto);
+  font-size: 16px;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--tinta);
+}
+
+h1 {
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 22px;
+  line-height: 28px;
+}
+h3 {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 56px;
+    line-height: 60px;
+  }
+  h2 {
+    font-size: 36px;
+    line-height: 42px;
+  }
+  h3 {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Foco visible en todo control (oro para el anillo; el borde interno separa del fondo). */
+:focus-visible {
+  outline: 3px solid var(--oro-700);
+  outline-offset: 2px;
+}
+
+.contenedor {
+  width: 100%;
+  max-width: calc(1180px + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Botones: un solo primario por pantalla; alto mínimo 48 px. */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 24px;
+  border: 2px solid transparent;
+  border-radius: var(--radio-pildora);
+  font: 600 16px/24px var(--fuente-texto);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+
+.boton--pequeno {
+  min-height: 44px;
+  padding: 0 20px;
+  font-size: 15px;
+}
+
+.boton--primario {
+  background: var(--rojo);
+  color: var(--blanco);
+  box-shadow: 0 6px 16px rgb(158 27 27 / 28%);
+}
+.boton--primario:hover {
+  background: var(--rojo-700);
+  box-shadow: 0 8px 20px rgb(158 27 27 / 34%);
+}
+.boton--primario:active {
+  background: var(--rojo-800);
+  transform: translateY(1px);
+}
+
+.boton--oro {
+  background: var(--oro);
+  color: var(--tinta);
+}
+.boton--oro:hover {
+  background: #bba14d;
+}
+.boton--oro:active {
+  background: #a88f3f;
+}
+
+.boton--borde {
+  background: var(--blanco);
+  border-color: var(--gris-300);
+  color: var(--tinta);
+}
+.boton--borde:hover {
+  border-color: var(--tinta);
+}
+.boton--borde:active {
+  background: var(--gris-100);
+}
+
+.boton--texto {
+  min-height: 44px;
+  padding: 0 16px;
+  background: transparent;
+  color: var(--rojo);
+}
+.boton--texto:hover {
+  background: var(--rojo-50);
+}
+
+/* Etiquetas informativas (no se tocan) y chips (se tocan para filtrar). */
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 12px;
+  border-radius: var(--radio-pildora);
+  background: var(--oro-100);
+  color: var(--tinta);
+  font: 600 13px/20px var(--fuente-texto);
+  white-space: nowrap;
+}
+
+.etiqueta--exito {
+  background: var(--exito-50);
+  color: var(--exito);
+}
+
+/* Pastilla dorada que antecede a cada título de sección. */
+.sobretitulo {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: var(--radio-pildora);
+  background: var(--oro-100);
+  font: 600 13px/20px var(--fuente-texto);
+}
+
+.tarjeta {
+  background: var(--blanco);
+  border: 1px solid rgb(217 207 188 / 55%);
+  border-radius: var(--radio-tarjeta);
+  box-shadow: var(--sombra-1);
+}
+
+/* ---------- Formularios (pantallas de autenticación) ---------- */
+.auth {
+  display: grid;
+  gap: 20px;
+}
+.auth h1 {
+  font-size: 30px;
+  line-height: 36px;
+}
+.auth__bajada {
+  margin-top: 6px;
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+.auth__volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  padding: 6px 0;
+  font: 600 13px/20px var(--fuente-texto);
+  text-decoration: none;
+}
+.auth__volver:hover {
+  color: var(--rojo);
+}
+.boton--ancho {
+  width: 100%;
+}
+.auth__pie {
+  text-align: center;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--gris-600);
+}
+.auth__pie a,
+.auth__legal a {
+  color: var(--rojo);
+  font-weight: 600;
+  text-underline-offset: 2px;
+}
+.auth__legal {
+  text-align: center;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--gris-600);
+}
+/* ---------- Formularios: campos, progreso, contraseña y código ---------- */
+.auth__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.auth__paso {
+  color: var(--gris-600);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.auth__form {
+  display: grid;
+  gap: 16px;
+}
+.auth__icono {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--oro-100);
+  color: var(--oro-700);
+}
+.auth__alerta {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--exito-50);
+  color: var(--exito);
+  font-size: 14px;
+  line-height: 20px;
+}
+.auth__separador {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--gris-600);
+  font-size: 12px;
+}
+.auth__separador::before,
+.auth__separador::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gris-300);
+}
+.auth__correo {
+  color: var(--tinta);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.auth__ayuda {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 16px;
+}
+.auth__ayuda-titulo {
+  font: 700 14px/20px var(--fuente-texto);
+}
+.progreso {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--gris-300);
+  overflow: hidden;
+}
+.progreso__relleno {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--rojo);
+}
+.fuerza {
+  display: grid;
+  gap: 8px;
+}
+.fuerza__barras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.fuerza__barras span {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--gris-300);
+  transition: background-color 0.2s;
+}
+.fuerza__barras .activa {
+  background: var(--exito);
+}
+.fuerza__reglas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+.fuerza__reglas li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.fuerza__reglas .cumple {
+  color: var(--exito);
+}
+.codigo {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+.codigo__digito {
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+  padding: 0;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 12px;
+  background: var(--blanco);
+  color: var(--tinta);
+  text-align: center;
+  font: 700 22px/1 var(--fuente-titulo);
+}
+.codigo__digito:focus {
+  outline: none;
+  border-color: var(--oro-700);
+  box-shadow: 0 0 0 3px rgb(203 179 91 / 35%);
+}
+.campo {
+  display: grid;
+  gap: 6px;
+}
+.campo__fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.campo__etiqueta {
+  font: 600 13px/20px var(--fuente-texto);
+}
+.campo__enlace {
+  color: var(--rojo);
+  font: 600 13px/20px var(--fuente-texto);
+  text-underline-offset: 2px;
+}
+.campo__caja {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 12px;
+  background: var(--blanco);
+  color: var(--gris-600);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.campo__caja:focus-within {
+  border-color: var(--oro-700);
+  box-shadow: 0 0 0 3px rgb(203 179 91 / 35%);
+}
+.campo__caja--error {
+  border-color: var(--error);
+}
+.campo__entrada {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--tinta);
+  font: 400 15px/24px var(--fuente-texto);
+}
+.campo__entrada::placeholder {
+  color: #8a857c;
+}
+.campo__entrada:focus,
+.campo__entrada:focus-visible {
+  outline: none;
+}
+.campo__ojo {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-right: -6px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gris-600);
+  cursor: pointer;
+}
+.campo__ojo:hover {
+  color: var(--tinta);
+}
+.campo__error {
+  color: var(--error);
+  font-size: 13px;
+  line-height: 18px;
+}
+.campo__ayuda {
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+.casilla {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+}
+.casilla input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: var(--rojo);
+}
+.casilla a {
+  color: var(--rojo);
+  font-weight: 600;
+  text-underline-offset: 2px;
+}
+.boton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

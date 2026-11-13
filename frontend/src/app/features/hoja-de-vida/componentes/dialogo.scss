@@ -1,0 +1,98 @@
+:host {
+  display: contents;
+}
+
+.caja {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: var(--blanco);
+  color: var(--tinta);
+  box-shadow: var(--sombra-2);
+}
+.caja--ancha {
+  width: min(1000px, calc(100vw - 32px));
+}
+.caja::backdrop {
+  background: rgb(28 27 26 / 50%);
+}
+
+.contenido {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  max-height: calc(100dvh - 48px);
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--gris-100);
+}
+h2 {
+  font-size: 18px;
+  line-height: 24px;
+}
+.cerrar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--tinta);
+  cursor: pointer;
+}
+.cerrar:hover {
+  background: var(--gris-100);
+}
+
+.cuerpo {
+  padding: 20px;
+  overflow-y: auto;
+}
+.pie {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--gris-100);
+}
+.pie:empty {
+  display: none;
+}
+
+/* Móvil: hoja que sube desde abajo. */
+@media (max-width: 639px) {
+  .caja {
+    width: 100%;
+    max-width: 100%;
+    max-height: 90dvh;
+    margin: auto 0 0;
+    border-radius: 20px 20px 0 0;
+    animation: subir 0.22s ease-out;
+  }
+  .contenido {
+    max-height: 90dvh;
+  }
+  .pie {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+}
+@keyframes subir {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .caja {
+    animation: none !important;
+  }
+}

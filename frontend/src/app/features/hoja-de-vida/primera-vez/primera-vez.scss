@@ -1,0 +1,358 @@
+:host {
+  display: grid;
+  gap: 24px;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+h2 {
+  font-size: 16px;
+  line-height: 22px;
+}
+h3 {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* ---------- Aviso «te falta muy poco» ---------- */
+.aviso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  padding: 16px 20px;
+  background: #fbf6e3;
+  border-color: var(--oro);
+  color: var(--oro-700);
+}
+.aviso__texto {
+  flex: 1;
+  min-width: 200px;
+}
+.aviso__titulo {
+  color: var(--tinta);
+  font: 700 15px/22px var(--fuente-titulo);
+}
+.aviso__detalle {
+  color: var(--gris-600);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+/* ---------- Portada roja ---------- */
+.portada {
+  position: relative;
+  display: grid;
+  min-height: 200px;
+  padding: 28px 24px 0;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--rojo);
+  color: var(--blanco);
+}
+.portada::before {
+  content: '';
+  position: absolute;
+  right: -40px;
+  bottom: -90px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: var(--oro);
+}
+.portada__texto {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 8px;
+  max-width: 460px;
+  padding-bottom: 24px;
+}
+.portada h1 {
+  color: var(--blanco);
+  font-size: 28px;
+  line-height: 32px;
+}
+.portada p {
+  font-size: 14px;
+  line-height: 20px;
+  opacity: 0.92;
+}
+.portada__camello {
+  display: none;
+}
+
+/* ---------- Dos caminos ---------- */
+.caminos {
+  display: grid;
+  gap: 16px;
+}
+.camino {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 20px;
+}
+.camino__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+}
+.camino__cabecera > div {
+  flex: 1;
+  min-width: 160px;
+}
+.camino__icono {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--oro-100);
+  color: var(--oro-700);
+}
+.camino__bajada {
+  color: var(--gris-600);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.autorizacion {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--oro);
+  border-radius: 12px;
+  background: #fbf6e3;
+  font-size: 13px;
+  line-height: 18px;
+  cursor: pointer;
+}
+.autorizacion input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: var(--rojo);
+}
+.autorizacion a {
+  color: var(--rojo);
+  font-weight: 600;
+  text-underline-offset: 2px;
+}
+
+.zona {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 28px 16px;
+  border: 2px dashed var(--gris-300);
+  border-radius: 16px;
+  background: var(--fondo);
+  text-align: center;
+}
+.zona--activa {
+  border-color: var(--oro);
+  background: var(--blanco);
+}
+.zona__icono {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--blanco);
+  box-shadow: var(--sombra-1);
+}
+.zona__titulo {
+  font: 700 14px/20px var(--fuente-titulo);
+}
+.zona__nota {
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.miniaturas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.ventajas {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 18px;
+}
+.ventajas li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ventajas app-icono {
+  color: var(--exito);
+}
+.camino__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+.camino__nota {
+  padding: 4px 6px;
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* ---------- Así funciona ---------- */
+.funciona {
+  display: grid;
+  gap: 12px;
+}
+.funciona__lista {
+  display: grid;
+  gap: 12px;
+}
+.paso {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+}
+.paso--primero {
+  border-color: var(--oro);
+}
+.paso__numero {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--oro);
+  border-radius: 50%;
+  color: var(--oro-700);
+  font: 700 13px/1 var(--fuente-titulo);
+}
+.paso p {
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* ---------- Lo que se activa ---------- */
+.activa {
+  display: grid;
+  gap: 12px;
+}
+.activa__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.chip-candado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--oro-100);
+  font: 600 12px/18px var(--fuente-texto);
+}
+.activa__lista {
+  display: grid;
+  gap: 12px;
+}
+.bloqueo {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+}
+.bloqueo__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bloqueo__etiqueta {
+  color: var(--gris-600);
+  font: 700 10px/14px var(--fuente-texto);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.bloqueo__candado {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--gris-100);
+  color: var(--gris-600);
+}
+.bloqueo__titulo {
+  font: 700 15px/20px var(--fuente-titulo);
+}
+.bloqueo__lineas {
+  display: grid;
+  gap: 6px;
+}
+.bloqueo__lineas i {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--gris-100);
+}
+.bloqueo__lineas i:last-child {
+  width: 60%;
+}
+.bloqueo__detalle {
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+@media (min-width: 640px) {
+  .funciona__lista {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .activa__lista {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .portada {
+    min-height: 220px;
+    padding: 32px 40px;
+  }
+  .portada h1 {
+    font-size: 36px;
+    line-height: 40px;
+  }
+  .portada::before {
+    right: 60px;
+    bottom: -120px;
+    width: 300px;
+    height: 300px;
+  }
+  .portada__camello {
+    position: absolute;
+    right: 70px;
+    bottom: 0;
+    z-index: 1;
+    display: block;
+    width: 250px;
+    height: auto;
+  }
+  .caminos {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .activa__lista {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

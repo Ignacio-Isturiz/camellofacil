@@ -1,0 +1,241 @@
+@use '../../../shared/esqueleto/esqueleto';
+
+:host {
+  display: grid;
+  gap: 16px;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+h2 {
+  font-size: 16px;
+  line-height: 22px;
+}
+
+/* ---------- Carga ---------- */
+.cargando {
+  display: grid;
+  gap: 12px;
+  color: var(--gris-600);
+  font-size: 14px;
+}
+.esq-columnas {
+  display: grid;
+  gap: 16px;
+}
+.esq-hoja {
+  height: 220px;
+  border-radius: 8px;
+}
+.esq-form {
+  height: 320px;
+  border-radius: 20px;
+}
+
+/* ---------- Cabecera ---------- */
+.cabecera {
+  display: grid;
+  gap: 12px;
+}
+.cabecera h1 {
+  font-size: 28px;
+  line-height: 34px;
+}
+.cabecera p {
+  margin-top: 4px;
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+.leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font: 600 11px/18px var(--fuente-texto);
+}
+.chip--leido {
+  background: var(--exito-50);
+  border-color: #c9e4d4;
+  color: var(--exito);
+}
+.chip--revisa {
+  background: #fbf6e3;
+  border-color: var(--oro);
+  color: var(--oro-700);
+}
+.chip--no {
+  background: var(--gris-100);
+  color: var(--gris-600);
+}
+
+/* ---------- Cuerpo ---------- */
+.cuerpo {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+
+.previa {
+  display: none;
+  gap: 10px;
+}
+.previa--abierta {
+  display: grid;
+}
+.previa__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+  color: var(--gris-600);
+  font: 600 11px/16px var(--fuente-texto);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.previa__titulo {
+  overflow-wrap: anywhere;
+}
+.previa__idioma {
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.previa__nota {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--gris-600);
+  font-size: 12px;
+}
+
+.formulario {
+  display: grid;
+  gap: 16px;
+}
+.ver-previa {
+  justify-self: start;
+}
+
+.seccion {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+.seccion__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.insignia {
+  padding: 1px 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font: 600 11px/18px var(--fuente-texto);
+  white-space: nowrap;
+}
+.insignia--leido {
+  background: var(--exito-50);
+  border-color: #c9e4d4;
+  color: var(--exito);
+}
+.insignia--revisa {
+  background: #fbf6e3;
+  border-color: var(--oro);
+  color: var(--oro-700);
+}
+
+.rejilla {
+  display: grid;
+  gap: 14px;
+}
+.item {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--oro);
+  border-radius: 14px;
+  background: #fffdf6;
+}
+
+.enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  padding: 6px 0;
+  border: 0;
+  background: transparent;
+  color: var(--rojo);
+  font: 600 13px/20px var(--fuente-texto);
+  cursor: pointer;
+}
+.enlace:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Barra de confirmación ---------- */
+.barra {
+  position: sticky;
+  bottom: 64px; /* sobre la barra de navegación inferior del móvil */
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 12px var(--gutter);
+  background: var(--blanco);
+  border-top: 1px solid rgb(217 207 188 / 55%);
+  box-shadow: 0 -6px 16px rgb(28 27 26 / 6%);
+}
+.barra__texto {
+  color: var(--oro-700);
+  font: 600 13px/18px var(--fuente-texto);
+}
+.barra__error {
+  color: var(--error);
+}
+
+@media (min-width: 640px) {
+  .rejilla {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .barra {
+    bottom: 0;
+  }
+}
+
+@media (min-width: 900px) {
+  .cabecera {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+  .cuerpo {
+    grid-template-columns: 5fr 7fr;
+    gap: 24px;
+  }
+  .esq-columnas {
+    grid-template-columns: 5fr 7fr;
+  }
+  .previa {
+    display: grid;
+    position: sticky;
+    top: calc(var(--alto-header) + 16px);
+  }
+  .ver-previa {
+    display: none;
+  }
+}

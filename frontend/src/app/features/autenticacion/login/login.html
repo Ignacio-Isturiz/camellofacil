@@ -1,0 +1,56 @@
+<app-marco-autenticacion prefijo="auth.login">
+  <section class="auth">
+    <a routerLink="/" class="auth__volver">
+      <app-icono nombre="chevron-izq" style="--tam: 16px" />
+      {{ 'auth.comun.volverInicio' | transloco }}
+    </a>
+
+    <div>
+      <h1>{{ 'auth.login.titulo' | transloco }}</h1>
+      <p class="auth__bajada">{{ 'auth.login.bajada' | transloco }}</p>
+    </div>
+
+    <form class="auth__form" [formGroup]="formulario" (ngSubmit)="enviar()" novalidate>
+      <app-campo-correo [control]="formulario.controls.correo" idCampo="login-correo" [mostrarErrores]="intentado()" />
+
+      <app-campo-contrasena
+        [control]="formulario.controls.contrasena"
+        idCampo="login-contrasena"
+        autocompletar="current-password"
+        [mostrarErrores]="intentado()"
+      >
+        <a routerLink="/recuperar" class="campo__enlace">{{ 'auth.login.olvidaste' | transloco }}</a>
+      </app-campo-contrasena>
+
+      <label class="casilla">
+        <input type="checkbox" formControlName="mantener" />
+        {{ 'auth.login.mantener' | transloco }}
+      </label>
+
+      <button type="submit" class="boton boton--primario boton--ancho">
+        {{ 'auth.login.entrar' | transloco }}
+      </button>
+    </form>
+
+    <p class="auth__separador"><span>{{ 'auth.login.o' | transloco }}</span></p>
+
+    <!-- Pendiente: conectar con el inicio de sesión de Microsoft cuando el backend lo ofrezca. -->
+    <button type="button" class="boton boton--borde boton--ancho" (click)="conMicrosoft()">
+      <app-logo-microsoft />
+      {{ 'auth.login.microsoft' | transloco }}
+    </button>
+
+    <p class="auth__pie">{{ 'auth.login.primeraVez' | transloco }}</p>
+    <a routerLink="/registro" class="boton boton--borde boton--ancho">
+      {{ 'auth.login.crearCuenta' | transloco }}
+    </a>
+
+    <p class="auth__legal">
+      {{ 'auth.login.legalInicio' | transloco }}
+      <a routerLink="/terminos">{{ 'auth.comun.terminosCorto' | transloco }}</a>
+      {{ 'auth.login.legalY' | transloco }}
+      <a routerLink="/privacidad">{{ 'auth.comun.privacidad' | transloco }}</a>
+      {{ 'auth.login.legalFin' | transloco }}
+    </p>
+  </section>
+</app-marco-autenticacion>

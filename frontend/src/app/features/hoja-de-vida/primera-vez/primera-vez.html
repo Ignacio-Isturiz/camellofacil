@@ -1,0 +1,122 @@
+@if (sinConfirmar()) {
+  <div class="aviso tarjeta" role="status">
+    <app-icono nombre="info" style="--tam: 20px" />
+    <div class="aviso__texto">
+      <p class="aviso__titulo">{{ 'hoja.primera.faltaPoco' | transloco }}</p>
+      <p class="aviso__detalle">
+        {{ 'hoja.primera.faltaPocoDetalle' | transloco }}
+        @if (pendientes() !== null) {
+          <span>· {{ 'hoja.primera.pendientes' | transloco: { n: pendientes() } }}</span>
+        }
+      </p>
+    </div>
+    <a routerLink="/hoja-de-vida/revisar" class="boton boton--primario boton--pequeno">
+      {{ 'hoja.primera.revisarDatos' | transloco }}
+    </a>
+  </div>
+}
+
+<section class="portada" aria-labelledby="primera-titulo">
+  <div class="portada__texto">
+    <h1 id="primera-titulo">{{ 'hoja.primera.titulo' | transloco }}</h1>
+    <p>{{ 'hoja.primera.bajada' | transloco }}</p>
+  </div>
+  <img class="portada__camello" src="images/camello-hero-640.webp" alt="" width="640" height="626" decoding="async" />
+</section>
+
+<div class="caminos">
+  <section class="tarjeta camino" aria-labelledby="camino-subir">
+    <div class="camino__cabecera">
+      <span class="camino__icono"><app-icono nombre="subir" style="--tam: 20px" /></span>
+      <div>
+        <h2 id="camino-subir">{{ 'hoja.primera.tengo' | transloco }}</h2>
+        <p class="camino__bajada">{{ 'hoja.primera.tengoDetalle' | transloco }}</p>
+      </div>
+      <span class="etiqueta etiqueta--exito">{{ 'hoja.primera.recomendado' | transloco }}</span>
+    </div>
+
+    <label class="autorizacion">
+      <input type="checkbox" [checked]="autorizado()" (change)="cambiarAutorizacion($event)" />
+      <span>
+        {{ 'hoja.primera.autorizo' | transloco }}
+        <a routerLink="/privacidad">{{ 'hoja.primera.comoUsamos' | transloco }}</a>
+      </span>
+    </label>
+
+    <div class="zona" [class.zona--activa]="autorizado()">
+      <span class="zona__icono"><app-icono nombre="subir" style="--tam: 22px" /></span>
+      @if (autorizado()) {
+        <p class="zona__titulo">{{ 'hoja.primera.zonaActiva' | transloco }}</p>
+        <button type="button" class="boton boton--borde boton--pequeno" (click)="elegirArchivo()">
+          {{ 'hoja.subir.elegir' | transloco }}
+        </button>
+      } @else {
+        <p class="zona__titulo">{{ 'hoja.primera.zonaBloqueada' | transloco }}</p>
+      }
+      <p class="zona__nota">{{ 'hoja.primera.formatos' | transloco }}</p>
+    </div>
+  </section>
+
+  <section class="tarjeta camino" aria-labelledby="camino-crear">
+    <div class="camino__cabecera">
+      <span class="camino__icono"><app-icono nombre="lapiz" style="--tam: 20px" /></span>
+      <div>
+        <h2 id="camino-crear">{{ 'hoja.primera.noTengo' | transloco }}</h2>
+        <p class="camino__bajada">{{ 'hoja.primera.noTengoDetalle' | transloco }}</p>
+      </div>
+    </div>
+
+    <div class="miniaturas">
+      <app-miniatura-plantilla estilo="harvard" />
+      <app-miniatura-plantilla estilo="ats-clasico" />
+      <app-miniatura-plantilla estilo="ats-moderno" />
+    </div>
+
+    <ul class="ventajas">
+      <li><app-icono nombre="check" style="--tam: 16px" />{{ 'hoja.primera.ventaja1' | transloco }}</li>
+      <li><app-icono nombre="check" style="--tam: 16px" />{{ 'hoja.primera.ventaja2' | transloco }}</li>
+      <li><app-icono nombre="check" style="--tam: 16px" />{{ 'hoja.primera.ventaja3' | transloco }}</li>
+    </ul>
+
+    <div class="camino__acciones">
+      <a routerLink="/hoja-de-vida/plantillas" class="boton boton--oro">{{ 'hoja.primera.crearConPlantilla' | transloco }}</a>
+      <a routerLink="/hoja-de-vida/plantillas" class="boton boton--texto">{{ 'hoja.primera.verPlantillas' | transloco }}</a>
+    </div>
+    <p class="camino__nota">{{ 'hoja.primera.escaneo' | transloco }}</p>
+  </section>
+</div>
+
+<section class="funciona" aria-labelledby="funciona-titulo">
+  <h2 id="funciona-titulo">{{ 'hoja.primera.asiFunciona' | transloco }}</h2>
+  <ol class="funciona__lista">
+    @for (p of pasos; track p.clave; let i = $index) {
+      <li class="tarjeta paso" [class.paso--primero]="i === 0">
+        <span class="paso__numero" aria-hidden="true">{{ i + 1 }}</span>
+        <div>
+          <h3>{{ 'hoja.primera.pasos.' + p.clave + '.titulo' | transloco }}</h3>
+          <p>{{ 'hoja.primera.pasos.' + p.clave + '.detalle' | transloco }}</p>
+        </div>
+      </li>
+    }
+  </ol>
+</section>
+
+<section class="activa" aria-labelledby="activa-titulo">
+  <div class="activa__cabecera">
+    <h2 id="activa-titulo">{{ 'hoja.primera.seActiva' | transloco }}</h2>
+    <span class="chip-candado"><app-icono nombre="candado" style="--tam: 14px" />{{ 'hoja.primera.seActivaAlSubir' | transloco }}</span>
+  </div>
+  <ul class="activa__lista">
+    @for (b of bloqueos; track b.clave) {
+      <li class="tarjeta bloqueo">
+        <div class="bloqueo__cabecera">
+          <span class="bloqueo__etiqueta">{{ 'hoja.primera.bloqueos.' + b.clave + '.etiqueta' | transloco }}</span>
+          <span class="bloqueo__candado" aria-hidden="true"><app-icono nombre="candado" style="--tam: 14px" /></span>
+        </div>
+        <p class="bloqueo__titulo">{{ 'hoja.primera.bloqueos.' + b.clave + '.titulo' | transloco }}</p>
+        <span class="bloqueo__lineas" aria-hidden="true"><i></i><i></i></span>
+        <p class="bloqueo__detalle">{{ 'hoja.primera.bloqueos.' + b.clave + '.detalle' | transloco }}</p>
+      </li>
+    }
+  </ul>
+</section>

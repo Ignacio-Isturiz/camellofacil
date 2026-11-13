@@ -1,0 +1,88 @@
+:host {
+  display: block;
+}
+
+.hoja {
+  display: grid;
+  gap: 12px;
+  padding: 24px 22px;
+  border-radius: 6px;
+  background: var(--blanco);
+  box-shadow: var(--sombra-2);
+  font: 400 12px/18px Georgia, 'Times New Roman', serif;
+  color: var(--tinta);
+}
+
+.hoja__cabecera {
+  text-align: center;
+}
+h3 {
+  font: 700 17px/22px Georgia, 'Times New Roman', serif;
+  letter-spacing: 0;
+}
+.hoja__contacto {
+  color: var(--gris-600);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+section {
+  display: grid;
+  gap: 4px;
+}
+h4 {
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--tinta);
+  font: 700 10px/16px Georgia, 'Times New Roman', serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+p {
+  overflow-wrap: anywhere;
+}
+
+/* Estilos de plantilla */
+.hoja--ats-clasico,
+.hoja--ats-moderno,
+.hoja--ats-compacto {
+  font-family: var(--fuente-texto);
+}
+.hoja--ats-clasico h3,
+.hoja--ats-moderno h3,
+.hoja--ats-compacto h3 {
+  font-family: var(--fuente-titulo);
+}
+.hoja--ats-clasico .hoja__cabecera,
+.hoja--ats-moderno .hoja__cabecera,
+.hoja--ats-compacto .hoja__cabecera {
+  text-align: left;
+}
+.hoja--ats-clasico h4,
+.hoja--ats-moderno h4,
+.hoja--ats-compacto h4 {
+  font-family: var(--fuente-titulo);
+}
+.hoja--ats-moderno h3,
+.hoja--ats-moderno h4 {
+  color: var(--rojo);
+  border-color: var(--rojo);
+}
+.hoja--ats-compacto {
+  gap: 8px;
+  padding: 16px;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+/* Cambios respecto del original */
+.redaccion {
+  padding: 0 2px;
+  border-radius: 3px;
+  background: #d8efe1;
+  box-shadow: 0 0 0 1px #9fd2b6;
+  color: inherit;
+}
+.movida {
+  background: var(--oro-200);
+  box-shadow: 0 0 0 2px var(--oro-200);
+}

@@ -1,0 +1,53 @@
+<header class="barra">
+  <div class="contenedor barra__fila">
+    <a
+      routerLink="/"
+      class="barra__marca"
+      [attr.aria-label]="'encabezado.inicio' | transloco"
+      (click)="cerrarMenu()"
+    >
+      <app-logo />
+    </a>
+
+    <nav
+      class="nav"
+      [class.nav--abierto]="menuAbierto()"
+      id="menu-principal"
+      [attr.aria-label]="'encabezado.navegacion' | transloco"
+    >
+      <a routerLink="/" fragment="como-funciona" class="nav__enlace" (click)="cerrarMenu()">{{
+        'encabezado.comoFunciona' | transloco
+      }}</a>
+      <a routerLink="/" fragment="vacantes" class="nav__enlace" (click)="cerrarMenu()">
+        {{ 'encabezado.vacantes' | transloco }}
+        <app-icono nombre="chevron-abajo" style="--tam: 16px" />
+      </a>
+      <a routerLink="/" fragment="preguntas" class="nav__enlace" (click)="cerrarMenu()">{{
+        'encabezado.preguntas' | transloco
+      }}</a>
+
+      <div class="nav__acceso">
+        <a routerLink="/login" class="boton boton--texto" (click)="cerrarMenu()">{{
+          'encabezado.iniciarSesion' | transloco
+        }}</a>
+        <a
+          routerLink="/registro"
+          class="boton boton--primario boton--pequeno"
+          (click)="cerrarMenu()"
+          >{{ 'encabezado.crearCuenta' | transloco }}</a
+        >
+      </div>
+    </nav>
+
+    <button
+      type="button"
+      class="barra__menu"
+      aria-controls="menu-principal"
+      [attr.aria-expanded]="menuAbierto()"
+      [attr.aria-label]="(menuAbierto() ? 'encabezado.cerrarMenu' : 'encabezado.abrirMenu') | transloco"
+      (click)="alternarMenu()"
+    >
+      <app-icono [nombre]="menuAbierto() ? 'cerrar' : 'menu'" style="--tam: 24px" />
+    </button>
+  </div>
+</header>

@@ -1,0 +1,68 @@
+@use '../../../shared/esqueleto/esqueleto';
+
+:host {
+  display: block;
+}
+
+.vac {
+  display: grid;
+  gap: 16px;
+  padding: 18px 20px;
+}
+.vac__texto {
+  display: grid;
+  gap: 10px;
+}
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.fila--acciones {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.etiqueta {
+  width: 72px;
+  height: 22px;
+  border-radius: 999px;
+}
+.etiqueta--larga {
+  width: 110px;
+}
+.cargo {
+  width: min(380px, 80%);
+  height: 20px;
+}
+.empresa {
+  width: min(200px, 50%);
+  height: 14px;
+}
+.dato {
+  width: 76px;
+  height: 14px;
+}
+.icono {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.boton-falso {
+  flex: none;
+  width: 120px;
+  height: 40px;
+  margin-left: auto;
+  border-radius: 999px;
+}
+
+@media (min-width: 640px) {
+  .vac {
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+  }
+  .boton-falso {
+    margin-left: 0;
+  }
+}

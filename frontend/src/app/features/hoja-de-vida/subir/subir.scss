@@ -1,0 +1,230 @@
+:host {
+  display: grid;
+  gap: 16px;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+.cabecera h1 {
+  font-size: 28px;
+  line-height: 34px;
+}
+.cabecera p {
+  margin-top: 4px;
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.cuerpo {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+
+.carga {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+}
+
+/* ---------- Zona de carga ---------- */
+.zona {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 36px 16px;
+  border: 2px dashed var(--gris-300);
+  border-radius: 16px;
+  background: var(--fondo);
+  text-align: center;
+}
+.zona--activa {
+  border-color: var(--oro);
+  background: var(--blanco);
+}
+.zona--sobre {
+  border-color: var(--rojo);
+  background: var(--rojo-50);
+}
+.zona--estado {
+  border-style: solid;
+  border-color: var(--gris-300);
+  background: var(--blanco);
+}
+.zona--error {
+  border-style: solid;
+  border-color: #f1b8b2;
+  background: #fdf3f2;
+}
+.zona__icono {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--blanco);
+  box-shadow: var(--sombra-1);
+}
+.zona__icono--error {
+  color: var(--error);
+}
+.zona__titulo {
+  max-width: 36ch;
+  font: 700 14px/20px var(--fuente-titulo);
+  overflow-wrap: anywhere;
+}
+.zona__nota {
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+.zona__nota--archivo {
+  overflow-wrap: anywhere;
+}
+.zona__acciones {
+  margin-top: 4px;
+}
+
+.boton--inactivo {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+label.boton {
+  position: relative;
+}
+/* El input real queda dentro del botón para que el teclado y el lector de pantalla lo alcancen. */
+label.boton input:focus-visible + * {
+  outline: none;
+}
+label.boton:focus-within {
+  outline: 3px solid var(--oro-700);
+  outline-offset: 2px;
+}
+
+.progreso {
+  width: min(320px, 100%);
+  height: 8px;
+  border-radius: 999px;
+  background: var(--gris-100);
+  overflow: hidden;
+}
+.progreso__relleno {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--rojo);
+  transition: width 0.2s;
+}
+
+.giro {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--gris-100);
+  border-top-color: var(--rojo);
+  border-radius: 50%;
+  animation: girar 0.9s linear infinite;
+}
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .giro {
+    animation: none !important;
+    border-top-color: var(--gris-100);
+    border-right-color: var(--rojo);
+  }
+}
+
+.pasos-error {
+  display: grid;
+  gap: 4px;
+  padding-left: 18px;
+  text-align: left;
+  list-style: decimal;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+/* ---------- Autorización ---------- */
+.autorizacion {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--oro);
+  border-radius: 14px;
+  background: #fbf6e3;
+  color: var(--oro-700);
+  font-size: 12px;
+  line-height: 18px;
+}
+.autorizacion p {
+  color: var(--tinta);
+}
+.autorizacion .casilla {
+  margin-top: 8px;
+}
+.autorizacion a {
+  color: var(--rojo);
+  font-weight: 600;
+  text-underline-offset: 2px;
+}
+
+/* ---------- Lateral ---------- */
+.lateral {
+  display: grid;
+  gap: 16px;
+}
+.despues,
+.sin-hoja {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+}
+h2 {
+  font-size: 16px;
+  line-height: 22px;
+}
+.despues ol {
+  display: grid;
+  gap: 12px;
+}
+.despues li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 18px;
+}
+.num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--oro-200);
+  font: 700 12px/1 var(--fuente-titulo);
+}
+.sin-hoja {
+  background: #fbf6e3;
+  border-color: var(--oro);
+}
+.sin-hoja p {
+  color: var(--gris-600);
+  font-size: 13px;
+  line-height: 18px;
+}
+.sin-hoja .boton {
+  justify-self: start;
+}
+
+@media (min-width: 900px) {
+  .cuerpo {
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+  }
+}

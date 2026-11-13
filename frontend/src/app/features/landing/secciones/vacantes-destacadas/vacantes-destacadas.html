@@ -1,0 +1,36 @@
+<section id="vacantes" class="destacadas contenedor" aria-labelledby="destacadas-titulo">
+  <div class="destacadas__intro">
+    <p class="sobretitulo">{{ 'landing.vacantes.sobretitulo' | transloco }}</p>
+    <h2 id="destacadas-titulo">{{ 'landing.vacantes.titulo' | transloco }}</h2>
+    <p class="destacadas__texto">{{ 'landing.vacantes.descripcion' | transloco }}</p>
+  </div>
+
+  <ul class="destacadas__lista">
+    @for (v of vacantes; track v.id) {
+      <li class="tarjeta vacante">
+        <div class="vacante__cabecera">
+          <span class="vacante__logo" [attr.data-tono]="v.tono" aria-hidden="true">{{ v.iniciales }}</span>
+          <app-icono nombre="guardar" class="vacante__guardar" />
+        </div>
+        <h3 class="vacante__cargo">
+          <a routerLink="/registro" class="vacante__enlace">{{ v.cargo }}</a>
+        </h3>
+        <p class="vacante__empresa">{{ v.empresa }}</p>
+        <p class="vacante__lugar">
+          <app-icono nombre="pin" style="--tam: 16px" />
+          {{ v.lugar }}
+        </p>
+        <span class="etiqueta">{{ 'landing.vacantes.tipoPractica' | transloco }}</span>
+        <div class="vacante__pie">
+          <span>{{ v.hace }}</span>
+          <span class="vacante__ir" aria-hidden="true"><app-icono nombre="flecha" style="--tam: 16px" /></span>
+        </div>
+      </li>
+    }
+  </ul>
+
+  <a routerLink="/registro" class="boton boton--primario destacadas__todas">
+    {{ 'landing.vacantes.verTodas' | transloco }}
+    <app-icono nombre="flecha" />
+  </a>
+</section>

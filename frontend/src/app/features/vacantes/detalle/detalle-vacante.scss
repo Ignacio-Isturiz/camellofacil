@@ -1,0 +1,153 @@
+:host {
+  display: block;
+  padding-bottom: 72px; /* espacio para la barra fija de móvil */
+}
+
+.migas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+.migas a {
+  color: var(--rojo);
+  text-underline-offset: 2px;
+}
+
+.detalle {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+.detalle__principal {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.cabecera {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+.cabecera h1 {
+  font-size: 26px;
+  line-height: 32px;
+}
+.cabecera__etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.etiqueta {
+  font-size: 12px;
+  padding: 1px 10px;
+}
+.etiqueta--neutra {
+  background: var(--gris-100);
+}
+
+.empresa {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.empresa__logo {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--rojo-50);
+  color: var(--rojo);
+  font: 800 14px/1 var(--fuente-titulo);
+}
+.empresa__nombre {
+  font: 600 14px/20px var(--fuente-texto);
+}
+.empresa__fuente {
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.bloque {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+}
+.bloque h2 {
+  font-size: 16px;
+  line-height: 24px;
+}
+.bloque h3 {
+  margin-top: 4px;
+  font: 700 14px/20px var(--fuente-titulo);
+}
+
+.razones {
+  display: grid;
+  gap: 8px;
+}
+.razon {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--exito-50);
+  color: var(--tinta);
+  font-size: 13px;
+  line-height: 18px;
+}
+.razon app-icono {
+  margin-top: 1px;
+  color: var(--exito);
+}
+.razon--aviso {
+  background: #fbf6e3;
+}
+.razon--aviso app-icono {
+  color: var(--oro-700);
+}
+
+.texto {
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 22px;
+}
+.puntos {
+  display: grid;
+  gap: 4px;
+  padding-left: 18px;
+  list-style: disc;
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.no-encontrada {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+  padding: 24px;
+}
+.no-encontrada h1 {
+  font-size: 22px;
+  line-height: 28px;
+}
+
+/* Móvil: la acción de postular queda primero, justo bajo el encabezado de la vacante. */
+@media (min-width: 900px) {
+  :host {
+    padding-bottom: 0;
+  }
+  .detalle {
+    grid-template-columns: 1fr 280px;
+    gap: 24px;
+  }
+}

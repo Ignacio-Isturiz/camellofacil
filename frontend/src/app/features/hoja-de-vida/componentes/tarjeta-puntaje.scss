@@ -1,0 +1,89 @@
+:host {
+  display: block;
+}
+
+.puntaje {
+  display: grid;
+  gap: 10px;
+  height: 100%;
+  padding: 20px;
+}
+
+.puntaje__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+h2 {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.insignia {
+  padding: 2px 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font: 600 12px/18px var(--fuente-texto);
+  white-space: nowrap;
+}
+.insignia--alto {
+  background: var(--exito-50);
+  border-color: #b7dcc7;
+  color: var(--exito);
+}
+.insignia--medio {
+  background: #fbf6e3;
+  border-color: var(--oro);
+  color: var(--oro-700);
+}
+.insignia--bajo {
+  background: #fdecea;
+  border-color: #f1b8b2;
+  color: var(--error);
+}
+
+.puntaje__valor {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.puntaje__valor strong {
+  font: 800 40px/44px var(--fuente-titulo);
+  letter-spacing: -0.03em;
+}
+.puntaje__valor span {
+  color: var(--gris-600);
+  font-size: 14px;
+}
+.puntaje__valor--cargando {
+  opacity: 0.5;
+}
+
+.barra {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--gris-100);
+  overflow: hidden;
+}
+.barra__relleno {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.4s;
+}
+.barra__relleno--alto {
+  background: var(--exito);
+}
+.barra__relleno--medio {
+  background: var(--oro);
+}
+.barra__relleno--bajo {
+  background: var(--error);
+}
+
+.puntaje__detalle {
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}

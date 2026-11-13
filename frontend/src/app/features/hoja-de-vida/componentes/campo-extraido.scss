@@ -1,0 +1,66 @@
+:host {
+  display: block;
+}
+
+.campo {
+  display: grid;
+  gap: 6px;
+}
+
+.campo__etiqueta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  font: 600 12px/18px var(--fuente-texto);
+}
+.campo__nota {
+  color: var(--gris-600);
+  font-weight: 400;
+}
+
+.entrada {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 10px;
+  background: var(--blanco);
+  color: var(--tinta);
+  font: 400 14px/20px var(--fuente-texto);
+}
+.entrada--area {
+  min-height: 84px;
+  padding: 10px 12px;
+  resize: vertical;
+}
+.entrada:focus {
+  outline: none;
+  border-color: var(--oro-700);
+  box-shadow: 0 0 0 3px rgb(203 179 91 / 35%);
+}
+.entrada[readonly] {
+  background: var(--gris-100);
+  color: var(--gris-600);
+}
+.entrada::placeholder {
+  color: #8a857c;
+}
+
+/* Dato que hay que revisar: se resalta en dorado hasta que se edita. */
+.campo--revisa .entrada {
+  border-color: var(--oro);
+  background: #fbf6e3;
+}
+
+.campo__ayuda {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--oro-700);
+  font-size: 12px;
+  line-height: 18px;
+}
+.campo__ayuda app-icono {
+  margin-top: 1px;
+}

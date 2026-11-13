@@ -1,0 +1,28 @@
+<footer class="pie">
+  <svg
+    class="pie__ola"
+    viewBox="0 0 1440 80"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M0 40C240 0 480 0 720 28s480 28 720-4v56H0Z" />
+  </svg>
+  <div class="pie__cuerpo">
+    <div class="contenedor">
+      <div class="pie__fila">
+        <app-logo [claro]="true" />
+        <nav class="pie__enlaces" [attr.aria-label]="'pie.navegacion' | transloco">
+          <a routerLink="/" fragment="como-funciona">{{ 'pie.comoFunciona' | transloco }}</a>
+          <a routerLink="/terminos">{{ 'pie.terminos' | transloco }}</a>
+          <a routerLink="/privacidad">{{ 'pie.privacidad' | transloco }}</a>
+          <a routerLink="/contacto">{{ 'pie.contacto' | transloco }}</a>
+        </nav>
+      </div>
+      <div class="pie__legal">
+        <p>{{ 'pie.aviso' | transloco }}</p>
+        <p>© {{ anio }} Camello Fácil</p>
+      </div>
+    </div>
+  </div>
+</footer>

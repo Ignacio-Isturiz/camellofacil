@@ -1,0 +1,138 @@
+<header class="cabecera">
+  <h1>{{ 'vacantes.lista.titulo' | transloco }}</h1>
+  <p class="cabecera__bajada">{{ 'vacantes.lista.bajada' | transloco }}</p>
+</header>
+
+<form class="buscador" role="search" (submit)="buscar($event)">
+  <div class="buscador__caja">
+    <app-icono nombre="lupa" style="--tam: 18px" />
+    <input
+      class="buscador__entrada"
+      type="search"
+      name="q"
+      autocomplete="off"
+      [attr.aria-label]="'vacantes.lista.buscarPlaceholder' | transloco"
+      [placeholder]="'vacantes.lista.buscarPlaceholder' | transloco"
+      [value]="consulta()"
+      (input)="consulta.set(valor($event))"
+    />
+  </div>
+  <button type="submit" class="boton boton--primario boton--pequeno">{{ 'vacantes.lista.buscar' | transloco }}</button>
+</form>
+
+<div class="cuerpo">
+  <aside class="filtros tarjeta" [attr.aria-label]="'vacantes.lista.filtros' | transloco">
+    <div class="filtros__cabecera">
+      <button
+        type="button"
+        class="filtros__titulo"
+        [attr.aria-expanded]="filtrosAbiertos()"
+        aria-controls="panel-filtros"
+        (click)="filtrosAbiertos.set(!filtrosAbiertos())"
+      >
+        <app-icono nombre="filtros" style="--tam: 16px" />
+        {{ 'vacantes.lista.filtros' | transloco }}
+        <app-icono class="filtros__flecha" nombre="chevron-abajo" style="--tam: 16px" />
+      </button>
+      <button type="button" class="filtros__limpiar" (click)="limpiar()">{{ 'vacantes.lista.limpiar' | transloco }}</button>
+    </div>
+
+    <div id="panel-filtros" class="filtros__panel" [class.filtros__panel--abierto]="filtrosAbiertos()">
+      <div class="grupo">
+        <label class="grupo__titulo" for="f-carrera">{{ 'vacantes.lista.carrera' | transloco }}</label>
+        <select id="f-carrera" class="seleccion" (change)="cambiar(carrera, valor($event))">
+          <option value="todas" [selected]="carrera() === 'todas'">{{ 'vacantes.lista.todasCarreras' | transloco }}</option>
+          @for (c of carreras; track c) {
+            <option [value]="c" [selected]="carrera() === c">{{ 'landing.carreras.nombres.' + c | transloco }}</option>
+          }
+        </select>
+      </div>
+
+      <fieldset class="grupo">
+        <legend class="grupo__titulo">{{ 'vacantes.lista.modalidad' | transloco }}</legend>
+        <div class="chips">
+          @for (m of modalidadesPosibles; track m) {
+            <button
+              type="button"
+              class="chip"
+              [class.chip--activo]="modalidades().has(m)"
+              [attr.aria-pressed]="modalidades().has(m)"
+              (click)="alternarModalidad(m)"
+            >
+              @if (modalidades().has(m)) {
+                <app-icono nombre="check" style="--tam: 14px" />
+              }
+              {{ 'vacantes.modalidad.' + m | transloco }}
+            </button>
+          }
+        </div>
+      </fieldset>
+
+      <div class="grupo">
+        <label class="grupo__titulo" for="f-fecha">{{ 'vacantes.lista.fecha' | transloco }}</label>
+        <select id="f-fecha" class="seleccion" (change)="cambiar(fecha, $any(valor($event)))">
+          @for (f of fechas; track f) {
+            <option [value]="f" [selected]="fecha() === f">{{ 'vacantes.lista.fechas.' + f | transloco }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </aside>
+
+  <section class="resultados" aria-live="polite">
+    <div class="resultados__barra">
+      @if (estado() === 'listo') {
+        <p class="resultados__total">
+          {{ (total() === 1 ? 'vacantes.lista.resultadoUno' : 'vacantes.lista.resultados') | transloco: { n: total() } }}
+        </p>
+      } @else {
+        <span class="resultados__total-esqueleto" aria-hidden="true"></span>
+      }
+      <label class="resultados__orden">
+        <span>{{ 'vacantes.lista.ordenar' | transloco }}</span>
+        <select class="seleccion seleccion--chica" (change)="cambiar(orden, $any(valor($event)))">
+          <option value="relevantes" [selected]="orden() === 'relevantes'">{{ 'vacantes.lista.orden.relevantes' | transloco }}</option>
+          <option value="recientes" [selected]="orden() === 'recientes'">{{ 'vacantes.lista.orden.recientes' | transloco }}</option>
+        </select>
+      </label>
+    </div>
+
+    @if (estado() === 'cargando') {
+      <ul class="lista" aria-busy="true">
+        <li class="solo-lectores" role="status">{{ 'vacantes.lista.cargando' | transloco }}</li>
+        @for (n of esqueletos; track n) {
+          <li><app-esqueleto-vacante /></li>
+        }
+      </ul>
+    } @else if (estado() === 'error') {
+      <div class="vacio tarjeta" role="alert">
+        <p>{{ 'vacantes.lista.error' | transloco }}</p>
+      </div>
+    } @else if (total() === 0) {
+      <div class="vacio tarjeta">
+        <p>{{ 'vacantes.lista.vacio' | transloco }}</p>
+        <button type="button" class="boton boton--borde boton--pequeno" (click)="limpiar()">
+          {{ 'vacantes.lista.limpiarFiltros' | transloco }}
+        </button>
+      </div>
+    } @else {
+      <ul class="lista">
+        @for (v of mostradas(); track v.id) {
+          <li>
+            <app-tarjeta-vacante
+              [vacante]="v"
+              [guardada]="guardadas().has(v.id)"
+              (guardar)="guardar(v.id)"
+              (ocultar)="ocultar(v.id)"
+            />
+          </li>
+        }
+      </ul>
+      @if (hayMas()) {
+        <button type="button" class="boton boton--borde boton--pequeno mas" (click)="cargarMas()">
+          {{ 'vacantes.lista.cargarMas' | transloco }}
+        </button>
+      }
+    }
+  </section>
+</div>

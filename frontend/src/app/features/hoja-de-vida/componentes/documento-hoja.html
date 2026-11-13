@@ -1,0 +1,25 @@
+<article class="hoja" [class]="'hoja hoja--' + estilo()">
+  <header class="hoja__cabecera">
+    <h3>{{ documento().nombre }}</h3>
+    @if (documento().contacto.length > 0) {
+      <p class="hoja__contacto">{{ documento().contacto.join(' · ') }}</p>
+    }
+  </header>
+
+  @for (s of secciones(); track s.id) {
+    <section>
+      <h4 [class.movida]="s.movida">{{ s.titulo }}</h4>
+      @for (b of s.bloques; track $index) {
+        <p>
+          @for (t of b.trozos; track $index) {
+            @if (t.nuevo) {
+              <mark class="redaccion">{{ t.texto }}</mark>
+            } @else {
+              {{ t.texto }}
+            }
+          }
+        </p>
+      }
+    </section>
+  }
+</article>

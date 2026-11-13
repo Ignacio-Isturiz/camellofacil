@@ -1,0 +1,144 @@
+@use '../../shared/esqueleto/esqueleto';
+
+:host {
+  display: grid;
+  gap: 16px;
+  max-width: 960px;
+  margin-inline: auto;
+}
+
+.cabecera {
+  display: grid;
+  gap: 8px;
+}
+.cabecera h1 {
+  font-size: 28px;
+  line-height: 34px;
+}
+.cabecera p {
+  margin-top: 4px;
+  max-width: 52ch;
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+.resumen {
+  font-size: 12px;
+}
+.resumen strong {
+  color: var(--tinta);
+}
+
+.herramientas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.buscador {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  min-width: 220px;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 12px;
+  background: var(--blanco);
+  color: var(--gris-600);
+}
+.buscador:focus-within {
+  border-color: var(--oro-700);
+  box-shadow: 0 0 0 3px rgb(203 179 91 / 35%);
+}
+.buscador input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--tinta);
+  font: 400 14px/20px var(--fuente-texto);
+}
+.buscador input:focus,
+.buscador input:focus-visible {
+  outline: none;
+}
+.orden {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 12px/18px var(--fuente-texto);
+}
+.seleccion {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 12px;
+  background: var(--blanco);
+  font: 400 13px/20px var(--fuente-texto);
+}
+
+.lista {
+  display: grid;
+  overflow: hidden;
+}
+.lista > li + li {
+  border-top: 1px solid var(--gris-100);
+}
+
+.esq {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+.esq .bloque {
+  border-radius: 8px;
+}
+.logo-esq {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px !important;
+}
+.linea {
+  width: 70%;
+  height: 14px;
+}
+.linea--media {
+  width: 40%;
+}
+.boton-esq {
+  width: 120px;
+  height: 40px;
+  border-radius: 999px !important;
+}
+
+.vacio {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  padding: 28px 24px;
+}
+.vacio h2 {
+  font-size: 18px;
+  line-height: 24px;
+}
+.vacio p {
+  color: var(--gris-600);
+  font-size: 14px;
+}
+
+.nota {
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+@media (min-width: 768px) {
+  .cabecera {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+}

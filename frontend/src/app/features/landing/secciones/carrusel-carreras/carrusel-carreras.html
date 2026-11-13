@@ -1,0 +1,19 @@
+<section class="contenedor" [attr.aria-label]="'landing.carreras.lista' | transloco">
+  <div class="tarjeta carrusel">
+    <div class="carrusel__ventana">
+      <div class="carrusel__pista">
+        <!-- El segundo grupo es una copia para que el desplazamiento no tenga saltos; los lectores de pantalla lo ignoran. -->
+        @for (grupo of [0, 1]; track grupo) {
+          <ul class="carrusel__grupo" [attr.aria-hidden]="grupo === 1 ? 'true' : null">
+            @for (c of carreras; track c.clave) {
+              <li class="carrera">
+                <span class="carrera__icono"><app-icono [nombre]="c.icono" style="--tam: 22px" /></span>
+                <span class="carrera__nombre">{{ 'landing.carreras.nombres.' + c.clave | transloco }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+  </div>
+</section>

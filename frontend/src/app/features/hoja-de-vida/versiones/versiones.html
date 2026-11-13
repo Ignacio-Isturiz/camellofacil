@@ -1,0 +1,165 @@
+<app-migas-hoja [actual]="'hoja.principal.versiones' | transloco" />
+
+<header class="cabecera">
+  <div>
+    <h1>{{ 'hoja.versiones.titulo' | transloco }}</h1>
+    <p>{{ 'hoja.versiones.bajada' | transloco }}</p>
+  </div>
+  <div class="cabecera__acciones">
+    <a routerLink="/hoja-de-vida/subir" class="boton boton--borde boton--pequeno">
+      <app-icono nombre="subir" style="--tam: 16px" />{{ 'hoja.versiones.subirNueva' | transloco }}
+    </a>
+    <a routerLink="/hoja-de-vida/plantillas" class="boton boton--primario boton--pequeno">
+      <app-icono nombre="mas" style="--tam: 16px" />{{ 'hoja.versiones.crearDesdePlantilla' | transloco }}
+    </a>
+  </div>
+</header>
+
+<div class="pestanas" role="tablist" [attr.aria-label]="'hoja.principal.versiones' | transloco">
+  @for (f of filtros; track f) {
+    <button type="button" role="tab" class="pestana" [class.pestana--activa]="filtro() === f" [attr.aria-selected]="filtro() === f" (click)="filtro.set(f)">
+      {{ 'hoja.versiones.filtros.' + f | transloco }}
+      @if (servicio.estadoVersiones() === 'listo') {
+        ({{ conteos()[f] }})
+      }
+    </button>
+  }
+</div>
+
+@switch (servicio.estadoVersiones()) {
+  @case ('cargando') {
+    <ul class="lista" aria-busy="true">
+      @for (n of [1, 2, 3]; track n) {
+        <li class="tarjeta fila fila--esqueleto" aria-hidden="true"></li>
+      }
+    </ul>
+  }
+  @case ('error') {
+    <app-aviso-error (reintentar)="reintentar()" />
+  }
+  @default {
+    @if (visibles().length === 0) {
+      <p class="tarjeta vacio">{{ 'hoja.versiones.vacio' | transloco }}</p>
+    } @else {
+      <ul class="lista">
+        @for (v of visibles(); track v.id) {
+          <li class="tarjeta fila" [class.fila--base]="v.tipo === 'base'">
+            <span class="fila__icono" aria-hidden="true"><app-icono nombre="documento" style="--tam: 18px" /></span>
+            <div class="fila__texto">
+              <p class="fila__nombre">
+                {{ v.nombre }}
+                @if (v.tipo === 'base') {
+                  <span class="insignia-base">{{ 'hoja.principal.base' | transloco }}</span>
+                }
+              </p>
+              <p class="fila__detalle">
+                {{ v.creadaEn | fechaCorta }} · {{ 'hoja.idiomas.' + v.idioma | transloco }}
+                @if (v.nota) {
+                  · {{ v.nota }}
+                }
+              </p>
+            </div>
+            <span class="etiqueta">{{ 'hoja.versiones.tipo.' + v.tipo | transloco }}</span>
+            @if (v.puntajeHarvard !== null || v.puntajeAts !== null) {
+              <span class="fila__puntajes">
+                @if (v.puntajeHarvard !== null) { Harvard <strong>{{ v.puntajeHarvard }}</strong> }
+                @if (v.puntajeAts !== null) { · ATS <strong>{{ v.puntajeAts }}</strong> }
+              </span>
+            }
+            <div class="fila__acciones">
+              <button type="button" class="boton boton--texto boton--pequeno" (click)="ver(v)">
+                <app-icono nombre="ojo" style="--tam: 16px" />{{ 'hoja.versiones.ver' | transloco }}
+              </button>
+              <a class="boton boton--borde boton--pequeno" [href]="urlDescarga(v.id, 'pdf')" download>
+                <app-icono nombre="descargar" style="--tam: 16px" />PDF
+              </a>
+              <a class="boton boton--borde boton--pequeno" [href]="urlDescarga(v.id, 'docx')" download>
+                <app-icono nombre="descargar" style="--tam: 16px" />Word
+              </a>
+              <button
+                type="button"
+                class="mas"
+                [attr.aria-label]="'hoja.versiones.masAcciones' | transloco: { nombre: v.nombre }"
+                (click)="abrirAcciones(v)"
+              >
+                <span aria-hidden="true">⋮</span>
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  }
+}
+
+<!-- Ver una versión -->
+<app-dialogo #dialogoVer [titulo]="seleccionada()?.nombre ?? ''">
+  @switch (estadoDocumento()) {
+    @case ('cargando') {
+      <p class="estado" role="status">{{ 'hoja.plantillas.cargandoPrevia' | transloco }}</p>
+    }
+    @case ('error') {
+      <app-aviso-error (reintentar)="ver(seleccionada()!)" />
+    }
+    @default {
+      @if (documento(); as d) {
+        <app-documento-hoja [documento]="d" />
+      }
+    }
+  }
+</app-dialogo>
+
+<!-- Acciones sobre una versión (en móvil sube desde abajo) -->
+<app-dialogo #dialogoAcciones [titulo]="seleccionada()?.nombre ?? ''">
+  @if (seleccionada(); as v) {
+    @switch (accion()) {
+      @case ('menu') {
+        <ul class="menu">
+          <li>
+            <button type="button" class="menu__op" [disabled]="trabajando() || v.tipo === 'base'" (click)="usarComoBase()">
+              {{ 'hoja.versiones.usarComoBase' | transloco }}
+            </button>
+          </li>
+          <li><button type="button" class="menu__op" (click)="irARenombrar()">{{ 'hoja.versiones.renombrar' | transloco }}</button></li>
+          <li><button type="button" class="menu__op" [disabled]="trabajando()" (click)="duplicar()">{{ 'hoja.versiones.duplicar' | transloco }}</button></li>
+          <li>
+            <button type="button" class="menu__op menu__op--peligro" [disabled]="!v.eliminable" [attr.aria-describedby]="v.eliminable ? null : 'por-que-no'" (click)="irAEliminar()">
+              {{ 'hoja.versiones.eliminar' | transloco }}
+            </button>
+            @if (!v.eliminable) {
+              <p id="por-que-no" class="menu__nota">
+                {{ v.motivoNoEliminable ?? ((v.tipo === 'base' ? 'hoja.versiones.noEliminaBase' : 'hoja.versiones.noEliminaUsada') | transloco) }}
+              </p>
+            }
+          </li>
+        </ul>
+      }
+      @case ('renombrar') {
+        <form class="forma" (submit)="$event.preventDefault(); renombrar()">
+          <label for="nuevo-nombre">{{ 'hoja.versiones.nombreVersion' | transloco }}</label>
+          <input id="nuevo-nombre" class="entrada" type="text" maxlength="120" [formControl]="nombre" />
+          <div class="forma__acciones">
+            <button type="button" class="boton boton--borde boton--pequeno" (click)="volverAlMenu()">{{ 'hoja.versiones.cancelar' | transloco }}</button>
+            <button type="submit" class="boton boton--primario boton--pequeno" [disabled]="trabajando() || nombre.invalid">
+              {{ 'hoja.versiones.guardar' | transloco }}
+            </button>
+          </div>
+        </form>
+      }
+      @case ('eliminar') {
+        <div class="forma">
+          <p>{{ 'hoja.versiones.confirmarEliminar' | transloco: { nombre: v.nombre } }}</p>
+          <div class="forma__acciones">
+            <button type="button" class="boton boton--borde boton--pequeno" (click)="volverAlMenu()">{{ 'hoja.versiones.cancelar' | transloco }}</button>
+            <button type="button" class="boton boton--primario boton--pequeno" [disabled]="trabajando()" (click)="eliminar()">
+              {{ 'hoja.versiones.eliminarDefinitivo' | transloco }}
+            </button>
+          </div>
+        </div>
+      }
+    }
+    @if (falloAccion()) {
+      <p class="error" role="alert">{{ 'hoja.versiones.errorAccion' | transloco }}</p>
+    }
+  }
+</app-dialogo>

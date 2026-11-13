@@ -1,0 +1,109 @@
+:host {
+  display: block;
+}
+
+.vac {
+  display: grid;
+  gap: 16px;
+  padding: 18px 20px;
+}
+
+.vac__etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.etiqueta {
+  font-size: 12px;
+  padding: 1px 10px;
+}
+
+.vac__cargo {
+  font-size: 18px;
+  line-height: 24px;
+}
+.vac__cargo a {
+  text-decoration: none;
+}
+.vac__cargo a:hover {
+  color: var(--rojo);
+}
+/* Toda la tarjeta responde al clic en el título (sin duplicar enlaces para el lector de pantalla). */
+.vac {
+  position: relative;
+}
+.vac__cargo a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.vac__empresa {
+  margin-top: 2px;
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.vac__datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 12px;
+  color: var(--gris-600);
+  font-size: 13px;
+  line-height: 18px;
+}
+.vac__datos li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vac__acciones {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vac__icono {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--gris-300);
+  border-radius: 10px;
+  background: var(--blanco);
+  color: var(--tinta);
+  cursor: pointer;
+}
+.vac__icono:hover {
+  border-color: var(--tinta);
+}
+.vac__icono--activo {
+  border-color: var(--rojo);
+  background: var(--rojo-50);
+  color: var(--rojo);
+}
+
+.vac__ver {
+  margin-left: auto;
+}
+
+@media (min-width: 640px) {
+  .vac {
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 24px;
+  }
+  .vac__acciones {
+    justify-content: flex-end;
+  }
+  .vac__ver {
+    margin-left: 0;
+  }
+}

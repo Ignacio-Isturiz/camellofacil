@@ -1,0 +1,23 @@
+@switch (estado()) {
+  @case ('cargando') {
+    <div class="cargando" aria-busy="true">
+      <p class="cargando__aviso" role="status">
+        {{ (servicio.despertando() ? 'hoja.cargando.despertando' : 'hoja.cargando.normal') | transloco }}
+      </p>
+      <app-esqueleto-hoja />
+    </div>
+  }
+  @case ('error') {
+    <app-aviso-error (reintentar)="reintentar()" />
+  }
+  @default {
+    @if (confirmada()) {
+      <app-principal />
+    } @else {
+      <app-primera-vez
+        [sinConfirmar]="resumen()?.estado === 'sin_confirmar'"
+        [pendientes]="resumen()?.pendientesRevision ?? null"
+      />
+    }
+  }
+}

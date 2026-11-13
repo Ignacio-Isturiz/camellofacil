@@ -1,0 +1,132 @@
+:host {
+  display: block;
+}
+
+.lateral {
+  display: grid;
+  gap: 12px;
+}
+
+.accion {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  box-shadow: var(--sombra-2);
+}
+
+/* Los botones principales viven en la barra fija en móvil. */
+.principales {
+  display: none;
+  gap: 10px;
+}
+
+.accion__nota {
+  text-align: center;
+  color: var(--gris-600);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ya-tienes {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #c9e4d4;
+  border-radius: 14px;
+  background: var(--exito-50);
+}
+.ya-tienes__titulo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--exito);
+  font: 700 13px/18px var(--fuente-texto);
+}
+.ya-tienes__acciones {
+  display: flex;
+  gap: 8px;
+}
+.ya-tienes__acciones .boton {
+  flex: 1;
+  background: var(--blanco);
+}
+.enlace {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--rojo);
+  font: 700 13px/20px var(--fuente-texto);
+  cursor: pointer;
+}
+.enlace:hover {
+  text-decoration: underline;
+}
+
+.accion__botones {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.accion__botones .boton {
+  flex-direction: column;
+  gap: 2px;
+  min-height: 64px;
+  padding: 0 4px;
+  border-radius: 14px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.accion__legal {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--gris-600);
+  font-size: 11px;
+  line-height: 16px;
+}
+.accion__legal app-icono {
+  margin-top: 1px;
+}
+
+/* ---------- Barra fija (móvil) ---------- */
+.barra-movil {
+  position: fixed;
+  right: 0;
+  bottom: 64px; /* sobre la navegación inferior */
+  left: 0;
+  z-index: 45;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 10px var(--gutter);
+  background: var(--blanco);
+  border-top: 1px solid rgb(217 207 188 / 55%);
+  box-shadow: 0 -6px 16px rgb(28 27 26 / 6%);
+}
+.barra-movil .boton {
+  padding: 0 10px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .barra-movil {
+    bottom: 0;
+  }
+}
+
+@media (min-width: 900px) {
+  .principales {
+    display: grid;
+  }
+  .barra-movil {
+    display: none;
+  }
+  .lateral {
+    position: sticky;
+    top: calc(var(--alto-header) + 16px);
+  }
+}

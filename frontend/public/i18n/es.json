@@ -4,5 +4,765 @@
     "cargando": "Comprobando conexión…",
     "error": "No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.",
     "reintentar": "Reintentar"
+  },
+  "encabezado": {
+    "inicio": "Camello Fácil, ir al inicio",
+    "navegacion": "Principal",
+    "comoFunciona": "Cómo funciona",
+    "vacantes": "Vacantes",
+    "preguntas": "Preguntas frecuentes",
+    "iniciarSesion": "Iniciar sesión",
+    "crearCuenta": "Crear cuenta",
+    "abrirMenu": "Abrir menú",
+    "cerrarMenu": "Cerrar menú"
+  },
+  "pie": {
+    "navegacion": "Enlaces del pie de página",
+    "comoFunciona": "Cómo funciona",
+    "terminos": "Términos y condiciones",
+    "privacidad": "Política de privacidad",
+    "contacto": "Contacto",
+    "aviso": "Las vacantes provienen de fuentes externas autorizadas. Camello Fácil no garantiza la contratación. Datos tratados según la Ley 1581 de 2012."
+  },
+  "auth": {
+    "comun": {
+      "soloUnaula": "Solo para la comunidad UNAULA",
+      "volverInicio": "Volver al inicio",
+      "correo": "Correo institucional",
+      "correoPlaceholder": "nombre@unaula.edu.co",
+      "contrasena": "Contraseña",
+      "mostrarContrasena": "Mostrar contraseña",
+      "ocultarContrasena": "Ocultar contraseña",
+      "paso": "Paso {{ actual }} de {{ total }}",
+      "terminos": "Términos y condiciones",
+      "privacidad": "Política de privacidad",
+      "terminosCorto": "Términos",
+      "errores": {
+        "correoObligatorio": "Escribe tu correo institucional.",
+        "correoDominio": "Usa tu correo @unaula.edu.co.",
+        "contrasenaObligatoria": "Escribe tu contraseña.",
+        "contrasenaDebil": "La contraseña no cumple los requisitos.",
+        "terminos": "Debes aceptar los términos para continuar."
+      }
+    },
+    "login": {
+      "panelTitulo": "Tus vacantes de hoy te están esperando.",
+      "punto1": "Recomendaciones nuevas cada mañana",
+      "punto2": "Tu hoja adaptada a cada vacante",
+      "punto3": "Todas tus postulaciones en un lugar",
+      "titulo": "Inicia sesión",
+      "bajada": "Usa tu correo institucional de UNAULA.",
+      "microsoft": "Iniciar sesión con Microsoft",
+      "primeraVez": "¿Primera vez aquí?",
+      "crearCuenta": "Crear cuenta",
+      "legalInicio": "Al entrar aceptas los",
+      "legalY": "y la",
+      "legalFin": "(Ley 1581 de 2012).",
+      "olvidaste": "¿La olvidaste?",
+      "mantener": "Mantener la sesión iniciada en este equipo",
+      "entrar": "Iniciar sesión",
+      "o": "o"
+    },
+    "registro": {
+      "panelTitulo": "Tu práctica empieza con una cuenta.",
+      "punto1": "Vacantes de práctica de tu carrera",
+      "punto2": "Análisis Harvard y ATS de tu hoja",
+      "punto3": "Solo con tu correo @unaula.edu.co",
+      "titulo": "Crea tu cuenta",
+      "bajada": "Después confirmas tu correo con un código y completas tu perfil.",
+      "microsoft": "Crear cuenta con Microsoft",
+      "yaTienes": "¿Ya tienes cuenta?",
+      "iniciarSesion": "Inicia sesión",
+      "ayudaCorreo": "Te enviaremos un código de 6 dígitos para confirmarlo. Solo se aceptan correos @unaula.edu.co.",
+      "reglas": {
+        "longitud": "8 caracteres o más",
+        "mayuscula": "Una mayúscula",
+        "numero": "Un número",
+        "minuscula": "Una minúscula"
+      },
+      "aceptoInicio": "Acepto los",
+      "aceptoY": "y la",
+      "aceptoFin": "(Ley 1581 de 2012).",
+      "crear": "Crear cuenta"
+    },
+    "verificar": {
+      "panelTitulo": "Un código y listo: confirmamos que eres de UNAULA.",
+      "punto1": "El código llega a tu correo institucional",
+      "punto2": "Vence en 15 minutos",
+      "punto3": "Si no llega, puedes pedir otro",
+      "cambiarCorreo": "Cambiar correo",
+      "titulo": "Revisa tu correo",
+      "bajada": "Escribe el código de 6 dígitos que enviamos a",
+      "correoPorDefecto": "tu correo institucional",
+      "etiquetaCodigo": "Código de verificación",
+      "digito": "Dígito {{ n }} de 6",
+      "ayuda": "Puedes pegar el código completo. Se verifica solo al escribir el último dígito.",
+      "noLlego": "¿No te llegó?",
+      "noLlegoDetalle": "Revisa la carpeta de correo no deseado o la pestaña «Otros» de Outlook.",
+      "reenviar": "Reenviar código",
+      "reenviarEn": "Reenviar en {{ segundos }} s",
+      "reenviado": "Te enviamos un nuevo código."
+    },
+    "recuperar": {
+      "panelTitulo": "Recupera tu acceso en dos minutos.",
+      "punto1": "Te enviamos un enlace seguro a tu correo",
+      "punto2": "El enlace vence en 30 minutos",
+      "punto3": "Tus datos y postulaciones siguen intactos",
+      "volver": "Volver a iniciar sesión",
+      "titulo": "¿Olvidaste tu contraseña?",
+      "bajada": "Escribe tu correo institucional y te enviamos un enlace para crear una nueva.",
+      "enviar": "Enviar enlace",
+      "enviado": "Si ese correo está registrado, recibirás un enlace para crear una contraseña nueva."
+    }
+  },
+  "landing": {
+    "portada": {
+      "exclusivo": "Exclusivo para la comunidad UNAULA",
+      "tituloInicio": "Encuentra la práctica que",
+      "tituloResalte": "se ajusta a ti.",
+      "descripcion": "Vacantes de práctica y empleo para tu carrera, recomendadas cada día según tu hoja de vida. Y te ayudamos a adaptarla a cada vacante sin inventar nada.",
+      "crearCuenta": "Crear mi cuenta",
+      "verComoFunciona": "Ver cómo funciona",
+      "notaCorreo": "Solo con tu correo @unaula.edu.co",
+      "notaPracticas": "Prácticas primero",
+      "altCamello": "Camello, mascota de Camello Fácil, con gafas de sol y buzo rojo, levanta el pulgar y sostiene un portátil.",
+      "tarjetaHoja": "Tu hoja · Harvard",
+      "tarjetaTipo": "Práctica",
+      "tarjetaCargo": "Practicante de análisis de datos",
+      "tarjetaLugar": "Medellín · Híbrido"
+    },
+    "pasos": {
+      "sobretitulo": "¿Cómo funciona?",
+      "titulo": "Es muy fácil, solo sigue estos pasos",
+      "paso": "Paso",
+      "cuenta": {
+        "titulo": "Crea tu cuenta",
+        "detalle": "Con tu correo institucional, en menos de dos minutos."
+      },
+      "hoja": {
+        "titulo": "Sube tu hoja de vida",
+        "detalle": "La analizamos contra Harvard y ATS y te decimos qué mejorar."
+      },
+      "vacantes": {
+        "titulo": "Recibe vacantes",
+        "detalle": "Cada día, según lo que buscas y tu hoja de vida."
+      },
+      "postula": {
+        "titulo": "Adapta y postúlate",
+        "detalle": "Ajusta tu hoja a la vacante y termina en el sitio original."
+      }
+    },
+    "vacantes": {
+      "sobretitulo": "Vacantes destacadas",
+      "titulo": "Oportunidades para ti",
+      "descripcion": "Algunas de las vacantes más recientes para estudiantes y egresados de UNAULA.",
+      "verTodas": "Ver todas las vacantes",
+      "tipoPractica": "Práctica"
+    },
+    "carreras": {
+      "lista": "Carreras de UNAULA",
+      "nombres": {
+        "derecho": "Derecho",
+        "contaduria": "Contaduría Pública",
+        "administracion": "Administración de Empresas",
+        "economia": "Economía",
+        "informatica": "Ingeniería Informática",
+        "industrial": "Ingeniería Industrial",
+        "datos": "Ingeniería en Ciencia de Datos e Inteligencia de Negocios"
+      }
+    },
+    "preguntas": {
+      "sobretitulo": "Preguntas frecuentes",
+      "titulo": "Lo que más nos preguntan",
+      "otraDuda": "¿Otra duda?",
+      "escribenos": "Escríbenos",
+      "registro": {
+        "pregunta": "¿Quién puede registrarse?",
+        "respuesta": "Estudiantes y egresados de UNAULA con un correo que termine en @unaula.edu.co. Al registrarte confirmas tu correo con un código."
+      },
+      "vacantes": {
+        "pregunta": "¿De dónde salen las vacantes?",
+        "respuesta": "De fuentes externas autorizadas que consultamos automáticamente. La postulación siempre se completa en la página original de la vacante."
+      },
+      "inventa": {
+        "pregunta": "¿La plataforma inventa información en mi hoja?",
+        "respuesta": "No. Solo reorganiza, resalta y mejora la redacción de lo que ya tienes. Si una vacante pide algo que no está en tu hoja, te lo mostramos como sugerencia."
+      },
+      "datos": {
+        "pregunta": "¿Qué hacen con mis datos?",
+        "respuesta": "Los usamos solo para analizar tu hoja y recomendarte vacantes, con tu autorización. Puedes verlos, corregirlos, descargarlos o eliminarlos desde tu perfil."
+      },
+      "garantia": {
+        "pregunta": "¿Me garantizan la práctica?",
+        "respuesta": "No. Te ayudamos a encontrar vacantes y a presentar una mejor hoja de vida; la decisión de contratación es de cada empresa."
+      }
+    }
+  },
+  "app": {
+    "saltar": "Saltar al contenido",
+    "inicioAria": "Camello Fácil, ir a inicio",
+    "navegacion": "Principal",
+    "inicio": "Inicio",
+    "vacantes": "Vacantes",
+    "hojaDeVida": "Hoja de vida",
+    "postulaciones": "Postulaciones",
+    "proximamente": "Próximamente",
+    "notificaciones": "Notificaciones",
+    "menuUsuario": "Menú de usuario",
+    "cerrarSesion": "Cerrar sesión",
+    "legal": "Vacantes de fuentes externas autorizadas. Camello Fácil no garantiza la contratación.",
+    "perfil": "Perfil"
+  },
+  "vacantes": {
+    "modalidad": {
+      "presencial": "Presencial",
+      "hibrido": "Híbrido",
+      "remoto": "Remoto"
+    },
+    "lista": {
+      "titulo": "Vacantes",
+      "bajada": "Te mostramos las prácticas de tu carrera. Cambia los filtros cuando quieras.",
+      "buscarPlaceholder": "Cargo, empresa o palabra clave",
+      "buscar": "Buscar",
+      "filtros": "Filtros",
+      "limpiar": "Limpiar",
+      "limpiarFiltros": "Limpiar filtros",
+      "carrera": "Carrera",
+      "todasCarreras": "Todas las carreras",
+      "modalidad": "Modalidad",
+      "ciudad": "Ciudad",
+      "fecha": "Fecha de publicación",
+      "fechas": {
+        "cualquiera": "Cualquier fecha",
+        "hoy": "Hoy",
+        "semana": "Última semana",
+        "mes": "Último mes"
+      },
+      "resultados": "{{ n }} vacantes",
+      "resultadoUno": "1 vacante",
+      "ordenar": "Ordenar por",
+      "orden": {
+        "relevantes": "Más relevantes",
+        "recientes": "Más recientes"
+      },
+      "cargarMas": "Cargar más vacantes",
+      "cargando": "Cargando vacantes…",
+      "error": "No pudimos cargar las vacantes. Inténtalo de nuevo en unos minutos.",
+      "vacio": "No encontramos vacantes con estos filtros."
+    },
+    "tarjeta": {
+      "practica": "Práctica",
+      "profesional": "Profesional",
+      "coincidencia": "{{ n }} % coincidencia",
+      "verYPostular": "Ver y postular",
+      "guardar": "Guardar vacante",
+      "quitarGuardada": "Quitar de guardadas",
+      "ocultar": "Ocultar vacante",
+      "hoy": "Hoy",
+      "ayer": "Ayer",
+      "hace": "Hace {{ n }} días"
+    },
+    "detalle": {
+      "migasAria": "Ruta de navegación",
+      "migas": "Vacantes",
+      "via": "Vía {{ fuente }}",
+      "publicadaHoy": "publicada hoy",
+      "publicadaAyer": "publicada ayer",
+      "publicadaHace": "publicada hace {{ n }} días",
+      "tipo": {
+        "practica": "Práctica profesional",
+        "profesional": "Empleo profesional"
+      },
+      "porQue": "Por qué te la recomendamos",
+      "coincide": "Coincide",
+      "falta": "Falta",
+      "sobre": {
+        "practica": "Sobre la práctica",
+        "profesional": "Sobre el cargo"
+      },
+      "responsabilidades": "Responsabilidades",
+      "requisitos": "Requisitos",
+      "postular": "Postular",
+      "guardar": "Guardar",
+      "guardada": "Guardada",
+      "ocultar": "Ocultar",
+      "reportar": "Reportar",
+      "externa": "Vacante de una fuente externa autorizada. Camello Fácil no garantiza la contratación.",
+      "noEncontrada": "No encontramos esta vacante.",
+      "volver": "Volver a vacantes"
+    },
+    "postular": {
+      "titulo": "Postular",
+      "pregunta": "¿Con qué hoja de vida vas?",
+      "adaptada": "Hoja adaptada",
+      "adaptadaDetalle": "Ajustada a esta vacante, solo con lo que ya tienes.",
+      "base": "Hoja base",
+      "baseDetalle": "Tu hoja de siempre, sin cambios.",
+      "nota": "Se abre la página original de la vacante en otra pestaña y allí termina tu postulación. Guardamos el clic en Mis postulaciones.",
+      "confirmar": "Postular",
+      "guardado": "Quedó guardado en Mis postulaciones.",
+      "verHistorial": "Ver",
+      "error": "No pudimos registrar tu clic. Inténtalo de nuevo."
+    },
+    "adaptar": {
+      "boton": "Adaptar hoja de vida",
+      "botonCorto": "Adaptar hoja",
+      "verMovil": "Mi hoja adaptada",
+      "soloConLoQueTienes": "Solo con lo que ya tienes, sin inventar nada",
+      "teQuedan": "te quedan {{ n }} hoy",
+      "sinCupo": "Hoy ya usaste tus adaptaciones. Vuelve mañana.",
+      "noSePudoComprobar": "No pudimos comprobar tus adaptaciones ahora.",
+      "yaTienes": "Tienes tu hoja adaptada a esta vacante",
+      "verCambios": "Ver cambios o editar",
+      "titulo": "Hoja adaptada a esta vacante",
+      "adaptando": "Adaptando tu hoja…",
+      "sinInventar": "La adaptación solo reordena y redacta mejor lo que ya está en tu hoja. Nunca agrega información.",
+      "limite": "Ya usaste tus adaptaciones de hoy. Vuelve mañana.",
+      "error": "No pudimos adaptar tu hoja ahora.",
+      "base": "Hoja base",
+      "adaptada": "Adaptada a la vacante",
+      "avisosTitulo": "La vacante pide y no está en tu hoja (no lo agregamos):",
+      "editar": "Editar",
+      "sinCupoRegenerar": "Hoy ya no te quedan adaptaciones para regenerar.",
+      "errorAccion": "No pudimos completar la acción. Inténtalo de nuevo.",
+      "guardar": "Guardar hoja adaptada",
+      "guardarYPostular": "Guardar y postular",
+      "postularConEsta": "Postular con esta hoja",
+      "guardadaAviso": "Guardamos tu hoja adaptada.",
+      "descartadaAviso": "Descartaste la adaptación."
+    }
+  },
+  "hoja": {
+    "nivel": {
+      "bajo": "Cumplimiento bajo",
+      "medio": "Cumplimiento medio",
+      "alto": "Cumplimiento alto"
+    },
+    "error": {
+      "titulo": "No pudimos cargar esta información",
+      "detalle": "Revisa tu conexión e inténtalo de nuevo. Si sigue igual, vuelve en unos minutos.",
+      "reintentar": "Reintentar",
+      "accesoTitulo": "No tienes acceso a esta información todavía",
+      "accesoDetalle": "Tu sesión no tiene permiso para verla. Si acabas de entrar, cierra sesión y vuelve a iniciarla.",
+      "noDisponibleTitulo": "Esta función aún no está disponible",
+      "noDisponibleDetalle": "El servidor todavía no ofrece esta información. No es tu conexión.",
+      "servidorTitulo": "El servidor no responde ahora",
+      "servidorDetalle": "Puede estar iniciando. Inténtalo de nuevo en un minuto."
+    },
+    "cargando": {
+      "normal": "Cargando tu hoja de vida…",
+      "despertando": "Preparando tu espacio… puede tardar unos segundos."
+    },
+    "idiomas": {
+      "es": "español",
+      "en": "inglés"
+    },
+    "tipos": {
+      "falta": "Falta",
+      "mejorar": "Mejorar",
+      "bien": "Bien"
+    },
+    "versiones": {
+      "titulo": "Mis versiones",
+      "bajada": "La hoja base alimenta tus recomendaciones y adaptaciones. Las adaptadas quedan ligadas a su vacante.",
+      "subirNueva": "Subir nueva",
+      "crearDesdePlantilla": "Crear desde plantilla",
+      "filtros": {
+        "todas": "Todas",
+        "base": "Base y reorganizadas",
+        "adaptadas": "Adaptadas a vacantes"
+      },
+      "vacio": "No hay versiones en esta lista.",
+      "ver": "Ver",
+      "masAcciones": "Más acciones de {{ nombre }}",
+      "usarComoBase": "Usar como hoja base",
+      "renombrar": "Renombrar",
+      "duplicar": "Duplicar",
+      "eliminar": "Eliminar",
+      "noEliminaBase": "No se puede eliminar la hoja base. Reemplázala o usa otra versión como base.",
+      "noEliminaUsada": "No se puede eliminar porque se usó en una postulación.",
+      "nombreVersion": "Nombre de la versión",
+      "cancelar": "Cancelar",
+      "guardar": "Guardar",
+      "confirmarEliminar": "¿Eliminar «{{ nombre }}»? No se puede deshacer.",
+      "eliminarDefinitivo": "Sí, eliminar",
+      "errorAccion": "No pudimos completar la acción. Inténtalo de nuevo.",
+      "tipo": {
+        "base": "Base",
+        "reorganizada": "Reorganizada",
+        "adaptada": "Adaptada"
+      }
+    },
+    "subir": {
+      "migas": "Subir hoja de vida",
+      "titulo": "Sube tu hoja de vida",
+      "bajada": "Es la base de todo: con ella te recomendamos vacantes y la mejoramos sin inventar nada.",
+      "zona": "Zona para subir tu hoja de vida",
+      "marcaAutorizacion": "Marca la autorización para habilitar la carga",
+      "arrastra": "Arrastra tu hoja aquí o elige un archivo",
+      "formatos": "PDF o Word (.doc, .docx) · máximo 5 MB · español o inglés",
+      "elegir": "Elegir archivo",
+      "cancelar": "Cancelar",
+      "subiendo": "Subiendo",
+      "analizando": "Analizando tu hoja…",
+      "analizandoDetalle": "Estamos leyendo tu información. No cierres esta página.",
+      "intentarOtro": "Elegir otro archivo",
+      "antes": "Antes de subirla:",
+      "antesDetalle": "tu hoja se procesa con herramientas automatizadas de inteligencia artificial para analizarla y recomendarte vacantes. Solo tú y el administrador pueden verla.",
+      "autorizo": "Autorizo el tratamiento de mis datos para estos fines.",
+      "leerPolitica": "Leer política",
+      "despues": "Qué pasa después",
+      "pasos": {
+        "p1": {
+          "titulo": "Leemos tu información:",
+          "detalle": "contacto, perfil, educación, experiencia, habilidades e idiomas."
+        },
+        "p2": {
+          "titulo": "La revisas",
+          "detalle": "y corriges lo que no quedó bien."
+        },
+        "p3": {
+          "titulo": "Recibes tu análisis",
+          "detalle": "Harvard y ATS con qué mejorar."
+        }
+      },
+      "sinHoja": "¿No tienes hoja de vida?",
+      "sinHojaDetalle": "Créala desde cero con una plantilla Harvard o ATS, llenando los campos.",
+      "verPlantillas": "Ver plantillas",
+      "errores": {
+        "formato": {
+          "titulo": "Ese formato no se puede leer",
+          "paso1": "Usa un archivo PDF o Word (.doc o .docx).",
+          "paso2": "Si tu hoja es una imagen o una foto, créala con una plantilla.",
+          "paso3": "Vuelve a elegir el archivo."
+        },
+        "peso": {
+          "titulo": "El archivo pesa más de 5 MB",
+          "paso1": "Guarda de nuevo la hoja como PDF, sin imágenes pesadas.",
+          "paso2": "Comprueba que el archivo final pese menos de 5 MB.",
+          "paso3": "Vuelve a elegir el archivo."
+        },
+        "ilegible": {
+          "titulo": "No pudimos leer tu hoja",
+          "paso1": "Comprueba que el archivo no esté dañado ni protegido con contraseña.",
+          "paso2": "Si es un escaneo o una foto, el texto no se puede leer: créala con una plantilla.",
+          "paso3": "Guarda el archivo como PDF con texto seleccionable y vuelve a subirlo."
+        },
+        "conexion": {
+          "titulo": "Se perdió la conexión",
+          "paso1": "Revisa tu conexión a internet.",
+          "paso2": "Tu archivo no se subió completo.",
+          "paso3": "Cuando vuelva la conexión, elige el archivo de nuevo."
+        },
+        "servidor": {
+          "titulo": "No pudimos procesar tu hoja ahora",
+          "paso1": "No es culpa de tu archivo: hubo un problema de nuestro lado.",
+          "paso2": "Espera unos minutos.",
+          "paso3": "Vuelve a intentarlo. Si sigue igual, escríbenos."
+        }
+      }
+    },
+    "primera": {
+      "faltaPoco": "Te falta muy poco",
+      "faltaPocoDetalle": "Ya subiste tu hoja; solo falta que confirmes los datos que leímos.",
+      "pendientes": "{{ n }} por revisar",
+      "revisarDatos": "Revisar datos",
+      "titulo": "Empecemos por tu hoja de vida",
+      "bajada": "Todo en Camello Fácil parte de ella: con tu hoja te recomendamos vacantes de práctica y te ayudamos a mejorarla, sin inventar nada.",
+      "tengo": "Ya tengo hoja de vida",
+      "tengoDetalle": "La leemos, la analizamos y tú confirmas los datos.",
+      "recomendado": "Recomendado",
+      "autorizo": "Autorizo que mi hoja de vida se procese con herramientas automatizadas de inteligencia artificial para analizarla, reorganizarla y recomendarme vacantes.",
+      "comoUsamos": "Cómo usamos tus datos",
+      "zonaActiva": "Elige tu archivo",
+      "zonaBloqueada": "Primero marca la autorización de arriba",
+      "formatos": "PDF o Word · máximo 5 MB · español o inglés",
+      "noTengo": "Aún no tengo hoja de vida",
+      "noTengoDetalle": "Créala aquí, sección por sección, sobre una plantilla.",
+      "ventaja1": "Formatos Harvard y ATS, en español o inglés",
+      "ventaja2": "Te decimos qué va en cada sección, con ejemplos",
+      "ventaja3": "Al guardarla, queda como tu hoja base",
+      "crearConPlantilla": "Crear con una plantilla",
+      "verPlantillas": "Ver plantillas",
+      "escaneo": "¿Tu hoja es una foto o un escaneo? Suele leerse mal: es mejor crearla aquí.",
+      "asiFunciona": "Así funciona",
+      "pasos": {
+        "sube": {
+          "titulo": "Sube o crea tu hoja",
+          "detalle": "PDF o Word, o desde una plantilla."
+        },
+        "confirma": {
+          "titulo": "Confirma lo que leímos",
+          "detalle": "Corriges lo que haga falta. Nada se inventa."
+        },
+        "recibe": {
+          "titulo": "Recibe puntajes y vacantes",
+          "detalle": "Harvard, ATS y vacantes de práctica cada día."
+        }
+      },
+      "seActiva": "Lo que se activa con tu hoja",
+      "seActivaAlSubir": "Se activa al subir tu hoja",
+      "bloqueos": {
+        "harvard": {
+          "etiqueta": "Harvard",
+          "titulo": "Tu puntaje Harvard",
+          "detalle": "Qué tan fiel es tu hoja al formato."
+        },
+        "ats": {
+          "etiqueta": "ATS",
+          "titulo": "Tu puntaje ATS",
+          "detalle": "Si los filtros automáticos la leen bien."
+        },
+        "mejorar": {
+          "etiqueta": "Qué mejorar",
+          "titulo": "Recomendaciones",
+          "detalle": "Qué falta y qué reorganizar."
+        },
+        "vacantes": {
+          "etiqueta": "Vacantes del día",
+          "titulo": "Prácticas para ti",
+          "detalle": "Con % de coincidencia y el motivo."
+        }
+      }
+    },
+    "principal": {
+      "titulo": "Mi hoja de vida",
+      "bajada": "Tu hoja base es el punto de partida de todo. Aquí ves cómo cumple con Harvard y ATS.",
+      "secciones": "Secciones de la hoja de vida",
+      "pestanas": {
+        "analisis": "Análisis",
+        "plantillas": "Plantillas",
+        "versiones": "Versiones",
+        "editar": "Editar"
+      },
+      "base": "Base",
+      "actualizada": "Actualizada el {{ fecha }}",
+      "idioma": "Idioma detectado: {{ idioma }}",
+      "paginas": "{{ n }} pág.",
+      "reemplazar": "Reemplazar",
+      "descargar": "Descargar",
+      "harvard": "Formato Harvard",
+      "ats": "Criterios ATS",
+      "opcionAts": "Opción ATS a evaluar",
+      "errorAts": "No pudimos recalcular el puntaje con esa opción.",
+      "queMejorar": "Qué mejorar",
+      "queMejorarDetalle": "Recomendaciones basadas solo en lo que ya está en tu hoja.",
+      "sinObservaciones": "Nada por aquí.",
+      "reorganizar": "Reorganizar en formato Harvard",
+      "hacerloYo": "Hacerlo yo con una plantilla",
+      "plantillas": "Plantillas",
+      "plantillasDetalle": "Elige una, mira la vista previa y edítala con tu información.",
+      "verPlantillas": "Ver las {{ n }} plantillas",
+      "sinPlantillas": "Todavía no hay plantillas disponibles.",
+      "vistaPrevia": "Vista previa",
+      "usar": "Usar",
+      "versiones": "Mis versiones",
+      "gestionar": "Gestionar versiones",
+      "sinVersiones": "Aún no tienes versiones guardadas."
+    },
+    "revisar": {
+      "migas": "Revisar datos",
+      "titulo": "Revisa lo que leímos",
+      "bajada": "Corrige lo que no esté bien. Usaremos exactamente esta información para analizar y adaptar tu hoja.",
+      "leyenda": "Significado de los colores",
+      "estados": {
+        "leido": "Leído",
+        "revisa": "Revisa",
+        "noEncontrado": "No encontrado"
+      },
+      "tuArchivo": "Tu archivo",
+      "idiomaDetectado": "idioma detectado: {{ idioma }}",
+      "notaMarcado": "Lo marcado en oro es lo que debes revisar.",
+      "vistaPrevia": "Vista previa de tu hoja",
+      "verPrevia": "Ver cómo va quedando",
+      "ocultarPrevia": "Ocultar vista previa",
+      "secciones": {
+        "contacto": "Contacto",
+        "perfil": "Perfil",
+        "experiencia": "Experiencia",
+        "educacion": "Educación",
+        "habilidades": "Habilidades"
+      },
+      "campos": {
+        "nombre": "Nombre",
+        "correo": "Correo",
+        "telefono": "Teléfono",
+        "ciudad": "Ciudad",
+        "cargo": "Cargo",
+        "organizacion": "Organización",
+        "inicio": "Inicio",
+        "fin": "Fin",
+        "descripcion": "Descripción",
+        "titulo": "Título o programa",
+        "institucion": "Institución"
+      },
+      "porRevisar": "{{ n }} por revisar",
+      "noEncontradaEtiqueta": "(no encontrado)",
+      "ejCiudad": "Ej.: Medellín",
+      "ayudaNoEncontrado": "No encontramos este dato. Agrégalo si lo recuerdas; si no, puedes dejarlo vacío.",
+      "ayudaFechas": "No encontramos la fecha. Agrégala si la recuerdas; si no, puedes dejarla vacía.",
+      "sinDato": "(sin dato)",
+      "sinFechas": "(sin fechas)",
+      "agregarExperiencia": "Agregar experiencia",
+      "quitar": "Quitar",
+      "confirmarAria": "Confirmar datos",
+      "quedaUno": "Te queda 1 dato por revisar (puedes continuar igual)",
+      "quedan": "Te quedan {{ n }} datos por revisar (puedes continuar igual)",
+      "sinPendientes": "No quedan datos por revisar",
+      "confirmar": "Confirmar y analizar",
+      "enviando": "Guardando…",
+      "errorGuardar": "No pudimos guardar tus cambios. Inténtalo de nuevo."
+    },
+    "dialogo": {
+      "cerrar": "Cerrar"
+    },
+    "plantillas": {
+      "titulo": "Elige una plantilla",
+      "bajada": "Todas son de uso libre. Mira cómo queda con tus datos antes de elegir.",
+      "filtroAria": "Tipo de plantilla",
+      "filtros": {
+        "todas": "Todas",
+        "harvard": "Harvard",
+        "ats": "ATS"
+      },
+      "idiomaAria": "Idioma de la plantilla",
+      "idiomas": {
+        "es": "Español",
+        "en": "Inglés"
+      },
+      "vacio": "No hay plantillas con estos filtros.",
+      "cargandoPrevia": "Preparando la vista previa…",
+      "conTusDatos": "Así se ve con la información de tu hoja.",
+      "usarEsta": "Usar esta plantilla"
+    },
+    "reorganizar": {
+      "migas": "Reorganizar",
+      "titulo": "Reorganizar en formato {{ formato }}",
+      "bajada": "Solo movemos y redactamos mejor lo que ya está en tu hoja. Nunca agregamos información.",
+      "formato": "Formato",
+      "formatos": {
+        "harvard": "Harvard",
+        "ats": "ATS"
+      },
+      "idioma": "Idioma",
+      "vista": "Vista",
+      "vistas": {
+        "lado": "Lado a lado",
+        "cambios": "Solo cambios"
+      },
+      "leyenda": "Significado de los resaltados",
+      "texto": "Texto",
+      "redaccionAjustada": "redacción ajustada",
+      "movido": "movido",
+      "preparando": "Preparando la propuesta…",
+      "original": "Original",
+      "reorganizada": "Reorganizada",
+      "cambios": "Cambios ({{ n }})",
+      "revertir": "Revertir",
+      "aplicar": "Aplicar",
+      "sinCambios": "No hay cambios que proponer: tu hoja ya está en este formato.",
+      "noInventamos": "No inventamos:",
+      "descartar": "Descartar",
+      "regenerar": "Regenerar",
+      "editarAntes": "Editar antes de guardar",
+      "aceptar": "Aceptar y guardar versión",
+      "errorGuardar": "No pudimos guardar la versión. Inténtalo de nuevo."
+    },
+    "editor": {
+      "migas": "Editor",
+      "titulo": "Editor de hoja de vida",
+      "sobrePlantilla": "Plantilla: {{ nombre }}",
+      "preparando": "Preparando tu editor…",
+      "guardando": "Guardando…",
+      "pendiente": "Cambios sin guardar…",
+      "errorGuardado": "No se pudo guardar. Reintentamos con tu próximo cambio.",
+      "guardado": "Cambios guardados",
+      "ejemplo": "Ejemplo",
+      "agregarEducacion": "Agregar educación",
+      "verPrevia": "Ver vista previa",
+      "errorVersion": "No pudimos guardar tu hoja. Inténtalo de nuevo.",
+      "guardarVersion": "Guardar como versión"
+    }
+  },
+  "postulaciones": {
+    "titulo": "Mis postulaciones",
+    "bajada": "Las vacantes en las que diste clic en «Postular». Así no pierdes de vista a dónde te postulaste.",
+    "clicsResumen": "{{ n }} clics en postular",
+    "ultimos90": "últimos 90 días",
+    "buscar": "Buscar por cargo o empresa",
+    "ordenar": "Ordenar por",
+    "orden": {
+      "recientes": "Más recientes",
+      "antiguas": "Más antiguas",
+      "cargoAZ": "Cargo A–Z",
+      "cargoZA": "Cargo Z–A"
+    },
+    "cargando": "Cargando tus postulaciones…",
+    "sinResultados": "No encontramos postulaciones con esa búsqueda.",
+    "vacioTitulo": "Todavía no has dado clic en «Postular»",
+    "vacioDetalle": "Cuando lo hagas, aquí queda el historial para que no pierdas de vista a dónde te postulaste.",
+    "verVacantes": "Ver vacantes de práctica",
+    "nota": "Las vacantes vienen de fuentes externas y Camello Fácil no garantiza la contratación. Guardamos tus clics 90 días; puedes quitar cualquiera cuando quieras.",
+    "hoy": "Hoy",
+    "ayer": "Ayer",
+    "tipo": {
+      "practica": "Práctica",
+      "profesional": "Profesional"
+    },
+    "diste": "Diste clic en postular",
+    "clics": "{{ n }} clics",
+    "hojaQueLlevaste": "Hoja que llevaste",
+    "hoja": {
+      "base": "Hoja base",
+      "adaptada": "Adaptada"
+    },
+    "verVacante": "Ver vacante",
+    "nuevaPestana": "(se abre en otra pestaña)",
+    "quitar": "Quitar «{{ cargo }}» del historial",
+    "quitada": "Quitada de tu historial.",
+    "deshacer": "Deshacer",
+    "restaurada": "Volvió a tu historial.",
+    "errorAbrir": "No pudimos abrir la vacante. Inténtalo de nuevo.",
+    "errorQuitar": "No pudimos quitarla del historial. Inténtalo de nuevo.",
+    "errorRestaurar": "No pudimos deshacerlo. Inténtalo de nuevo."
+  },
+  "inicio": {
+    "hola": "Hola, {{ nombre }}",
+    "nuevas": "Tienes {{ n }} vacantes nuevas que coinciden con tu búsqueda y tu hoja de vida.",
+    "nuevasUna": "Tienes 1 vacante nueva que coincide con tu búsqueda y tu hoja de vida.",
+    "cargando": "Cargando tu resumen…",
+    "recomendadasHoy": "Recomendadas hoy",
+    "verTodas": "Ver todas las vacantes",
+    "nueva": "Nueva",
+    "porQue": "Por qué:",
+    "teSirvio": "¿Te sirvió?",
+    "si": "Sí",
+    "no": "No",
+    "gracias": "Gracias por tu respuesta",
+    "errorVoto": "No pudimos guardar tu respuesta. Inténtalo de nuevo.",
+    "sinDatos": "No pudimos cargar esto ahora.",
+    "vacioTitulo": "Aún no hay recomendaciones para hoy",
+    "vacioDetalle": "Cuando tu hoja de vida esté lista, aquí verás las vacantes que mejor coinciden contigo.",
+    "vacioBoton": "Ir a mi hoja de vida",
+    "busqueda": {
+      "titulo": "¿Qué estás buscando?",
+      "editar": "Editar",
+      "vacio": "Aún no nos cuentas qué buscas. Con «Editar» puedes decirlo.",
+      "texto": "Cuéntanos qué buscas",
+      "etiquetas": "Etiquetas",
+      "ayuda": "Separa las etiquetas con comas. Máximo 8.",
+      "guardar": "Guardar",
+      "guardada": "Guardamos lo que buscas.",
+      "error": "No pudimos guardar los cambios. Inténtalo de nuevo."
+    },
+    "adaptaciones": {
+      "titulo": "Adaptaciones de hoy",
+      "quedan": "Te quedan {{ n }} de {{ total }}. Se renuevan cada día."
+    },
+    "ultimas": {
+      "titulo": "Últimas postulaciones",
+      "verTodos": "Ver todos",
+      "vacio": "Aún no has dado clic en «Postular»."
+    }
   }
 }
