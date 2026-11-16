@@ -24,7 +24,7 @@ export class MarcoAplicacion {
 
   protected cerrarSesion(): void {
     this.menuAbierto.set(false);
-    this.sesion.cerrar();
+    void this.sesion.cerrar();
     void this.router.navigate(['/']);
   }
 }

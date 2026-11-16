@@ -12,7 +12,6 @@
     "vacantes": "Vacantes",
     "preguntas": "Preguntas frecuentes",
     "iniciarSesion": "Iniciar sesión",
-    "crearCuenta": "Crear cuenta",
     "abrirMenu": "Abrir menú",
     "cerrarMenu": "Cerrar menú"
   },
@@ -28,22 +27,8 @@
     "comun": {
       "soloUnaula": "Solo para la comunidad UNAULA",
       "volverInicio": "Volver al inicio",
-      "correo": "Correo institucional",
-      "correoPlaceholder": "nombre@unaula.edu.co",
-      "contrasena": "Contraseña",
-      "mostrarContrasena": "Mostrar contraseña",
-      "ocultarContrasena": "Ocultar contraseña",
-      "paso": "Paso {{ actual }} de {{ total }}",
-      "terminos": "Términos y condiciones",
       "privacidad": "Política de privacidad",
-      "terminosCorto": "Términos",
-      "errores": {
-        "correoObligatorio": "Escribe tu correo institucional.",
-        "correoDominio": "Usa tu correo @unaula.edu.co.",
-        "contrasenaObligatoria": "Escribe tu contraseña.",
-        "contrasenaDebil": "La contraseña no cumple los requisitos.",
-        "terminos": "Debes aceptar los términos para continuar."
-      }
+      "terminosCorto": "Términos"
     },
     "login": {
       "panelTitulo": "Tus vacantes de hoy te están esperando.",
@@ -51,68 +36,15 @@
       "punto2": "Tu hoja adaptada a cada vacante",
       "punto3": "Todas tus postulaciones en un lugar",
       "titulo": "Inicia sesión",
-      "bajada": "Usa tu correo institucional de UNAULA.",
+      "bajada": "Entra con tu cuenta Microsoft de UNAULA (tu correo @unaula.edu.co).",
       "microsoft": "Iniciar sesión con Microsoft",
-      "primeraVez": "¿Primera vez aquí?",
-      "crearCuenta": "Crear cuenta",
       "legalInicio": "Al entrar aceptas los",
       "legalY": "y la",
       "legalFin": "(Ley 1581 de 2012).",
-      "olvidaste": "¿La olvidaste?",
-      "mantener": "Mantener la sesión iniciada en este equipo",
-      "entrar": "Iniciar sesión",
-      "o": "o"
-    },
-    "registro": {
-      "panelTitulo": "Tu práctica empieza con una cuenta.",
-      "punto1": "Vacantes de práctica de tu carrera",
-      "punto2": "Análisis Harvard y ATS de tu hoja",
-      "punto3": "Solo con tu correo @unaula.edu.co",
-      "titulo": "Crea tu cuenta",
-      "bajada": "Después confirmas tu correo con un código y completas tu perfil.",
-      "microsoft": "Crear cuenta con Microsoft",
-      "yaTienes": "¿Ya tienes cuenta?",
-      "iniciarSesion": "Inicia sesión",
-      "ayudaCorreo": "Te enviaremos un código de 6 dígitos para confirmarlo. Solo se aceptan correos @unaula.edu.co.",
-      "reglas": {
-        "longitud": "8 caracteres o más",
-        "mayuscula": "Una mayúscula",
-        "numero": "Un número",
-        "minuscula": "Una minúscula"
-      },
-      "aceptoInicio": "Acepto los",
-      "aceptoY": "y la",
-      "aceptoFin": "(Ley 1581 de 2012).",
-      "crear": "Crear cuenta"
-    },
-    "verificar": {
-      "panelTitulo": "Un código y listo: confirmamos que eres de UNAULA.",
-      "punto1": "El código llega a tu correo institucional",
-      "punto2": "Vence en 15 minutos",
-      "punto3": "Si no llega, puedes pedir otro",
-      "cambiarCorreo": "Cambiar correo",
-      "titulo": "Revisa tu correo",
-      "bajada": "Escribe el código de 6 dígitos que enviamos a",
-      "correoPorDefecto": "tu correo institucional",
-      "etiquetaCodigo": "Código de verificación",
-      "digito": "Dígito {{ n }} de 6",
-      "ayuda": "Puedes pegar el código completo. Se verifica solo al escribir el último dígito.",
-      "noLlego": "¿No te llegó?",
-      "noLlegoDetalle": "Revisa la carpeta de correo no deseado o la pestaña «Otros» de Outlook.",
-      "reenviar": "Reenviar código",
-      "reenviarEn": "Reenviar en {{ segundos }} s",
-      "reenviado": "Te enviamos un nuevo código."
-    },
-    "recuperar": {
-      "panelTitulo": "Recupera tu acceso en dos minutos.",
-      "punto1": "Te enviamos un enlace seguro a tu correo",
-      "punto2": "El enlace vence en 30 minutos",
-      "punto3": "Tus datos y postulaciones siguen intactos",
-      "volver": "Volver a iniciar sesión",
-      "titulo": "¿Olvidaste tu contraseña?",
-      "bajada": "Escribe tu correo institucional y te enviamos un enlace para crear una nueva.",
-      "enviar": "Enviar enlace",
-      "enviado": "Si ese correo está registrado, recibirás un enlace para crear una contraseña nueva."
+      "errorDominio": "Solo pueden entrar cuentas @unaula.edu.co. Intenta con tu correo institucional.",
+      "errorMicrosoft": "No pudimos iniciar sesión con Microsoft. Inténtalo de nuevo.",
+      "sinRegistro": "No necesitas registrarte: si tienes correo @unaula.edu.co, ya tienes acceso.",
+      "sesionExpirada": "Tu sesión se cerró tras 8 horas sin actividad. Vuelve a entrar con Microsoft."
     }
   },
   "landing": {
@@ -121,7 +53,7 @@
       "tituloInicio": "Encuentra la práctica que",
       "tituloResalte": "se ajusta a ti.",
       "descripcion": "Vacantes de práctica y empleo para tu carrera, recomendadas cada día según tu hoja de vida. Y te ayudamos a adaptarla a cada vacante sin inventar nada.",
-      "crearCuenta": "Crear mi cuenta",
+      "crearCuenta": "Entra con tu correo UNAULA",
       "verComoFunciona": "Ver cómo funciona",
       "notaCorreo": "Solo con tu correo @unaula.edu.co",
       "notaPracticas": "Prácticas primero",
@@ -136,8 +68,8 @@
       "titulo": "Es muy fácil, solo sigue estos pasos",
       "paso": "Paso",
       "cuenta": {
-        "titulo": "Crea tu cuenta",
-        "detalle": "Con tu correo institucional, en menos de dos minutos."
+        "titulo": "Entra con tu cuenta UNAULA",
+        "detalle": "Con tu cuenta Microsoft de la universidad. Sin registros ni contraseñas nuevas."
       },
       "hoja": {
         "titulo": "Sube tu hoja de vida",
@@ -178,7 +110,7 @@
       "escribenos": "Escríbenos",
       "registro": {
         "pregunta": "¿Quién puede registrarse?",
-        "respuesta": "Estudiantes y egresados de UNAULA con un correo que termine en @unaula.edu.co. Al registrarte confirmas tu correo con un código."
+        "respuesta": "Estudiantes y egresados de UNAULA con una cuenta activa @unaula.edu.co. No hay que registrarse: entras con tu cuenta Microsoft de la universidad."
       },
       "vacantes": {
         "pregunta": "¿De dónde salen las vacantes?",

@@ -12,7 +12,6 @@
     "vacantes": "Jobs",
     "preguntas": "FAQ",
     "iniciarSesion": "Log in",
-    "crearCuenta": "Sign up",
     "abrirMenu": "Open menu",
     "cerrarMenu": "Close menu"
   },
@@ -28,22 +27,8 @@
     "comun": {
       "soloUnaula": "Only for the UNAULA community",
       "volverInicio": "Back to home",
-      "correo": "Institutional email",
-      "correoPlaceholder": "name@unaula.edu.co",
-      "contrasena": "Password",
-      "mostrarContrasena": "Show password",
-      "ocultarContrasena": "Hide password",
-      "paso": "Step {{ actual }} of {{ total }}",
-      "terminos": "Terms and conditions",
       "privacidad": "Privacy policy",
-      "terminosCorto": "Terms",
-      "errores": {
-        "correoObligatorio": "Enter your institutional email.",
-        "correoDominio": "Use your @unaula.edu.co email.",
-        "contrasenaObligatoria": "Enter your password.",
-        "contrasenaDebil": "The password does not meet the requirements.",
-        "terminos": "You must accept the terms to continue."
-      }
+      "terminosCorto": "Terms"
     },
     "login": {
       "panelTitulo": "Your openings for today are waiting for you.",
@@ -51,68 +36,15 @@
       "punto2": "Your résumé tailored to each opening",
       "punto3": "All your applications in one place",
       "titulo": "Log in",
-      "bajada": "Use your UNAULA institutional email.",
+      "bajada": "Sign in with your UNAULA Microsoft account (your @unaula.edu.co email).",
       "microsoft": "Sign in with Microsoft",
-      "primeraVez": "First time here?",
-      "crearCuenta": "Create account",
       "legalInicio": "By signing in you accept the",
       "legalY": "and the",
       "legalFin": "(Law 1581 of 2012).",
-      "olvidaste": "Forgot it?",
-      "mantener": "Keep me signed in on this device",
-      "entrar": "Log in",
-      "o": "or"
-    },
-    "registro": {
-      "panelTitulo": "Your internship starts with an account.",
-      "punto1": "Internships for your degree",
-      "punto2": "Harvard and ATS analysis of your résumé",
-      "punto3": "Only with your @unaula.edu.co email",
-      "titulo": "Create your account",
-      "bajada": "Then you confirm your email with a code and complete your profile.",
-      "microsoft": "Create account with Microsoft",
-      "yaTienes": "Already have an account?",
-      "iniciarSesion": "Log in",
-      "ayudaCorreo": "We will send you a 6-digit code to confirm it. Only @unaula.edu.co emails are accepted.",
-      "reglas": {
-        "longitud": "8 characters or more",
-        "mayuscula": "One uppercase letter",
-        "numero": "One number",
-        "minuscula": "One lowercase letter"
-      },
-      "aceptoInicio": "I accept the",
-      "aceptoY": "and the",
-      "aceptoFin": "(Law 1581 of 2012).",
-      "crear": "Create account"
-    },
-    "verificar": {
-      "panelTitulo": "One code and you are in: we confirm you are from UNAULA.",
-      "punto1": "The code arrives at your institutional email",
-      "punto2": "It expires in 15 minutes",
-      "punto3": "If it does not arrive, you can ask for another",
-      "cambiarCorreo": "Change email",
-      "titulo": "Check your email",
-      "bajada": "Enter the 6-digit code we sent to",
-      "correoPorDefecto": "your institutional email",
-      "etiquetaCodigo": "Verification code",
-      "digito": "Digit {{ n }} of 6",
-      "ayuda": "You can paste the whole code. It is checked as soon as you type the last digit.",
-      "noLlego": "Did not get it?",
-      "noLlegoDetalle": "Check your spam folder or the Other tab in Outlook.",
-      "reenviar": "Resend code",
-      "reenviarEn": "Resend in {{ segundos }} s",
-      "reenviado": "We sent you a new code."
-    },
-    "recuperar": {
-      "panelTitulo": "Recover your access in two minutes.",
-      "punto1": "We send a secure link to your email",
-      "punto2": "The link expires in 30 minutes",
-      "punto3": "Your data and applications stay intact",
-      "volver": "Back to log in",
-      "titulo": "Forgot your password?",
-      "bajada": "Enter your institutional email and we will send you a link to create a new one.",
-      "enviar": "Send link",
-      "enviado": "If that email is registered, you will receive a link to create a new password."
+      "errorDominio": "Only @unaula.edu.co accounts can sign in. Try your institutional email.",
+      "errorMicrosoft": "We couldn't sign you in with Microsoft. Please try again.",
+      "sinRegistro": "No sign-up needed: if you have an @unaula.edu.co email, you already have access.",
+      "sesionExpirada": "You were signed out after 8 hours of inactivity. Sign in with Microsoft again."
     }
   },
   "landing": {
@@ -121,7 +53,7 @@
       "tituloInicio": "Find the internship that",
       "tituloResalte": "fits you.",
       "descripcion": "Internships and jobs for your degree, recommended every day based on your résumé. And we help you tailor it to each opening without making anything up.",
-      "crearCuenta": "Create my account",
+      "crearCuenta": "Sign in with your UNAULA email",
       "verComoFunciona": "See how it works",
       "notaCorreo": "Only with your @unaula.edu.co email",
       "notaPracticas": "Internships first",
@@ -136,8 +68,8 @@
       "titulo": "It's easy, just follow these steps",
       "paso": "Step",
       "cuenta": {
-        "titulo": "Create your account",
-        "detalle": "With your institutional email, in under two minutes."
+        "titulo": "Sign in with your UNAULA account",
+        "detalle": "With your university Microsoft account. No sign-up, no new passwords."
       },
       "hoja": {
         "titulo": "Upload your résumé",
@@ -178,7 +110,7 @@
       "escribenos": "Write to us",
       "registro": {
         "pregunta": "Who can sign up?",
-        "respuesta": "UNAULA students and alumni with an email ending in @unaula.edu.co. When you sign up you confirm your email with a code."
+        "respuesta": "UNAULA students and alumni with an active @unaula.edu.co account. No sign-up needed: you sign in with your university Microsoft account."
       },
       "vacantes": {
         "pregunta": "Where do the jobs come from?",

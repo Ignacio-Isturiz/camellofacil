@@ -16,28 +16,15 @@ export const routes: Routes = [
     path: 'conexion',
     loadComponent: () => import('./features/conexion/conexion').then((m) => m.Conexion),
   },
-  // Autenticación: una ruta por pantalla, así la URL cambia con cada paso del flujo.
+  // Único ingreso: la cuenta Microsoft de UNAULA (no hay registro ni contraseñas propias).
   {
     path: 'login',
+    canActivate: [irAInicioConSesion],
     title: 'Inicia sesión · Camello Fácil',
     loadComponent: () => import('./features/autenticacion/login/login').then((m) => m.Login),
   },
-  {
-    path: 'registro',
-    pathMatch: 'full',
-    title: 'Crea tu cuenta · Camello Fácil',
-    loadComponent: () => import('./features/autenticacion/registro/registro').then((m) => m.Registro),
-  },
-  {
-    path: 'registro/verificar',
-    title: 'Revisa tu correo · Camello Fácil',
-    loadComponent: () => import('./features/autenticacion/verificar/verificar').then((m) => m.Verificar),
-  },
-  {
-    path: 'recuperar',
-    title: 'Recupera tu acceso · Camello Fácil',
-    loadComponent: () => import('./features/autenticacion/recuperar/recuperar').then((m) => m.Recuperar),
-  },
+  // Enlaces viejos a /registro llevan al ingreso con Microsoft.
+  { path: 'registro', redirectTo: 'login' },
   // Inicio de quien ya inició sesión.
   {
     path: 'inicio',
@@ -51,7 +38,7 @@ export const routes: Routes = [
       },
     ],
   },
-  // Pantallas de quien inició sesión (con la sesión simulada hasta que exista la autenticación real).
+  // Pantallas de quien inició sesión.
   {
     path: 'vacantes',
     canActivate: [exigirSesion],

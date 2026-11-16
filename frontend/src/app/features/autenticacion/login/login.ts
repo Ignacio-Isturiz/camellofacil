@@ -1,55 +1,33 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { Sesion } from '../../../core/sesion/sesion';
 import { Icono } from '../../../shared/icono/icono';
 import { LogoMicrosoft } from '../../../shared/logo-microsoft/logo-microsoft';
-import { CampoContrasena } from '../campos/campo-contrasena';
-import { CampoCorreo } from '../campos/campo-correo';
 import { MarcoAutenticacion } from '../marco-autenticacion/marco-autenticacion';
-import { correoUnaula } from '../validadores';
 
-/** /login — ingreso con correo institucional y contraseña, o con Microsoft. */
+/** Avisos según `?error=` (lo pone el backend al fallar Microsoft, o el frontend al vencer la sesión). */
+const AVISOS: Record<string, string> = {
+  dominio: 'auth.login.errorDominio',
+  microsoft: 'auth.login.errorMicrosoft',
+  expirada: 'auth.login.sesionExpirada',
+};
+
+/** /login — el único ingreso es con la cuenta Microsoft de UNAULA. */
 @Component({
   selector: 'app-login',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    ReactiveFormsModule,
-    RouterLink,
-    TranslocoPipe,
-    Icono,
-    LogoMicrosoft,
-    MarcoAutenticacion,
-    CampoCorreo,
-    CampoContrasena,
-  ],
+  imports: [RouterLink, TranslocoPipe, Icono, LogoMicrosoft, MarcoAutenticacion],
   templateUrl: './login.html',
 })
 export class Login {
   private readonly sesion = inject(Sesion);
-  private readonly router = inject(Router);
 
-  protected readonly formulario = new FormGroup({
-    correo: new FormControl('', { nonNullable: true, validators: [Validators.required, correoUnaula] }),
-    contrasena: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    mantener: new FormControl(true, { nonNullable: true }),
-  });
+  protected readonly aviso = AVISOS[inject(ActivatedRoute).snapshot.queryParamMap.get('error') ?? ''] ?? null;
 
-  protected readonly intentado = signal(false);
-
-  protected enviar(): void {
-    this.intentado.set(true);
-    if (this.formulario.invalid) return;
-    // SESIÓN SIMULADA (ver core/sesion): no valida la contraseña. Reemplazar por el login real del backend.
-    this.sesion.iniciarSimulada(this.formulario.controls.correo.value);
-    void this.router.navigate(['/inicio']);
-  }
-
+  /** Navegación de página completa: el backend lleva a Microsoft y, al volver, deja la cookie de sesión. */
   protected conMicrosoft(): void {
-    // Pendiente: flujo de Microsoft del backend. Mientras tanto, sesión simulada.
-    this.sesion.iniciarSimulada();
-    void this.router.navigate(['/inicio']);
+    window.location.assign(this.sesion.urlMicrosoft);
   }
 }
