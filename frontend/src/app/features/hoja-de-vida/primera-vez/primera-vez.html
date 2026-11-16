@@ -35,13 +35,14 @@
       <span class="etiqueta etiqueta--exito">{{ 'hoja.primera.recomendado' | transloco }}</span>
     </div>
 
-    <label class="autorizacion">
-      <input type="checkbox" [checked]="autorizado()" (change)="cambiarAutorizacion($event)" />
-      <span>
-        {{ 'hoja.primera.autorizo' | transloco }}
-        <a routerLink="/privacidad">{{ 'hoja.primera.comoUsamos' | transloco }}</a>
-      </span>
-    </label>
+    @if (!autorizado()) {
+      <p class="autorizacion">
+        <span>
+          {{ 'hoja.subir.sinAutorizacion' | transloco }}
+          <a routerLink="/perfil">{{ 'hoja.subir.activar' | transloco }}</a>
+        </span>
+      </p>
+    }
 
     <div class="zona" [class.zona--activa]="autorizado()">
       <span class="zona__icono"><app-icono nombre="subir" style="--tam: 22px" /></span>

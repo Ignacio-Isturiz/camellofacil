@@ -17,5 +17,4 @@ export class TarjetaVacante {
   readonly vacante = input.required<Vacante>();
   readonly guardada = input(false);
   readonly guardar = output<void>();
-  readonly ocultar = output<void>();
 }

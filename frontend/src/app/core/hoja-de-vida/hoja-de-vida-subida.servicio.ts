@@ -8,7 +8,7 @@ import { AvanceAnalisis, ErrorSubida } from './hoja-de-vida.modelos';
 export type EstadoSubida = 'reposo' | 'subiendo' | 'analizando' | 'listo' | 'error';
 
 /** Peso máximo del archivo (el servidor vuelve a validarlo). */
-export const PESO_MAXIMO_BYTES = 5 * 1024 * 1024;
+export const PESO_MAXIMO_BYTES = 20 * 1024 * 1024;
 const EXTENSIONES = ['.pdf', '.doc', '.docx'];
 const INTERVALO_ANALISIS_MS = 2500;
 /** Se deja de preguntar después de este tiempo y se muestra un error del servidor. */
@@ -17,7 +17,7 @@ const LIMITE_ANALISIS_MS = 3 * 60 * 1000;
 /**
  * Subida del archivo y seguimiento de su análisis. Todo contra el API real:
  * POST multipart y luego consultas periódicas al avance (no hay respuestas simuladas).
- * La autorización de IA (RF-93) viaja junto con el archivo.
+ * La autorización de IA (RF-93) se da en el primer ingreso y se gestiona en Mi perfil; el backend la exige.
  */
 @Injectable({ providedIn: 'root' })
 export class HojaDeVidaSubidaServicio {
@@ -46,7 +46,6 @@ export class HojaDeVidaSubidaServicio {
 
     const cuerpo = new FormData();
     cuerpo.append('archivo', archivo, archivo.name);
-    cuerpo.append('autorizacionIa', 'true');
 
     this.peticion = this.http
       .post(API_HOJA_DE_VIDA.archivo, cuerpo, { observe: 'events', reportProgress: true })
@@ -90,7 +89,8 @@ export class HojaDeVidaSubidaServicio {
         take(1),
       )
       .subscribe({
-        next: (a) => (a.estado === 'listo' ? this.estado.set('listo') : void this.fallar('ilegible')),
+        next: (a) =>
+          a.estado === 'listo' ? this.estado.set('listo') : void this.fallar(a.estado === 'error' ? 'servidor' : 'ilegible'),
         error: (e: unknown) => this.fallar(e instanceof HttpErrorResponse ? this.clasificar(e) : 'servidor'),
       });
   }
@@ -99,6 +99,8 @@ export class HojaDeVidaSubidaServicio {
     switch (e.status) {
       case 0:
         return 'conexion';
+      case 403:
+        return 'autorizacion';
       case 413:
         return 'peso';
       case 415:

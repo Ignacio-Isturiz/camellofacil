@@ -100,7 +100,8 @@
         "economia": "Economics",
         "informatica": "Computer Engineering",
         "industrial": "Industrial Engineering",
-        "datos": "Data Science and Business Intelligence Engineering"
+        "datos": "Data Science and Business Intelligence Engineering",
+        "sociales": "B.Ed. in Social Sciences"
       }
     },
     "preguntas": {
@@ -143,7 +144,8 @@
     "menuUsuario": "User menu",
     "cerrarSesion": "Log out",
     "legal": "Job listings come from authorized external sources. Camello Fácil does not guarantee hiring.",
-    "perfil": "Profile"
+    "perfil": "Profile",
+    "miPerfil": "My profile"
   },
   "vacantes": {
     "modalidad": {
@@ -153,7 +155,7 @@
     },
     "lista": {
       "titulo": "Jobs",
-      "bajada": "We show internships for your degree. Change the filters whenever you like.",
+      "bajada": "Remote internships or in the Medellín metro area. Change the filters anytime.",
       "buscarPlaceholder": "Title, company or keyword",
       "buscar": "Search",
       "filtros": "Filters",
@@ -180,7 +182,8 @@
       "cargarMas": "Load more jobs",
       "cargando": "Loading jobs…",
       "error": "We could not load the jobs. Please try again in a few minutes.",
-      "vacio": "We found no jobs with these filters."
+      "vacio": "We found no jobs with these filters.",
+      "reintentar": "Try again"
     },
     "tarjeta": {
       "practica": "Internship",
@@ -189,7 +192,6 @@
       "verYPostular": "View and apply",
       "guardar": "Save job",
       "quitarGuardada": "Remove from saved",
-      "ocultar": "Hide job",
       "hoy": "Today",
       "ayer": "Yesterday",
       "hace": "{{ n }} days ago"
@@ -217,11 +219,12 @@
       "postular": "Apply",
       "guardar": "Save",
       "guardada": "Saved",
-      "ocultar": "Hide",
       "reportar": "Report",
       "externa": "Job from an authorized external source. Camello Fácil does not guarantee hiring.",
       "noEncontrada": "We could not find this job.",
-      "volver": "Back to jobs"
+      "volver": "Back to jobs",
+      "error": "We couldn't load this job.",
+      "sinDescripcion": "The job board did not publish a description. Check the original posting when you apply."
     },
     "postular": {
       "titulo": "Apply",
@@ -330,9 +333,9 @@
       "titulo": "Upload your résumé",
       "bajada": "It is the base of everything: with it we recommend jobs and improve it without making anything up.",
       "zona": "Area to upload your résumé",
-      "marcaAutorizacion": "Check the authorization to enable uploading",
+      "marcaAutorizacion": "Turn on the AI analysis authorization to upload your résumé",
       "arrastra": "Drag your résumé here or choose a file",
-      "formatos": "PDF or Word (.doc, .docx) · max 5 MB · Spanish or English",
+      "formatos": "PDF or Word (.doc, .docx) · max 20 MB · Spanish or English",
       "elegir": "Choose file",
       "cancelar": "Cancel",
       "subiendo": "Uploading",
@@ -341,8 +344,6 @@
       "intentarOtro": "Choose another file",
       "antes": "Before uploading:",
       "antesDetalle": "your résumé is processed with automated artificial intelligence tools to analyze it and recommend jobs. Only you and the administrator can see it.",
-      "autorizo": "I authorize the processing of my data for these purposes.",
-      "leerPolitica": "Read policy",
       "despues": "What happens next",
       "pasos": {
         "p1": {
@@ -369,9 +370,9 @@
           "paso3": "Choose the file again."
         },
         "peso": {
-          "titulo": "The file is larger than 5 MB",
+          "titulo": "The file is larger than 20 MB",
           "paso1": "Save the résumé again as a PDF, without heavy images.",
-          "paso2": "Check that the final file is under 5 MB.",
+          "paso2": "Check that the final file is under 20 MB.",
           "paso3": "Choose the file again."
         },
         "ilegible": {
@@ -391,8 +392,18 @@
           "paso1": "It is not your file: there was a problem on our side.",
           "paso2": "Wait a few minutes.",
           "paso3": "Try again. If it keeps failing, write to us."
+        },
+        "autorizacion": {
+          "titulo": "Your authorization is missing",
+          "paso1": "Your résumé is analyzed with artificial intelligence and we need your authorization.",
+          "paso2": "Turn it on in My profile, under Privacy and my data.",
+          "paso3": "Come back and choose the file again."
         }
-      }
+      },
+      "autorizado": "You authorized this analysis on {{ fecha }}. You can revoke it in",
+      "miPerfil": "My profile",
+      "sinAutorizacion": "To upload your résumé you need to authorize the analysis with artificial intelligence.",
+      "activar": "Turn it on in My profile"
     },
     "primera": {
       "faltaPoco": "Almost there",
@@ -404,11 +415,9 @@
       "tengo": "I already have a résumé",
       "tengoDetalle": "We read it, analyze it and you confirm the data.",
       "recomendado": "Recommended",
-      "autorizo": "I authorize my résumé to be processed with automated artificial intelligence tools to analyze it, reorganize it and recommend jobs to me.",
-      "comoUsamos": "How we use your data",
       "zonaActiva": "Choose your file",
-      "zonaBloqueada": "First check the authorization above",
-      "formatos": "PDF or Word · max 5 MB · Spanish or English",
+      "zonaBloqueada": "Turn on the AI analysis authorization to upload your résumé",
+      "formatos": "PDF or Word · max 20 MB · Spanish or English",
       "noTengo": "I don't have a résumé yet",
       "noTengoDetalle": "Create it here, section by section, on a template.",
       "ventaja1": "Harvard and ATS formats, in Spanish or English",
@@ -490,7 +499,8 @@
       "usar": "Use",
       "versiones": "My versions",
       "gestionar": "Manage versions",
-      "sinVersiones": "You have no saved versions yet."
+      "sinVersiones": "You have no saved versions yet.",
+      "analisisPendiente": "The Harvard and ATS analysis will be available soon."
     },
     "revisar": {
       "migas": "Review data",
@@ -695,6 +705,164 @@
       "titulo": "Latest applications",
       "verTodos": "See all",
       "vacio": "You have not clicked “Apply” yet."
+    }
+  },
+  "perfil": {
+    "titulo": "My profile",
+    "reintentar": "Retry",
+    "cancelar": "Cancel",
+    "tipo": {
+      "ESTUDIANTE": "Student",
+      "EGRESADO": "Alumni"
+    },
+    "modalidad": {
+      "PRESENCIAL": "On-site",
+      "REMOTO": "Remote",
+      "HIBRIDO": "Hybrid"
+    },
+    "disponibilidad": {
+      "TIEMPO_COMPLETO": "Full time",
+      "MEDIO_TIEMPO": "Part time",
+      "FLEXIBLE": "Flexible"
+    },
+    "campos": {
+      "soy": "I am",
+      "carrera": "Degree",
+      "elegirCarrera": "Choose your degree",
+      "semestre": "Current semester",
+      "elegirSemestre": "Choose your semester",
+      "semestreN": "Semester {{ n }}",
+      "nombre": "Full name",
+      "correo": "Institutional email",
+      "modalidad": "Work mode (choose any)",
+      "disponibilidad": "Availability",
+      "sinIndicar": "Not specified"
+    },
+    "completar": {
+      "etiqueta": "Last step",
+      "titulo": "Hi, {{ nombre }}. Complete your profile",
+      "bajada": "We use this to show you openings for your degree. We only ask once.",
+      "terminosInicio": "I accept the",
+      "terminos": "Terms and conditions",
+      "terminosY": "and the",
+      "privacidad": "Privacy policy",
+      "terminosFin": "(version {{ version }}, Law 1581 of 2012).",
+      "ia": "I authorize the analysis of my résumé with artificial intelligence to get feedback and job recommendations. I can revoke this in My profile.",
+      "continuar": "Save and continue",
+      "guardando": "Saving…"
+    },
+    "errores": {
+      "tipo": "Choose whether you are a student or alumni.",
+      "carrera": "Choose your degree.",
+      "carreras": "We could not load the degrees.",
+      "semestre": "Choose your semester.",
+      "terminos": "You must accept the terms and the privacy policy.",
+      "ia": "We need your authorization to analyze your résumé.",
+      "guardar": "We could not save your changes. Please try again."
+    },
+    "pendientes": {
+      "titulo": "Finish completing your profile",
+      "progreso": "{{ hechos }} of {{ total }}",
+      "datos": "Basic details and consents",
+      "hoja": {
+        "titulo": "Base résumé",
+        "detalle": "Upload it as PDF or Word. We use it to analyze your profile, recommend openings and tailor it to each one.",
+        "accion": "Upload résumé"
+      },
+      "preferencias": {
+        "titulo": "Search preferences",
+        "detalle": "Work mode and availability. Optional, but they improve your recommendations.",
+        "accion": "Add preferences"
+      }
+    },
+    "cuenta": {
+      "titulo": "My account",
+      "datos": "Personal details",
+      "preferencias": "Search preferences",
+      "sinPreferencias": "Not set yet"
+    },
+    "privacidad": {
+      "titulo": "Privacy and my data",
+      "terminos": "Accepted terms and policy",
+      "aceptados": "Version {{ version }} · accepted on {{ fecha }}",
+      "ia": "AI analysis authorization",
+      "iaActiva": "Active since {{ fecha }} · you can revoke it",
+      "iaInactiva": "Revoked · we will not analyze your résumé with AI",
+      "confirmarRevocar": "Without this authorization we cannot analyze or tailor your résumé. Revoke it?",
+      "revocar": "Revoke",
+      "activar": "Activate",
+      "iaActivada": "AI analysis authorization activated.",
+      "iaRevocada": "AI analysis authorization revoked.",
+      "verDatos": "View and correct my data",
+      "verDatosDetalle": "Everything we store about you",
+      "descargar": "Download my data",
+      "descargarDetalle": "A file with your profile, résumés and applications",
+      "nota": "We process your data under Colombian Law 1581 of 2012. Only you and the administrator can see your résumé."
+    },
+    "editar": {
+      "titulo": "Details and preferences",
+      "volver": "Back to my profile",
+      "correoFijo": "Your name and email come from your UNAULA account and cannot be changed here.",
+      "preferenciasAyuda": "Optional. They help us recommend better openings.",
+      "guardar": "Save changes",
+      "guardado": "Your changes were saved."
+    }
+  },
+  "legal": {
+    "documentos": "Legal documents",
+    "version": "Version 1.0 · effective 16 Nov 2026",
+    "borrador": "Draft · legal review pending",
+    "terminos": {
+      "corto": "Terms",
+      "titulo": "Terms and conditions",
+      "quien": {
+        "titulo": "Who can use the platform",
+        "texto": "[Legal text pending review: only UNAULA students and alumni with an active @unaula.edu.co account, signing in with Microsoft.]"
+      },
+      "que": {
+        "titulo": "What it does and does not do",
+        "texto": "[Legal text pending review: recommends openings and helps improve your résumé; it does not guarantee hiring.]"
+      },
+      "vacantes": {
+        "titulo": "Openings from external sources",
+        "texto": "[Legal text pending review: openings come from authorized external sources; you apply on the original page.]"
+      },
+      "hoja": {
+        "titulo": "Use of your résumé",
+        "texto": "[Legal text pending review: the platform reorganizes and improves your information without making anything up.]"
+      },
+      "cuenta": {
+        "titulo": "Account and security",
+        "texto": "[Legal text pending review: you are signed out after 8 hours of inactivity; you can delete your account and data at any time.]"
+      }
+    },
+    "privacidad": {
+      "corto": "Privacy",
+      "titulo": "Privacy policy",
+      "responsable": {
+        "titulo": "Data controller",
+        "texto": "[Legal text pending review: identity and contact details of the controller.]"
+      },
+      "datos": {
+        "titulo": "What data we process",
+        "texto": "[Legal text pending review: name and email from your UNAULA account, student or alumni status, degree, semester, preferences and your résumé.]"
+      },
+      "finalidades": {
+        "titulo": "What we use it for",
+        "texto": "[Legal text pending review: recommending openings, analyzing and tailoring your résumé and tracking your applications.]"
+      },
+      "ia": {
+        "titulo": "Artificial intelligence analysis",
+        "texto": "[Legal text pending review: to analyze your résumé we send only its text (not the file) to the AI provider Groq, with servers in the United States (international data transfer), and only if you authorize it; you can revoke it in My profile.]"
+      },
+      "derechos": {
+        "titulo": "Your rights",
+        "texto": "[Legal text pending review: access, update, correct and delete your data, and revoke your authorization (Law 1581 of 2012).]"
+      },
+      "conservacion": {
+        "titulo": "Retention",
+        "texto": "[Legal text pending review: how long data is kept and how it is deleted when you delete your account.]"
+      }
     }
   }
 }

@@ -100,7 +100,8 @@
         "economia": "Economía",
         "informatica": "Ingeniería Informática",
         "industrial": "Ingeniería Industrial",
-        "datos": "Ingeniería en Ciencia de Datos e Inteligencia de Negocios"
+        "datos": "Ingeniería en Ciencia de Datos e Inteligencia de Negocios",
+        "sociales": "Licenciatura en Ciencias Sociales"
       }
     },
     "preguntas": {
@@ -143,7 +144,8 @@
     "menuUsuario": "Menú de usuario",
     "cerrarSesion": "Cerrar sesión",
     "legal": "Vacantes de fuentes externas autorizadas. Camello Fácil no garantiza la contratación.",
-    "perfil": "Perfil"
+    "perfil": "Perfil",
+    "miPerfil": "Mi perfil"
   },
   "vacantes": {
     "modalidad": {
@@ -153,7 +155,7 @@
     },
     "lista": {
       "titulo": "Vacantes",
-      "bajada": "Te mostramos las prácticas de tu carrera. Cambia los filtros cuando quieras.",
+      "bajada": "Prácticas remotas o en el área metropolitana de Medellín. Cambia los filtros cuando quieras.",
       "buscarPlaceholder": "Cargo, empresa o palabra clave",
       "buscar": "Buscar",
       "filtros": "Filtros",
@@ -180,7 +182,8 @@
       "cargarMas": "Cargar más vacantes",
       "cargando": "Cargando vacantes…",
       "error": "No pudimos cargar las vacantes. Inténtalo de nuevo en unos minutos.",
-      "vacio": "No encontramos vacantes con estos filtros."
+      "vacio": "No encontramos vacantes con estos filtros.",
+      "reintentar": "Reintentar"
     },
     "tarjeta": {
       "practica": "Práctica",
@@ -189,7 +192,6 @@
       "verYPostular": "Ver y postular",
       "guardar": "Guardar vacante",
       "quitarGuardada": "Quitar de guardadas",
-      "ocultar": "Ocultar vacante",
       "hoy": "Hoy",
       "ayer": "Ayer",
       "hace": "Hace {{ n }} días"
@@ -217,11 +219,12 @@
       "postular": "Postular",
       "guardar": "Guardar",
       "guardada": "Guardada",
-      "ocultar": "Ocultar",
       "reportar": "Reportar",
       "externa": "Vacante de una fuente externa autorizada. Camello Fácil no garantiza la contratación.",
       "noEncontrada": "No encontramos esta vacante.",
-      "volver": "Volver a vacantes"
+      "volver": "Volver a vacantes",
+      "error": "No pudimos cargar esta vacante.",
+      "sinDescripcion": "El portal no publicó una descripción. Revisa la oferta original al postularte."
     },
     "postular": {
       "titulo": "Postular",
@@ -330,9 +333,9 @@
       "titulo": "Sube tu hoja de vida",
       "bajada": "Es la base de todo: con ella te recomendamos vacantes y la mejoramos sin inventar nada.",
       "zona": "Zona para subir tu hoja de vida",
-      "marcaAutorizacion": "Marca la autorización para habilitar la carga",
+      "marcaAutorizacion": "Activa la autorización de análisis con IA para subir tu hoja",
       "arrastra": "Arrastra tu hoja aquí o elige un archivo",
-      "formatos": "PDF o Word (.doc, .docx) · máximo 5 MB · español o inglés",
+      "formatos": "PDF o Word (.doc, .docx) · máximo 20 MB · español o inglés",
       "elegir": "Elegir archivo",
       "cancelar": "Cancelar",
       "subiendo": "Subiendo",
@@ -341,8 +344,6 @@
       "intentarOtro": "Elegir otro archivo",
       "antes": "Antes de subirla:",
       "antesDetalle": "tu hoja se procesa con herramientas automatizadas de inteligencia artificial para analizarla y recomendarte vacantes. Solo tú y el administrador pueden verla.",
-      "autorizo": "Autorizo el tratamiento de mis datos para estos fines.",
-      "leerPolitica": "Leer política",
       "despues": "Qué pasa después",
       "pasos": {
         "p1": {
@@ -369,9 +370,9 @@
           "paso3": "Vuelve a elegir el archivo."
         },
         "peso": {
-          "titulo": "El archivo pesa más de 5 MB",
+          "titulo": "El archivo pesa más de 20 MB",
           "paso1": "Guarda de nuevo la hoja como PDF, sin imágenes pesadas.",
-          "paso2": "Comprueba que el archivo final pese menos de 5 MB.",
+          "paso2": "Comprueba que el archivo final pese menos de 20 MB.",
           "paso3": "Vuelve a elegir el archivo."
         },
         "ilegible": {
@@ -391,8 +392,18 @@
           "paso1": "No es culpa de tu archivo: hubo un problema de nuestro lado.",
           "paso2": "Espera unos minutos.",
           "paso3": "Vuelve a intentarlo. Si sigue igual, escríbenos."
+        },
+        "autorizacion": {
+          "titulo": "Falta tu autorización",
+          "paso1": "Tu hoja se analiza con inteligencia artificial y necesitamos tu autorización.",
+          "paso2": "Actívala en Mi perfil, en «Privacidad y mis datos».",
+          "paso3": "Vuelve aquí y elige el archivo de nuevo."
         }
-      }
+      },
+      "autorizado": "Autorizaste este análisis el {{ fecha }}. Puedes revocarlo en",
+      "miPerfil": "Mi perfil",
+      "sinAutorizacion": "Para subir tu hoja necesitas la autorización de análisis con inteligencia artificial.",
+      "activar": "Actívala en Mi perfil"
     },
     "primera": {
       "faltaPoco": "Te falta muy poco",
@@ -404,11 +415,9 @@
       "tengo": "Ya tengo hoja de vida",
       "tengoDetalle": "La leemos, la analizamos y tú confirmas los datos.",
       "recomendado": "Recomendado",
-      "autorizo": "Autorizo que mi hoja de vida se procese con herramientas automatizadas de inteligencia artificial para analizarla, reorganizarla y recomendarme vacantes.",
-      "comoUsamos": "Cómo usamos tus datos",
       "zonaActiva": "Elige tu archivo",
-      "zonaBloqueada": "Primero marca la autorización de arriba",
-      "formatos": "PDF o Word · máximo 5 MB · español o inglés",
+      "zonaBloqueada": "Activa la autorización de análisis con IA para subir tu hoja",
+      "formatos": "PDF o Word · máximo 20 MB · español o inglés",
       "noTengo": "Aún no tengo hoja de vida",
       "noTengoDetalle": "Créala aquí, sección por sección, sobre una plantilla.",
       "ventaja1": "Formatos Harvard y ATS, en español o inglés",
@@ -490,7 +499,8 @@
       "usar": "Usar",
       "versiones": "Mis versiones",
       "gestionar": "Gestionar versiones",
-      "sinVersiones": "Aún no tienes versiones guardadas."
+      "sinVersiones": "Aún no tienes versiones guardadas.",
+      "analisisPendiente": "El análisis Harvard y ATS estará disponible pronto."
     },
     "revisar": {
       "migas": "Revisar datos",
@@ -695,6 +705,164 @@
       "titulo": "Últimas postulaciones",
       "verTodos": "Ver todos",
       "vacio": "Aún no has dado clic en «Postular»."
+    }
+  },
+  "perfil": {
+    "titulo": "Mi perfil",
+    "reintentar": "Reintentar",
+    "cancelar": "Cancelar",
+    "tipo": {
+      "ESTUDIANTE": "Estudiante",
+      "EGRESADO": "Egresado"
+    },
+    "modalidad": {
+      "PRESENCIAL": "Presencial",
+      "REMOTO": "Remoto",
+      "HIBRIDO": "Híbrido"
+    },
+    "disponibilidad": {
+      "TIEMPO_COMPLETO": "Tiempo completo",
+      "MEDIO_TIEMPO": "Medio tiempo",
+      "FLEXIBLE": "Flexible"
+    },
+    "campos": {
+      "soy": "Soy",
+      "carrera": "Carrera",
+      "elegirCarrera": "Elige tu carrera",
+      "semestre": "Semestre actual",
+      "elegirSemestre": "Elige tu semestre",
+      "semestreN": "{{ n }}.º semestre",
+      "nombre": "Nombre completo",
+      "correo": "Correo institucional",
+      "modalidad": "Modalidad (puedes elegir varias)",
+      "disponibilidad": "Disponibilidad",
+      "sinIndicar": "Sin indicar"
+    },
+    "completar": {
+      "etiqueta": "Último paso",
+      "titulo": "Hola, {{ nombre }}. Completa tu perfil",
+      "bajada": "Con estos datos te mostramos las vacantes de tu carrera. Solo te lo pedimos una vez.",
+      "terminosInicio": "Acepto los",
+      "terminos": "Términos y condiciones",
+      "terminosY": "y la",
+      "privacidad": "Política de privacidad",
+      "terminosFin": "(versión {{ version }}, Ley 1581 de 2012).",
+      "ia": "Autorizo el análisis de mi hoja de vida con inteligencia artificial para recibir retroalimentación y recomendaciones de vacantes. Puedo revocar esta autorización en Mi perfil.",
+      "continuar": "Guardar y continuar",
+      "guardando": "Guardando…"
+    },
+    "errores": {
+      "tipo": "Elige si eres estudiante o egresado.",
+      "carrera": "Elige tu carrera.",
+      "carreras": "No pudimos cargar las carreras.",
+      "semestre": "Elige tu semestre.",
+      "terminos": "Debes aceptar los términos y la política de privacidad.",
+      "ia": "Necesitamos tu autorización para analizar tu hoja de vida.",
+      "guardar": "No pudimos guardar los cambios. Inténtalo de nuevo."
+    },
+    "pendientes": {
+      "titulo": "Termina de completar tu perfil",
+      "progreso": "{{ hechos }} de {{ total }}",
+      "datos": "Datos básicos y consentimientos",
+      "hoja": {
+        "titulo": "Hoja de vida base",
+        "detalle": "Súbela en PDF o Word. Con ella analizamos tu perfil, te recomendamos vacantes y la adaptamos a cada una.",
+        "accion": "Subir hoja de vida"
+      },
+      "preferencias": {
+        "titulo": "Preferencias de búsqueda",
+        "detalle": "Modalidad y disponibilidad. Son opcionales, pero mejoran tus recomendaciones.",
+        "accion": "Agregar preferencias"
+      }
+    },
+    "cuenta": {
+      "titulo": "Mi cuenta",
+      "datos": "Datos personales",
+      "preferencias": "Preferencias de búsqueda",
+      "sinPreferencias": "Aún no las has indicado"
+    },
+    "privacidad": {
+      "titulo": "Privacidad y mis datos",
+      "terminos": "Términos y política aceptados",
+      "aceptados": "Versión {{ version }} · aceptados el {{ fecha }}",
+      "ia": "Autorización de análisis con IA",
+      "iaActiva": "Activa desde el {{ fecha }} · puedes revocarla",
+      "iaInactiva": "Revocada · no analizaremos tu hoja de vida con IA",
+      "confirmarRevocar": "Sin esta autorización no podremos analizar ni adaptar tu hoja de vida. ¿Quieres revocarla?",
+      "revocar": "Revocar",
+      "activar": "Activar",
+      "iaActivada": "Autorización de análisis con IA activada.",
+      "iaRevocada": "Autorización de análisis con IA revocada.",
+      "verDatos": "Ver y corregir mis datos",
+      "verDatosDetalle": "Todo lo que guardamos sobre ti",
+      "descargar": "Descargar mis datos",
+      "descargarDetalle": "Archivo con tu perfil, hojas y postulaciones",
+      "nota": "Tratamos tus datos según la Ley 1581 de 2012. Solo tú y el administrador pueden ver tu hoja de vida."
+    },
+    "editar": {
+      "titulo": "Datos y preferencias",
+      "volver": "Volver a mi perfil",
+      "correoFijo": "Tu nombre y tu correo vienen de tu cuenta de UNAULA y no se pueden cambiar aquí.",
+      "preferenciasAyuda": "Opcionales. Nos ayudan a recomendarte mejores vacantes.",
+      "guardar": "Guardar cambios",
+      "guardado": "Tus cambios se guardaron."
+    }
+  },
+  "legal": {
+    "documentos": "Documentos legales",
+    "version": "Versión 1.0 · vigente desde el 16 nov 2026",
+    "borrador": "Borrador · revisión legal pendiente",
+    "terminos": {
+      "corto": "Términos",
+      "titulo": "Términos y condiciones",
+      "quien": {
+        "titulo": "Quién puede usar la plataforma",
+        "texto": "[Texto legal pendiente de revisión: solo estudiantes y egresados de UNAULA con una cuenta institucional @unaula.edu.co activa, que inician sesión con Microsoft.]"
+      },
+      "que": {
+        "titulo": "Qué hace y qué no hace",
+        "texto": "[Texto legal pendiente de revisión: recomienda vacantes y ayuda a mejorar la hoja de vida; no garantiza la contratación ni intermedia entre la persona y la empresa.]"
+      },
+      "vacantes": {
+        "titulo": "Vacantes de fuentes externas",
+        "texto": "[Texto legal pendiente de revisión: las vacantes provienen de fuentes externas autorizadas; la postulación se completa en la página original.]"
+      },
+      "hoja": {
+        "titulo": "Uso de tu hoja de vida",
+        "texto": "[Texto legal pendiente de revisión: la plataforma reorganiza y mejora la redacción de tu información sin inventar datos.]"
+      },
+      "cuenta": {
+        "titulo": "Cuenta y seguridad",
+        "texto": "[Texto legal pendiente de revisión: la sesión se cierra tras 8 horas sin actividad; puedes eliminar tu cuenta y tus datos cuando quieras.]"
+      }
+    },
+    "privacidad": {
+      "corto": "Privacidad",
+      "titulo": "Política de privacidad",
+      "responsable": {
+        "titulo": "Responsable del tratamiento",
+        "texto": "[Texto legal pendiente de revisión: identificación y datos de contacto del responsable.]"
+      },
+      "datos": {
+        "titulo": "Qué datos tratamos",
+        "texto": "[Texto legal pendiente de revisión: nombre y correo de tu cuenta de UNAULA, tipo (estudiante o egresado), carrera, semestre, preferencias y tu hoja de vida.]"
+      },
+      "finalidades": {
+        "titulo": "Para qué los usamos",
+        "texto": "[Texto legal pendiente de revisión: recomendarte vacantes, analizar y adaptar tu hoja de vida y registrar tus postulaciones.]"
+      },
+      "ia": {
+        "titulo": "Análisis con inteligencia artificial",
+        "texto": "[Texto legal pendiente de revisión: para analizar tu hoja de vida enviamos solo su texto (no el archivo) al proveedor de inteligencia artificial Groq, con servidores en Estados Unidos (transferencia internacional de datos), y solo si lo autorizas; puedes revocarlo en Mi perfil.]"
+      },
+      "derechos": {
+        "titulo": "Tus derechos",
+        "texto": "[Texto legal pendiente de revisión: conocer, actualizar, rectificar y suprimir tus datos, y revocar la autorización (Ley 1581 de 2012).]"
+      },
+      "conservacion": {
+        "titulo": "Conservación",
+        "texto": "[Texto legal pendiente de revisión: cuánto tiempo se guardan los datos y cómo se eliminan al borrar la cuenta.]"
+      }
     }
   }
 }

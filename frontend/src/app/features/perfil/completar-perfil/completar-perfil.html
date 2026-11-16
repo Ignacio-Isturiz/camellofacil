@@ -1,0 +1,100 @@
+<dialog #caja class="caja" aria-labelledby="completar-titulo" aria-describedby="completar-bajada" (cancel)="impedirCierre($event)">
+  <form class="contenido" [formGroup]="formulario" (ngSubmit)="enviar()" novalidate>
+    <header class="cabecera">
+      <p class="etiqueta">{{ 'perfil.completar.etiqueta' | transloco }}</p>
+      <h2 id="completar-titulo">{{ 'perfil.completar.titulo' | transloco: { nombre: nombre() } }}</h2>
+      <p id="completar-bajada" class="bajada">{{ 'perfil.completar.bajada' | transloco }}</p>
+    </header>
+
+    <div class="cuerpo">
+      <fieldset class="campo">
+        <legend class="campo__etiqueta">{{ 'perfil.campos.soy' | transloco }}</legend>
+        <div class="opciones">
+          <label class="opcion">
+            <input type="radio" formControlName="tipo" value="ESTUDIANTE" />
+            <span>{{ 'perfil.tipo.ESTUDIANTE' | transloco }}</span>
+          </label>
+          <label class="opcion">
+            <input type="radio" formControlName="tipo" value="EGRESADO" />
+            <span>{{ 'perfil.tipo.EGRESADO' | transloco }}</span>
+          </label>
+        </div>
+        @if (error('tipo')) {
+          <p class="campo__error" role="alert">{{ 'perfil.errores.tipo' | transloco }}</p>
+        }
+      </fieldset>
+
+      <div class="campo">
+        <label class="campo__etiqueta" for="completar-carrera">{{ 'perfil.campos.carrera' | transloco }}</label>
+        <div class="campo__caja" [class.campo__caja--error]="error('carrera')">
+          <select id="completar-carrera" class="campo__entrada" formControlName="carrera">
+            <option value="" disabled>{{ 'perfil.campos.elegirCarrera' | transloco }}</option>
+            @for (c of carreras(); track c.codigo) {
+              <option [value]="c.codigo">{{ c.nombre }}</option>
+            }
+          </select>
+        </div>
+        @if (errorCarreras()) {
+          <p class="campo__error" role="alert">
+            {{ 'perfil.errores.carreras' | transloco }}
+            <button type="button" class="enlace" (click)="cargarCarreras()">{{ 'perfil.reintentar' | transloco }}</button>
+          </p>
+        } @else if (error('carrera')) {
+          <p class="campo__error" role="alert">{{ 'perfil.errores.carrera' | transloco }}</p>
+        }
+      </div>
+
+      @if (esEstudiante()) {
+        <div class="campo">
+          <label class="campo__etiqueta" for="completar-semestre">{{ 'perfil.campos.semestre' | transloco }}</label>
+          <div class="campo__caja" [class.campo__caja--error]="error('semestre')">
+            <select id="completar-semestre" class="campo__entrada" formControlName="semestre">
+              <option [ngValue]="null" disabled>{{ 'perfil.campos.elegirSemestre' | transloco }}</option>
+              @for (n of semestres; track n) {
+                <option [ngValue]="n">{{ 'perfil.campos.semestreN' | transloco: { n } }}</option>
+              }
+            </select>
+          </div>
+          @if (error('semestre')) {
+            <p class="campo__error" role="alert">{{ 'perfil.errores.semestre' | transloco }}</p>
+          }
+        </div>
+      }
+
+      <div class="consentimientos">
+        <label class="casilla">
+          <input type="checkbox" formControlName="aceptaTerminos" />
+          <span>
+            {{ 'perfil.completar.terminosInicio' | transloco }}
+            <a routerLink="/terminos" target="_blank" rel="noopener">{{ 'perfil.completar.terminos' | transloco }}</a>
+            {{ 'perfil.completar.terminosY' | transloco }}
+            <a routerLink="/privacidad" target="_blank" rel="noopener">{{ 'perfil.completar.privacidad' | transloco }}</a>
+            {{ 'perfil.completar.terminosFin' | transloco: { version: version() } }}
+          </span>
+        </label>
+        @if (error('aceptaTerminos')) {
+          <p class="campo__error" role="alert">{{ 'perfil.errores.terminos' | transloco }}</p>
+        }
+
+        <label class="casilla">
+          <input type="checkbox" formControlName="autorizaAnalisisIa" />
+          <span>{{ 'perfil.completar.ia' | transloco }}</span>
+        </label>
+        @if (error('autorizaAnalisisIa')) {
+          <p class="campo__error" role="alert">{{ 'perfil.errores.ia' | transloco }}</p>
+        }
+      </div>
+
+      @if (errorEnvio()) {
+        <p class="campo__error" role="alert">{{ 'perfil.errores.guardar' | transloco }}</p>
+      }
+    </div>
+
+    <footer class="pie">
+      <button type="button" class="boton boton--texto" (click)="salir.emit()">{{ 'app.cerrarSesion' | transloco }}</button>
+      <button type="submit" class="boton boton--primario" [disabled]="enviando()">
+        {{ (enviando() ? 'perfil.completar.guardando' : 'perfil.completar.continuar') | transloco }}
+      </button>
+    </footer>
+  </form>
+</dialog>

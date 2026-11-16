@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, computed, effect, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { HojaDeVidaSubidaServicio } from '../../../core/hoja-de-vida/hoja-de-vida-subida.servicio';
 import { HojaDeVidaServicio } from '../../../core/hoja-de-vida/hoja-de-vida.servicio';
+import { PerfilServicio } from '../../../core/perfil/perfil.servicio';
+import { FechaCortaPipe } from '../../../shared/fecha-corta/fecha-corta.pipe';
 import { Icono } from '../../../shared/icono/icono';
 import { MigasHoja } from '../componentes/migas-hoja';
 
@@ -11,7 +13,7 @@ import { MigasHoja } from '../componentes/migas-hoja';
 @Component({
   selector: 'app-subir',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, TranslocoPipe, Icono, MigasHoja],
+  imports: [RouterLink, TranslocoPipe, Icono, MigasHoja, FechaCortaPipe],
   templateUrl: './subir.html',
   styleUrl: './subir.scss',
 })
@@ -20,10 +22,11 @@ export class Subir implements OnDestroy {
   private readonly resumen = inject(HojaDeVidaServicio);
   protected readonly subida = inject(HojaDeVidaSubidaServicio);
 
-  /** RF-93: sin esta autorización no se puede subir. Puede venir ya marcada desde «Primera vez». */
-  protected readonly autorizado = signal(
-    this.router.currentNavigation()?.extras.state?.['autorizado'] === true,
-  );
+  private readonly perfil = inject(PerfilServicio);
+
+  /** RF-93: la autorización de análisis con IA se da en el primer ingreso y se puede revocar en Mi perfil. */
+  protected readonly autorizacion = computed(() => this.perfil.estado()?.analisisIa ?? null);
+  protected readonly autorizado = computed(() => this.autorizacion() !== null);
   protected readonly arrastrando = signal(false);
 
   protected readonly erroresPasos = [1, 2, 3] as const;
@@ -42,10 +45,6 @@ export class Subir implements OnDestroy {
 
   ngOnDestroy(): void {
     this.subida.cancelar();
-  }
-
-  protected cambiarAutorizacion(evento: Event): void {
-    this.autorizado.set((evento.target as HTMLInputElement).checked);
   }
 
   protected elegido(evento: Event): void {

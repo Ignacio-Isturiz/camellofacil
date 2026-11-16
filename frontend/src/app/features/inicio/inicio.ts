@@ -62,6 +62,8 @@ export class Inicio {
 
   constructor() {
     this.servicio.cargarTodo();
+    // Para saber cuáles recomendadas ya están guardadas.
+    this.vacantes.cargar();
   }
 
   protected alternarGuardada(id: string): void {

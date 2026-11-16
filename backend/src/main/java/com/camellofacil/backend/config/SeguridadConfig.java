@@ -1,6 +1,8 @@
 package com.camellofacil.backend.config;
 
 import com.camellofacil.backend.auth.app.ServicioOidcMicrosoft;
+import com.camellofacil.backend.auth.app.SesionActual;
+import com.camellofacil.backend.perfil.app.PerfilService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -45,6 +48,8 @@ public class SeguridadConfig {
             HttpSecurity http,
             ServicioOidcMicrosoft servicioMicrosoft,
             ClientRegistrationRepository registros,
+            SesionActual sesion,
+            PerfilService perfiles,
             @Value("${camellofacil.frontend-url}") String frontendUrl) throws Exception {
         http
             .cors(Customizer.withDefaults())
@@ -53,6 +58,8 @@ public class SeguridadConfig {
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
             .addFilterAfter(new CookieCsrfFilter(), CsrfFilter.class)
+            // Sin el perfil del primer ingreso completo, la API solo permite completarlo.
+            .addFilterAfter(new PerfilCompletoFilter(sesion, perfiles), AuthorizationFilter.class)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/api/v1/conexion", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated())

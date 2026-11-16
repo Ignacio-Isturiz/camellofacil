@@ -101,6 +101,37 @@ export const routes: Routes = [
       },
     ],
   },
+  // Mi perfil: datos, lo que falta completar (hoja de vida base) y privacidad.
+  {
+    path: 'perfil',
+    canActivate: [exigirSesion],
+    loadComponent: () => import('./shared/marco-aplicacion/marco-aplicacion').then((m) => m.MarcoAplicacion),
+    children: [
+      {
+        path: '',
+        title: 'Mi perfil · Camello Fácil',
+        loadComponent: () => import('./features/perfil/mi-perfil/mi-perfil').then((m) => m.MiPerfil),
+      },
+      {
+        path: 'editar',
+        title: 'Editar perfil · Camello Fácil',
+        loadComponent: () => import('./features/perfil/editar-perfil/editar-perfil').then((m) => m.EditarPerfil),
+      },
+    ],
+  },
+  // Documentos legales (públicos). Borrador 1.0, pendiente de revisión legal.
+  {
+    path: 'terminos',
+    title: 'Términos y condiciones · Camello Fácil',
+    data: { documento: 'terminos' },
+    loadComponent: () => import('./features/legal/documento-legal').then((m) => m.DocumentoLegal),
+  },
+  {
+    path: 'privacidad',
+    title: 'Política de privacidad · Camello Fácil',
+    data: { documento: 'privacidad' },
+    loadComponent: () => import('./features/legal/documento-legal').then((m) => m.DocumentoLegal),
+  },
   // Historial de clics en «Postular».
   {
     path: 'postulaciones',
@@ -114,6 +145,6 @@ export const routes: Routes = [
       },
     ],
   },
-  // Aún no existen /contacto, /terminos ni /privacidad: vuelven al inicio. Quitar al agregarlas.
+  // Aún no existe /contacto: vuelve al inicio. Quitar al agregarla.
   { path: '**', redirectTo: '' },
 ];

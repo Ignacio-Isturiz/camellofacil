@@ -48,8 +48,9 @@ export interface Observacion {
 
 export interface HojaBase {
   archivo: ArchivoHoja;
-  harvard: Puntaje;
-  ats: PuntajeAts;
+  /** null mientras no exista el análisis Harvard / ATS (llega en una etapa siguiente). */
+  harvard: Puntaje | null;
+  ats: PuntajeAts | null;
   opcionesAts: readonly OpcionAts[];
   observaciones: readonly Observacion[];
 }
@@ -99,14 +100,15 @@ export type EstadoCarga = 'cargando' | 'listo' | 'error';
 
 // ---------- Subida y análisis ----------
 
-export type EtapaAnalisis = 'analizando' | 'listo' | 'ilegible';
+/** `error`: el análisis falló varias veces de nuestro lado (no es culpa del archivo). */
+export type EtapaAnalisis = 'analizando' | 'listo' | 'ilegible' | 'error';
 
 export interface AvanceAnalisis {
   estado: EtapaAnalisis;
 }
 
 /** Por qué falló una subida (los cuatro primeros se detectan en el cliente o los devuelve el servidor). */
-export type ErrorSubida = 'formato' | 'peso' | 'ilegible' | 'conexion' | 'servidor';
+export type ErrorSubida = 'formato' | 'peso' | 'ilegible' | 'conexion' | 'servidor' | 'autorizacion';
 
 // ---------- Datos extraídos del archivo ----------
 

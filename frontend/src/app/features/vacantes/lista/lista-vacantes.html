@@ -107,6 +107,9 @@
     } @else if (estado() === 'error') {
       <div class="vacio tarjeta" role="alert">
         <p>{{ 'vacantes.lista.error' | transloco }}</p>
+        <button type="button" class="boton boton--borde boton--pequeno" (click)="reintentar()">
+          {{ 'vacantes.lista.reintentar' | transloco }}
+        </button>
       </div>
     } @else if (total() === 0) {
       <div class="vacio tarjeta">
@@ -123,7 +126,6 @@
               [vacante]="v"
               [guardada]="guardadas().has(v.id)"
               (guardar)="guardar(v.id)"
-              (ocultar)="ocultar(v.id)"
             />
           </li>
         }

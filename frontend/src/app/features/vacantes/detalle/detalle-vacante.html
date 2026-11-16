@@ -1,6 +1,11 @@
-@if (estado() === 'listo' && !vacante()) {
-  <div class="tarjeta no-encontrada">
-    <h1>{{ 'vacantes.detalle.noEncontrada' | transloco }}</h1>
+@if (estado() === 'no-encontrada' || estado() === 'error') {
+  <div class="tarjeta no-encontrada" role="alert">
+    <h1>{{ (estado() === 'error' ? 'vacantes.detalle.error' : 'vacantes.detalle.noEncontrada') | transloco }}</h1>
+    @if (estado() === 'error') {
+      <button type="button" class="boton boton--borde boton--pequeno" (click)="reintentar()">
+        {{ 'vacantes.lista.reintentar' | transloco }}
+      </button>
+    }
     <a routerLink="/vacantes" class="boton boton--primario boton--pequeno">{{ 'vacantes.detalle.volver' | transloco }}</a>
   </div>
 } @else {
@@ -21,7 +26,9 @@
             <div>
               <p class="empresa__nombre">{{ v.empresa }}</p>
               <p class="empresa__fuente">
-                {{ 'vacantes.detalle.via' | transloco: { fuente: v.fuente } }} ·
+                @if (v.fuente) {
+                  {{ 'vacantes.detalle.via' | transloco: { fuente: v.fuente } }} ·
+                }
                 @switch (v.dias) {
                   @case (0) { {{ 'vacantes.detalle.publicadaHoy' | transloco }} }
                   @case (1) { {{ 'vacantes.detalle.publicadaAyer' | transloco }} }
@@ -33,17 +40,22 @@
           <h1>{{ v.cargo }}</h1>
           <div class="cabecera__etiquetas">
             <span class="etiqueta">{{ 'vacantes.detalle.tipo.' + v.tipo | transloco }}</span>
-            <span class="etiqueta etiqueta--exito">
-              <app-icono nombre="check" style="--tam: 13px" />
-              {{ 'vacantes.tarjeta.coincidencia' | transloco: { n: v.coincidencia } }}
-            </span>
-            <span class="etiqueta etiqueta--neutra"><app-icono nombre="pin" style="--tam: 13px" />{{ v.ciudad }}</span>
+            @if (v.coincidencia !== null) {
+              <span class="etiqueta etiqueta--exito">
+                <app-icono nombre="check" style="--tam: 13px" />
+                {{ 'vacantes.tarjeta.coincidencia' | transloco: { n: v.coincidencia } }}
+              </span>
+            }
+            @if (v.ciudad) {
+              <span class="etiqueta etiqueta--neutra"><app-icono nombre="pin" style="--tam: 13px" />{{ v.ciudad }}</span>
+            }
             <span class="etiqueta etiqueta--neutra">
               <app-icono nombre="maletin" style="--tam: 13px" />{{ 'vacantes.modalidad.' + v.modalidad | transloco }}
             </span>
           </div>
         </section>
 
+        @if (v.razones.length > 0) {
         <section class="tarjeta bloque" aria-labelledby="por-que">
           <h2 id="por-que">{{ 'vacantes.detalle.porQue' | transloco }}</h2>
           <ul class="razones">
@@ -58,24 +70,33 @@
             }
           </ul>
         </section>
+        }
 
         <section class="tarjeta bloque" aria-labelledby="sobre">
           <h2 id="sobre">{{ 'vacantes.detalle.sobre.' + v.tipo | transloco }}</h2>
-          <p class="texto">{{ v.descripcion }}</p>
+          @if (v.descripcion) {
+            <p class="texto texto--parrafos">{{ v.descripcion }}</p>
+          } @else {
+            <p class="texto">{{ 'vacantes.detalle.sinDescripcion' | transloco }}</p>
+          }
 
-          <h3>{{ 'vacantes.detalle.responsabilidades' | transloco }}</h3>
-          <ul class="puntos">
-            @for (t of v.responsabilidades; track t) {
-              <li>{{ t }}</li>
-            }
-          </ul>
+          @if (v.responsabilidades.length > 0) {
+            <h3>{{ 'vacantes.detalle.responsabilidades' | transloco }}</h3>
+            <ul class="puntos">
+              @for (t of v.responsabilidades; track $index) {
+                <li>{{ t }}</li>
+              }
+            </ul>
+          }
 
-          <h3>{{ 'vacantes.detalle.requisitos' | transloco }}</h3>
-          <ul class="puntos">
-            @for (t of v.requisitos; track t) {
-              <li>{{ t }}</li>
-            }
-          </ul>
+          @if (v.requisitos.length > 0) {
+            <h3>{{ 'vacantes.detalle.requisitos' | transloco }}</h3>
+            <ul class="puntos">
+              @for (t of v.requisitos; track $index) {
+                <li>{{ t }}</li>
+              }
+            </ul>
+          }
         </section>
       </div>
     } @else {
@@ -88,7 +109,6 @@
       [lista]="!!vacante()"
       [guardada]="guardada()"
       (guardar)="guardar()"
-      (ocultar)="ocultar()"
     />
   </div>
 }

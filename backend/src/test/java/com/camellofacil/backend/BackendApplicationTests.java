@@ -7,31 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.postgresql.PostgreSQLContainer;
 
-/** Integración con Postgres real: arranca la app, corre Flyway y llama al endpoint de conexión. */
-@SpringBootTest(properties = {
-    // Valores ficticios: las pruebas no hablan con Microsoft
-    "camellofacil.microsoft.client-id=cliente-de-prueba",
-    "camellofacil.microsoft.client-secret=secreto-de-prueba",
-    "camellofacil.microsoft.tenant-id=00000000-0000-0000-0000-000000000000"
-})
-@AutoConfigureMockMvc
-@Testcontainers
-class BackendApplicationTests {
-
-    @Container
-    @ServiceConnection
-    static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:17");
-
-    @Autowired
-    MockMvc mockMvc;
+/** Integración con Postgres real: arranca la app, corre Flyway y revisa la seguridad básica. */
+class BackendApplicationTests extends PruebaIntegracion {
 
     @Test
     void endpointDeConexionResponde() throws Exception {
