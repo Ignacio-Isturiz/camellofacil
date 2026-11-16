@@ -92,25 +92,24 @@
       }
     }
 
-    <div class="autorizacion" [class.autorizacion--bloqueada]="subida.estado() === 'subiendo' || subida.estado() === 'analizando'">
+    <div class="autorizacion">
       <app-icono nombre="escudo" style="--tam: 18px" />
       <div>
         <p>
           <strong>{{ 'hoja.subir.antes' | transloco }}</strong>
           {{ 'hoja.subir.antesDetalle' | transloco }}
         </p>
-        <label class="casilla">
-          <input
-            type="checkbox"
-            [checked]="autorizado()"
-            [disabled]="subida.estado() === 'subiendo' || subida.estado() === 'analizando'"
-            (change)="cambiarAutorizacion($event)"
-          />
-          <span>
-            {{ 'hoja.subir.autorizo' | transloco }}
-            <a routerLink="/privacidad">{{ 'hoja.subir.leerPolitica' | transloco }}</a>
-          </span>
-        </label>
+        @if (autorizacion(); as a) {
+          <p class="autorizacion__estado">
+            {{ 'hoja.subir.autorizado' | transloco: { fecha: (a.otorgadoEn | fechaCorta) } }}
+            <a routerLink="/perfil">{{ 'hoja.subir.miPerfil' | transloco }}</a>.
+          </p>
+        } @else {
+          <p class="autorizacion__estado">
+            {{ 'hoja.subir.sinAutorizacion' | transloco }}
+            <a routerLink="/perfil">{{ 'hoja.subir.activar' | transloco }}</a>
+          </p>
+        }
       </div>
     </div>
   </section>

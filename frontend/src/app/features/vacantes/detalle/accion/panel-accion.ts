@@ -36,7 +36,6 @@ export class PanelAccion {
   readonly lista = input(false);
   readonly guardada = input(false);
   readonly guardar = output<void>();
-  readonly ocultar = output<void>();
 
   private readonly dialogoAdaptar = viewChild.required<DialogoAdaptar>('dlgAdaptar');
   private readonly dialogoPostular = viewChild.required<DialogoPostular>('dlgPostular');

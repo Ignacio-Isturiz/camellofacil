@@ -1,0 +1,133 @@
+:host {
+  display: contents;
+}
+
+.caja {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: var(--blanco);
+  color: var(--tinta);
+  box-shadow: var(--sombra-2);
+}
+.caja::backdrop {
+  background: rgb(28 27 26 / 60%);
+}
+
+.contenido {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  max-height: calc(100dvh - 32px);
+}
+
+.cabecera {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid var(--gris-100);
+}
+h2 {
+  font-size: 22px;
+  line-height: 28px;
+}
+.bajada {
+  color: var(--gris-600);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.cuerpo {
+  display: grid;
+  gap: 18px;
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.opciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.opcion {
+  position: relative;
+  cursor: pointer;
+}
+.opcion input {
+  position: absolute;
+  opacity: 0;
+}
+.opcion span {
+  display: grid;
+  place-items: center;
+  min-height: 48px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 12px;
+  font: 600 15px/20px var(--fuente-texto);
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+.opcion input:checked + span {
+  border-color: var(--rojo);
+  background: var(--rojo-50);
+  color: var(--rojo);
+}
+.opcion input:focus-visible + span {
+  box-shadow: 0 0 0 3px rgb(203 179 91 / 35%);
+}
+
+select.campo__entrada {
+  cursor: pointer;
+}
+
+.consentimientos {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--gris-100);
+}
+
+.enlace {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--rojo);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--gris-100);
+}
+
+/* Móvil: hoja que ocupa casi toda la pantalla. */
+@media (max-width: 599px) {
+  .caja {
+    width: 100vw;
+    max-width: 100vw;
+    margin: auto 0 0;
+    border-radius: 20px 20px 0 0;
+  }
+  .cabecera,
+  .cuerpo,
+  .pie {
+    padding-inline: 16px;
+  }
+}

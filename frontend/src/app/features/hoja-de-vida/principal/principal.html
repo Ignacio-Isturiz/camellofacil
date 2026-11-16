@@ -60,6 +60,7 @@
         [puntaje]="servicio.puntajeAts()"
         [cargando]="servicio.estadoPuntajeAts() === 'cargando'"
       >
+        @if (h.opcionesAts.length > 0) {
         <div class="opcion-ats">
           <label for="opcion-ats">{{ 'hoja.principal.opcionAts' | transloco }}</label>
           <select id="opcion-ats" class="seleccion" (change)="cambiarOpcionAts($event)">
@@ -71,6 +72,7 @@
             <p class="opcion-ats__error" role="alert">{{ 'hoja.principal.errorAts' | transloco }}</p>
           }
         </div>
+        }
       </app-tarjeta-puntaje>
     </div>
 

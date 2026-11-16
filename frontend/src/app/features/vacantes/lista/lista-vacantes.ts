@@ -13,7 +13,7 @@ type Orden = 'relevantes' | 'recientes';
 const POR_PAGINA = 4;
 const LIMITE_DIAS: Record<Fecha, number> = { cualquiera: Infinity, hoy: 0, semana: 7, mes: 30 };
 
-/** /vacantes — búsqueda, pestañas por tipo, filtros y lista. Todo el filtrado se hace en el cliente sobre los datos de muestra. */
+/** /vacantes — búsqueda, filtros y lista. El API manda las vacantes abiertas más recientes y el filtrado se hace aquí. */
 @Component({
   selector: 'app-lista-vacantes',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,14 +41,20 @@ export class ListaVacantes {
   protected readonly visibles = signal(POR_PAGINA);
   protected readonly filtrosAbiertos = signal(false);
 
+  constructor() {
+    this.servicio.cargar();
+  }
+
+  protected reintentar(): void {
+    this.servicio.cargar(true);
+  }
+
   /** Solo se muestran prácticas (la plataforma es para practicantes). Los demás filtros se aplican encima. */
   private readonly candidatas = computed(() => {
     const texto = normalizar(this.busqueda());
-    const ocultas = this.servicio.ocultas();
     return this.servicio.todas().filter(
       (v) =>
         v.tipo === 'practica' &&
-        !ocultas.has(v.id) &&
         (texto === '' || coincideTexto(v, texto)) &&
         (this.carrera() === 'todas' || v.carreras.includes(this.carrera())) &&
         this.modalidades().has(v.modalidad) &&
@@ -58,7 +64,8 @@ export class ListaVacantes {
 
   private readonly resultados = computed(() => {
     return [...this.candidatas()].sort((a, b) =>
-      this.orden() === 'recientes' ? a.dias - b.dias : b.coincidencia - a.coincidencia,
+      // Sin puntaje de coincidencia (llega con las recomendaciones), «relevantes» ordena por fecha.
+      this.orden() === 'recientes' ? a.dias - b.dias : (b.coincidencia ?? 0) - (a.coincidencia ?? 0) || a.dias - b.dias,
     );
   });
 
@@ -99,10 +106,6 @@ export class ListaVacantes {
     this.servicio.alternarGuardada(id);
   }
 
-  protected ocultar(id: string): void {
-    this.servicio.ocultar(id);
-  }
-
   protected valor(evento: Event): string {
     return (evento.target as HTMLInputElement | HTMLSelectElement).value;
   }
@@ -120,5 +123,5 @@ function normalizar(texto: string): string {
 }
 
 function coincideTexto(v: Vacante, texto: string): boolean {
-  return normalizar(`${v.cargo} ${v.empresa} ${v.descripcion}`).includes(texto);
+  return normalizar(`${v.cargo} ${v.empresa} ${v.ciudad ?? ''}`).includes(texto);
 }

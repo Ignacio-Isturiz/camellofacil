@@ -1,0 +1,105 @@
+:host {
+  display: grid;
+  gap: 16px;
+  max-width: 720px;
+  margin-inline: auto;
+  padding-block: 24px 32px;
+}
+
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  font: 600 13px/20px var(--fuente-texto);
+  text-decoration: none;
+}
+.volver:hover {
+  color: var(--rojo);
+}
+
+h1 {
+  font-size: 26px;
+  line-height: 32px;
+}
+h2 {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.formulario {
+  display: grid;
+  gap: 16px;
+}
+.bloque {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.campo__caja--fija {
+  background: var(--gris-100);
+}
+select.campo__entrada {
+  cursor: pointer;
+}
+
+.opciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.opcion,
+.chip {
+  position: relative;
+  cursor: pointer;
+}
+.opcion input,
+.chip input {
+  position: absolute;
+  opacity: 0;
+}
+.opcion span {
+  display: grid;
+  place-items: center;
+  min-height: 48px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 12px;
+  font: 600 15px/20px var(--fuente-texto);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 999px;
+  font: 600 14px/20px var(--fuente-texto);
+}
+.opcion input:checked + span,
+.chip input:checked + span {
+  border-color: var(--rojo);
+  background: var(--rojo-50);
+  color: var(--rojo);
+}
+.opcion input:focus-visible + span,
+.chip input:focus-visible + span {
+  box-shadow: 0 0 0 3px rgb(203 179 91 / 35%);
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
+import { PerfilServicio } from '../../../core/perfil/perfil.servicio';
 import { Icono, NombreIcono } from '../../../shared/icono/icono';
 import { MiniaturaPlantilla } from '../componentes/miniatura-plantilla';
 
@@ -24,8 +25,9 @@ export class PrimeraVez {
   readonly sinConfirmar = input(false);
   readonly pendientes = input<number | null>(null);
 
-  /** RF-93: sin esta autorización la zona de carga queda desactivada. */
-  protected readonly autorizado = signal(false);
+  /** RF-93: sin la autorización de IA (primer ingreso / Mi perfil) la zona de carga queda desactivada. */
+  private readonly perfil = inject(PerfilServicio);
+  protected readonly autorizado = computed(() => !!this.perfil.estado()?.analisisIa);
 
   protected readonly pasos: readonly { clave: 'sube' | 'confirma' | 'recibe'; icono: NombreIcono }[] = [
     { clave: 'sube', icono: 'subir' },
@@ -39,13 +41,9 @@ export class PrimeraVez {
     { clave: 'vacantes' },
   ];
 
-  protected cambiarAutorizacion(evento: Event): void {
-    this.autorizado.set((evento.target as HTMLInputElement).checked);
-  }
-
-  /** La subida del archivo se hace en /hoja-de-vida/subir; la autorización viaja en el estado de la navegación. */
+  /** La subida del archivo se hace en /hoja-de-vida/subir. */
   protected elegirArchivo(): void {
     if (!this.autorizado()) return;
-    void this.router.navigate(['/hoja-de-vida/subir'], { state: { autorizado: true } });
+    void this.router.navigate(['/hoja-de-vida/subir']);
   }
 }

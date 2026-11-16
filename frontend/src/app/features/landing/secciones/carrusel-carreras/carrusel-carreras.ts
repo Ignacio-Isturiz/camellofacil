@@ -21,6 +21,7 @@ const CARRERAS: readonly Carrera[] = [
   { clave: 'informatica', icono: 'codigo' },
   { clave: 'industrial', icono: 'engranaje' },
   { clave: 'datos', icono: 'datos' },
+  { clave: 'sociales', icono: 'birrete' },
 ];
 
 /** Carrusel continuo con las carreras cubiertas. Nunca se detiene. */

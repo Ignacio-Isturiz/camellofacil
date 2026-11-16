@@ -1,0 +1,173 @@
+<h1 class="solo-lectores">{{ 'perfil.titulo' | transloco }}</h1>
+
+@if (estado(); as e) {
+  <section class="cabeza tarjeta">
+    <span class="avatar" aria-hidden="true">{{ iniciales() }}</span>
+    <div class="cabeza__texto">
+      <p class="cabeza__nombre">{{ e.nombre }}</p>
+      <p class="cabeza__correo">{{ e.correo }}</p>
+      @if (datos(); as d) {
+        <p class="cabeza__tipo">
+          {{ 'perfil.tipo.' + d.tipo | transloco }}
+          @if (d.semestre) {
+            · {{ 'perfil.campos.semestreN' | transloco: { n: d.semestre } }}
+          }
+        </p>
+      }
+    </div>
+  </section>
+
+  <section class="completar tarjeta" aria-labelledby="completar-titulo">
+    <div class="completar__cabeza">
+      <h2 id="completar-titulo">{{ 'perfil.pendientes.titulo' | transloco }}</h2>
+      <span class="etiqueta">{{ 'perfil.pendientes.progreso' | transloco: { hechos: hechos(), total: total() } }}</span>
+    </div>
+    <div class="barra" role="progressbar" [attr.aria-valuenow]="hechos()" aria-valuemin="0" [attr.aria-valuemax]="total()">
+      <span [style.width.%]="(hechos() / total()) * 100"></span>
+    </div>
+    <ul class="pasos">
+      <li class="paso paso--hecho">
+        <span class="paso__marca"><app-icono nombre="check" style="--tam: 16px" /></span>
+        <div class="paso__texto">
+          <p class="paso__titulo">{{ 'perfil.pendientes.datos' | transloco }}</p>
+        </div>
+      </li>
+      @for (p of pendientes(); track p.clave) {
+        <li class="paso" [class.paso--hecho]="p.hecho">
+          <span class="paso__marca">
+            @if (p.hecho) {
+              <app-icono nombre="check" style="--tam: 16px" />
+            }
+          </span>
+          <div class="paso__texto">
+            <p class="paso__titulo">{{ 'perfil.pendientes.' + p.clave + '.titulo' | transloco }}</p>
+            @if (!p.hecho) {
+              <p class="paso__detalle">{{ 'perfil.pendientes.' + p.clave + '.detalle' | transloco }}</p>
+              <a [routerLink]="p.ruta" class="boton boton--pequeno" [class.boton--primario]="p.clave === 'hoja'" [class.boton--borde]="p.clave !== 'hoja'">
+                {{ 'perfil.pendientes.' + p.clave + '.accion' | transloco }}
+              </a>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="grupo" aria-labelledby="cuenta-titulo">
+    <h2 id="cuenta-titulo" class="grupo__titulo">{{ 'perfil.cuenta.titulo' | transloco }}</h2>
+    <div class="tarjeta lista">
+      <a routerLink="/perfil/editar" class="fila">
+        <app-icono nombre="usuario" style="--tam: 20px" />
+        <span class="fila__texto">
+          <span class="fila__titulo">{{ 'perfil.cuenta.datos' | transloco }}</span>
+          @if (datos(); as d) {
+            <span class="fila__detalle">{{ d.carrera.nombre }}</span>
+          }
+        </span>
+        <app-icono nombre="chevron-der" style="--tam: 18px" />
+      </a>
+      <a routerLink="/perfil/editar" class="fila">
+        <app-icono nombre="filtros" style="--tam: 20px" />
+        <span class="fila__texto">
+          <span class="fila__titulo">{{ 'perfil.cuenta.preferencias' | transloco }}</span>
+          <span class="fila__detalle">
+            @if (tienePreferencias() && datos(); as d) {
+              @for (m of d.modalidades; track m; let ultimo = $last) {
+                {{ 'perfil.modalidad.' + m | transloco }}{{ ultimo ? '' : ', ' }}
+              }
+              @if (d.disponibilidad) {
+                · {{ 'perfil.disponibilidad.' + d.disponibilidad | transloco }}
+              }
+            } @else {
+              {{ 'perfil.cuenta.sinPreferencias' | transloco }}
+            }
+          </span>
+        </span>
+        <app-icono nombre="chevron-der" style="--tam: 18px" />
+      </a>
+    </div>
+  </section>
+
+  <section class="grupo" aria-labelledby="privacidad-titulo">
+    <h2 id="privacidad-titulo" class="grupo__titulo">{{ 'perfil.privacidad.titulo' | transloco }}</h2>
+    <div class="tarjeta lista">
+      <a routerLink="/terminos" class="fila">
+        <app-icono nombre="escudo" style="--tam: 20px" />
+        <span class="fila__texto">
+          <span class="fila__titulo">{{ 'perfil.privacidad.terminos' | transloco }}</span>
+          @if (e.terminos; as t) {
+            <span class="fila__detalle">
+              {{ 'perfil.privacidad.aceptados' | transloco: { version: t.version, fecha: (t.otorgadoEn | fechaCorta) } }}
+            </span>
+          }
+        </span>
+        <app-icono nombre="chevron-der" style="--tam: 18px" />
+      </a>
+
+      <div class="fila fila--estatica">
+        <app-icono nombre="rayo" style="--tam: 20px" />
+        <span class="fila__texto">
+          <span class="fila__titulo">{{ 'perfil.privacidad.ia' | transloco }}</span>
+          <span class="fila__detalle">
+            @if (e.analisisIa; as ia) {
+              {{ 'perfil.privacidad.iaActiva' | transloco: { fecha: (ia.otorgadoEn | fechaCorta) } }}
+            } @else {
+              {{ 'perfil.privacidad.iaInactiva' | transloco }}
+            }
+          </span>
+          @if (confirmandoRevocar()) {
+            <span class="confirmar" role="alert">
+              {{ 'perfil.privacidad.confirmarRevocar' | transloco }}
+              <span class="confirmar__botones">
+                <button type="button" class="boton boton--borde boton--pequeno" (click)="confirmandoRevocar.set(false)">
+                  {{ 'perfil.cancelar' | transloco }}
+                </button>
+                <button type="button" class="boton boton--primario boton--pequeno" [disabled]="cambiandoIa()" (click)="cambiarIa(false)">
+                  {{ 'perfil.privacidad.revocar' | transloco }}
+                </button>
+              </span>
+            </span>
+          }
+        </span>
+        @if (!confirmandoRevocar()) {
+          @if (e.analisisIa) {
+            <button type="button" class="boton boton--texto boton--pequeno" (click)="confirmandoRevocar.set(true)">
+              {{ 'perfil.privacidad.revocar' | transloco }}
+            </button>
+          } @else {
+            <button type="button" class="boton boton--texto boton--pequeno" [disabled]="cambiandoIa()" (click)="cambiarIa(true)">
+              {{ 'perfil.privacidad.activar' | transloco }}
+            </button>
+          }
+        }
+      </div>
+
+      <div class="fila fila--estatica fila--apagada">
+        <app-icono nombre="ojo" style="--tam: 20px" />
+        <span class="fila__texto">
+          <span class="fila__titulo">{{ 'perfil.privacidad.verDatos' | transloco }}</span>
+          <span class="fila__detalle">{{ 'perfil.privacidad.verDatosDetalle' | transloco }}</span>
+        </span>
+        <span class="etiqueta">{{ 'app.proximamente' | transloco }}</span>
+      </div>
+      <div class="fila fila--estatica fila--apagada">
+        <app-icono nombre="descargar" style="--tam: 20px" />
+        <span class="fila__texto">
+          <span class="fila__titulo">{{ 'perfil.privacidad.descargar' | transloco }}</span>
+          <span class="fila__detalle">{{ 'perfil.privacidad.descargarDetalle' | transloco }}</span>
+        </span>
+        <span class="etiqueta">{{ 'app.proximamente' | transloco }}</span>
+      </div>
+    </div>
+    <p class="nota">{{ 'perfil.privacidad.nota' | transloco }}</p>
+  </section>
+
+  <button type="button" class="boton boton--borde boton--ancho salir" (click)="cerrarSesion()">
+    {{ 'app.cerrarSesion' | transloco }}
+  </button>
+} @else {
+  <div class="cargando" aria-busy="true">
+    <div class="tarjeta hueco"></div>
+    <div class="tarjeta hueco"></div>
+  </div>
+}

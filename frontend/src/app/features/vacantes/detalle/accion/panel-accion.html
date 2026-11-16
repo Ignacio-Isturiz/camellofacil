@@ -48,9 +48,6 @@
         <app-icono nombre="guardar" style="--tam: 18px" />
         {{ (guardada() ? 'vacantes.detalle.guardada' : 'vacantes.detalle.guardar') | transloco }}
       </button>
-      <button type="button" class="boton boton--borde boton--pequeno" [disabled]="!lista()" (click)="ocultar.emit()">
-        <app-icono nombre="ojo-cerrado" style="--tam: 18px" />{{ 'vacantes.detalle.ocultar' | transloco }}
-      </button>
       <button type="button" class="boton boton--borde boton--pequeno" [disabled]="!lista()">
         <app-icono nombre="bandera" style="--tam: 18px" />{{ 'vacantes.detalle.reportar' | transloco }}
       </button>

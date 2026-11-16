@@ -1,0 +1,110 @@
+<a routerLink="/perfil" class="volver">
+  <app-icono nombre="chevron-izq" style="--tam: 16px" />
+  {{ 'perfil.editar.volver' | transloco }}
+</a>
+
+<h1>{{ 'perfil.editar.titulo' | transloco }}</h1>
+
+<form class="formulario" [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+  <section class="tarjeta bloque" aria-labelledby="datos-titulo">
+    <h2 id="datos-titulo">{{ 'perfil.cuenta.datos' | transloco }}</h2>
+
+    <div class="campo">
+      <label class="campo__etiqueta" for="editar-nombre">{{ 'perfil.campos.nombre' | transloco }}</label>
+      <div class="campo__caja campo__caja--fija">
+        <input id="editar-nombre" class="campo__entrada" [value]="estado()?.nombre ?? ''" readonly />
+      </div>
+    </div>
+    <div class="campo">
+      <label class="campo__etiqueta" for="editar-correo">{{ 'perfil.campos.correo' | transloco }}</label>
+      <div class="campo__caja campo__caja--fija">
+        <input id="editar-correo" class="campo__entrada" [value]="estado()?.correo ?? ''" readonly />
+      </div>
+      <p class="campo__ayuda">{{ 'perfil.editar.correoFijo' | transloco }}</p>
+    </div>
+
+    <fieldset class="campo">
+      <legend class="campo__etiqueta">{{ 'perfil.campos.soy' | transloco }}</legend>
+      <div class="opciones">
+        <label class="opcion">
+          <input type="radio" formControlName="tipo" value="ESTUDIANTE" />
+          <span>{{ 'perfil.tipo.ESTUDIANTE' | transloco }}</span>
+        </label>
+        <label class="opcion">
+          <input type="radio" formControlName="tipo" value="EGRESADO" />
+          <span>{{ 'perfil.tipo.EGRESADO' | transloco }}</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="campo">
+      <label class="campo__etiqueta" for="editar-carrera">{{ 'perfil.campos.carrera' | transloco }}</label>
+      <div class="campo__caja" [class.campo__caja--error]="error('carrera')">
+        <select id="editar-carrera" class="campo__entrada" formControlName="carrera">
+          @for (c of carreras(); track c.codigo) {
+            <option [value]="c.codigo">{{ c.nombre }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    @if (esEstudiante()) {
+      <div class="campo">
+        <label class="campo__etiqueta" for="editar-semestre">{{ 'perfil.campos.semestre' | transloco }}</label>
+        <div class="campo__caja" [class.campo__caja--error]="error('semestre')">
+          <select id="editar-semestre" class="campo__entrada" formControlName="semestre">
+            <option [ngValue]="null" disabled>{{ 'perfil.campos.elegirSemestre' | transloco }}</option>
+            @for (n of semestres; track n) {
+              <option [ngValue]="n">{{ 'perfil.campos.semestreN' | transloco: { n } }}</option>
+            }
+          </select>
+        </div>
+        @if (error('semestre')) {
+          <p class="campo__error" role="alert">{{ 'perfil.errores.semestre' | transloco }}</p>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="tarjeta bloque" aria-labelledby="preferencias-titulo">
+    <div>
+      <h2 id="preferencias-titulo">{{ 'perfil.cuenta.preferencias' | transloco }}</h2>
+      <p class="campo__ayuda">{{ 'perfil.editar.preferenciasAyuda' | transloco }}</p>
+    </div>
+
+    <fieldset class="campo">
+      <legend class="campo__etiqueta">{{ 'perfil.campos.modalidad' | transloco }}</legend>
+      <div class="chips">
+        @for (m of modalidades; track m) {
+          <label class="chip">
+            <input type="checkbox" [checked]="marcada(m)" (change)="alternar(m)" />
+            <span>{{ 'perfil.modalidad.' + m | transloco }}</span>
+          </label>
+        }
+      </div>
+    </fieldset>
+
+    <div class="campo">
+      <label class="campo__etiqueta" for="editar-disponibilidad">{{ 'perfil.campos.disponibilidad' | transloco }}</label>
+      <div class="campo__caja">
+        <select id="editar-disponibilidad" class="campo__entrada" formControlName="disponibilidad">
+          <option [ngValue]="null">{{ 'perfil.campos.sinIndicar' | transloco }}</option>
+          @for (d of disponibilidades; track d) {
+            <option [ngValue]="d">{{ 'perfil.disponibilidad.' + d | transloco }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </section>
+
+  @if (errorEnvio()) {
+    <p class="campo__error" role="alert">{{ 'perfil.errores.guardar' | transloco }}</p>
+  }
+
+  <div class="acciones">
+    <a routerLink="/perfil" class="boton boton--borde">{{ 'perfil.cancelar' | transloco }}</a>
+    <button type="submit" class="boton boton--primario" [disabled]="enviando()">
+      {{ (enviando() ? 'perfil.completar.guardando' : 'perfil.editar.guardar') | transloco }}
+    </button>
+  </div>
+</form>

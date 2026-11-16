@@ -27,6 +27,8 @@ import { Puntaje } from '../../../core/hoja-de-vida/hoja-de-vida.modelos';
           <span class="barra__relleno" [class]="'barra__relleno barra__relleno--' + p.nivel" [style.width.%]="p.valor"></span>
         </div>
         <p class="puntaje__detalle">{{ p.detalle }}</p>
+      } @else if (!cargando()) {
+        <p class="puntaje__detalle">{{ 'hoja.principal.analisisPendiente' | transloco }}</p>
       }
       <ng-content />
     </section>

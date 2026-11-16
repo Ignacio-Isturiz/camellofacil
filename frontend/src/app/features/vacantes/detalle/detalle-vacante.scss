@@ -151,3 +151,9 @@
     gap: 24px;
   }
 }
+
+/* Las descripciones de los portales traen saltos de línea: se respetan. */
+.texto--parrafos {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}

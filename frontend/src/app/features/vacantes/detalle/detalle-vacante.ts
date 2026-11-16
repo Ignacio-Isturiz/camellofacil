@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { map } from 'rxjs';
 
@@ -19,14 +19,16 @@ import { VacantesServicio } from '../vacantes-servicio';
 })
 export class DetalleVacante {
   private readonly servicio = inject(VacantesServicio);
-  private readonly router = inject(Router);
 
   protected readonly id = toSignal(inject(ActivatedRoute).paramMap.pipe(map((p) => p.get('id') ?? '')), {
     initialValue: '',
   });
 
-  protected readonly estado = this.servicio.estado;
-  protected readonly vacante = computed(() => this.servicio.porId(this.id()));
+  protected readonly estado = this.servicio.estadoDetalle;
+  protected readonly vacante = computed(() => {
+    const d = this.servicio.detalle();
+    return d && d.id === this.id() ? d : undefined;
+  });
   protected readonly guardada = computed(() => this.servicio.guardadas().has(this.id()));
 
   protected readonly iniciales = computed(() =>
@@ -39,12 +41,19 @@ export class DetalleVacante {
       .toUpperCase(),
   );
 
-  protected guardar(): void {
-    this.servicio.alternarGuardada(this.id());
+  constructor() {
+    effect(() => {
+      const id = this.id();
+      if (id) this.servicio.cargarDetalle(id);
+    });
   }
 
-  protected ocultar(): void {
-    this.servicio.ocultar(this.id());
-    void this.router.navigate(['/vacantes']);
+  protected reintentar(): void {
+    this.servicio.detalle.set(null);
+    this.servicio.cargarDetalle(this.id());
+  }
+
+  protected guardar(): void {
+    this.servicio.alternarGuardada(this.id());
   }
 }
