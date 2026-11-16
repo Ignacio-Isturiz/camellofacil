@@ -13,7 +13,7 @@
           <app-icono nombre="guardar" class="vacante__guardar" />
         </div>
         <h3 class="vacante__cargo">
-          <a routerLink="/registro" class="vacante__enlace">{{ v.cargo }}</a>
+          <a routerLink="/login" class="vacante__enlace">{{ v.cargo }}</a>
         </h3>
         <p class="vacante__empresa">{{ v.empresa }}</p>
         <p class="vacante__lugar">
@@ -29,7 +29,7 @@
     }
   </ul>
 
-  <a routerLink="/registro" class="boton boton--primario destacadas__todas">
+  <a routerLink="/login" class="boton boton--primario destacadas__todas">
     {{ 'landing.vacantes.verTodas' | transloco }}
     <app-icono nombre="flecha" />
   </a>

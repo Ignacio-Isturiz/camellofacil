@@ -7,6 +7,7 @@ import { routes } from './app.routes';
 import { provideApiConfiguration } from './core/api/api-configuration';
 import { ultimoErrorInterceptor } from './core/http/ultimo-error';
 import { credencialesInterceptor } from './core/http/credenciales.interceptor';
+import { sesionVencidaInterceptor } from './core/sesion/sesion-vencida.interceptor';
 import { TranslocoHttpLoader } from './core/i18n/transloco-loader';
 
 export const appConfig: ApplicationConfig = {
@@ -18,7 +19,7 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
     ),
     // HttpClient ya reenvía la cookie XSRF-TOKEN como cabecera X-XSRF-TOKEN (CSRF del backend).
-    provideHttpClient(withFetch(), withInterceptors([credencialesInterceptor, ultimoErrorInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([credencialesInterceptor, sesionVencidaInterceptor, ultimoErrorInterceptor])),
     // Cliente generado desde OpenAPI. Ruta relativa: en desarrollo pasa por el proxy (proxy.conf.json).
     provideApiConfiguration(''),
     provideTransloco({

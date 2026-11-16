@@ -1,4 +1,8 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+
+import { ApiConfiguration } from '../api/api-configuration';
 
 export interface Usuario {
   correo: string;
@@ -8,64 +12,68 @@ export interface Usuario {
   carrera: string;
 }
 
-const CLAVE = 'camello.sesion-simulada';
+/** Respuesta de GET /api/v1/auth/me. */
+interface UsuarioApi {
+  correo: string;
+  nombre: string;
+}
+
+/** Ruta de «quién soy»: un 401 aquí solo significa «no hay sesión», no que haya vencido. */
+export const RUTA_YO = '/api/v1/auth/me';
 
 /**
- * SESIÓN SIMULADA, solo para poder ver y construir las pantallas de quien ya inició sesión mientras no
- * exista el módulo de autenticación del backend.
+ * Sesión de quien entró con su cuenta Microsoft de UNAULA (único medio de ingreso).
  *
- * - No autentica nada ni protege nada: cualquiera puede llamar a `iniciarSimulada()`.
- *   La seguridad real (quién ve qué) la impone el backend; este guardia solo ordena la navegación.
- * - Al integrar el backend, se reemplaza el cuerpo de este servicio (login real + cookie de sesión)
- *   y el resto de la app no cambia: usa `usuario()` / `activa()` / `cerrar()`.
+ * La sesión real vive en el backend (cookie, vence tras 8 horas sin actividad). Aquí solo se guarda en
+ * memoria quién es, para pintar la interfaz; nada personal va a localStorage ni sessionStorage.
  */
 @Injectable({ providedIn: 'root' })
 export class Sesion {
-  private readonly actual = signal<Usuario | null>(this.leer());
+  private readonly http = inject(HttpClient);
+  private readonly api = inject(ApiConfiguration);
+
+  private readonly actual = signal<Usuario | null>(null);
 
   readonly usuario = this.actual.asReadonly();
   readonly activa = computed(() => this.actual() !== null);
 
-  iniciarSimulada(correo = 'valentina.r@unaula.edu.co'): void {
-    const usuario = this.construir(correo.trim().toLowerCase());
-    this.actual.set(usuario);
-    this.guardar(usuario);
+  /** URL a la que se navega (página completa) para entrar con Microsoft. */
+  get urlMicrosoft(): string {
+    return `${this.api.rootUrl}/oauth2/authorization/microsoft`;
   }
 
-  cerrar(): void {
+  /** Pregunta al backend si hay sesión (cookie). Devuelve true si la hay. */
+  async restaurar(): Promise<boolean> {
+    try {
+      const datos = await firstValueFrom(this.http.get<UsuarioApi>(`${this.api.rootUrl}${RUTA_YO}`));
+      this.actual.set(construir(datos.correo, datos.nombre));
+      return true;
+    } catch {
+      this.actual.set(null);
+      return false;
+    }
+  }
+
+  /** Olvida la sesión en memoria (p. ej. cuando el backend responde que venció). */
+  olvidar(): void {
     this.actual.set(null);
-    this.guardar(null);
   }
 
-  private construir(correo: string): Usuario {
-    const partes = correo
-      .split('@')[0]
-      .split(/[._-]+/)
-      .filter(Boolean);
-    const nombre = partes.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join(' ') || 'Estudiante';
-    const iniciales =
-      partes.length > 1
-        ? (partes[0][0] + partes[1][0]).toUpperCase()
-        : (partes[0] ?? 'E').slice(0, 2).toUpperCase();
-    return { correo, nombre, iniciales, carrera: 'datos' };
-  }
-
-  // El almacenamiento puede no estar disponible (modo privado): la app funciona igual, sin recordar la sesión.
-  private leer(): Usuario | null {
+  async cerrar(): Promise<void> {
+    this.olvidar();
     try {
-      const crudo = sessionStorage.getItem(CLAVE);
-      return crudo ? (JSON.parse(crudo) as Usuario) : null;
+      await firstValueFrom(this.http.post(`${this.api.rootUrl}/api/v1/auth/logout`, null));
     } catch {
-      return null;
+      /* si falla, la sesión del servidor vence sola */
     }
   }
+}
 
-  private guardar(usuario: Usuario | null): void {
-    try {
-      if (usuario) sessionStorage.setItem(CLAVE, JSON.stringify(usuario));
-      else sessionStorage.removeItem(CLAVE);
-    } catch {
-      /* sin almacenamiento: se ignora */
-    }
-  }
+function construir(correo: string, nombreCompleto: string): Usuario {
+  const nombre = nombreCompleto.trim() || correo.split('@')[0];
+  const partes = nombre.split(/[\s._-]+/).filter(Boolean);
+  const iniciales =
+    partes.length > 1 ? (partes[0][0] + partes[1][0]).toUpperCase() : (partes[0] ?? 'E').slice(0, 2).toUpperCase();
+  // Pendiente: la carrera llegará del módulo de perfil.
+  return { correo, nombre, iniciales, carrera: 'datos' };
 }

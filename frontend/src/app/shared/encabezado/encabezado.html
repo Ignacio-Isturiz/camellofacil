@@ -27,15 +27,9 @@
       }}</a>
 
       <div class="nav__acceso">
-        <a routerLink="/login" class="boton boton--texto" (click)="cerrarMenu()">{{
+        <a routerLink="/login" class="boton boton--primario boton--pequeno" (click)="cerrarMenu()">{{
           'encabezado.iniciarSesion' | transloco
         }}</a>
-        <a
-          routerLink="/registro"
-          class="boton boton--primario boton--pequeno"
-          (click)="cerrarMenu()"
-          >{{ 'encabezado.crearCuenta' | transloco }}</a
-        >
       </div>
     </nav>
 
