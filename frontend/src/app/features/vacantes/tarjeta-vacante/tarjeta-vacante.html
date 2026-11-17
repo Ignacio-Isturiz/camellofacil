@@ -45,8 +45,10 @@
     >
       <app-icono nombre="guardar" style="--tam: 18px" />
     </button>
-    <a [routerLink]="['/vacantes', vacante().id]" class="boton boton--primario boton--pequeno vac__ver">
+    <button type="button" class="boton boton--primario boton--pequeno vac__ver" (click)="postular()">
       {{ 'vacantes.tarjeta.verYPostular' | transloco }}
-    </a>
+      <app-icono nombre="externo" style="--tam: 16px" />
+      <span class="solo-lectores">{{ 'postulaciones.nuevaPestana' | transloco }}</span>
+    </button>
   </div>
 </article>

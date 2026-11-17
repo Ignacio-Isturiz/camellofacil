@@ -66,6 +66,21 @@ export class Inicio {
     this.vacantes.cargar();
   }
 
+  /** Los números de página que se muestran: todos si son pocos; si no, hasta 5 alrededor de la actual. */
+  protected readonly numerosDePagina = computed(() => {
+    const r = this.servicio.resumen();
+    if (!r) return [];
+    const visibles = Math.min(5, r.totalPaginas);
+    const desde = Math.min(Math.max(0, r.pagina - 2), r.totalPaginas - visibles);
+    return Array.from({ length: visibles }, (_, i) => desde + i);
+  });
+
+  protected irAPagina(pagina: number): void {
+    const r = this.servicio.resumen();
+    if (!r || pagina < 0 || pagina >= r.totalPaginas || pagina === r.pagina) return;
+    this.servicio.cargarResumen(pagina);
+  }
+
   protected alternarGuardada(id: string): void {
     this.vacantes.alternarGuardada(id);
   }

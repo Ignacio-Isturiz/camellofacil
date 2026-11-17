@@ -1,5 +1,7 @@
 /** Contratos de postulaciones. Solo tipos: aquí no hay datos. */
 
+import { Modalidad } from '../../features/vacantes/vacante';
+
 export type TipoVacantePostulada = 'practica' | 'profesional';
 export type HojaUsada = 'base' | 'adaptada';
 export type OrdenPostulaciones = 'recientes' | 'antiguas' | 'cargoAZ' | 'cargoZA';
@@ -10,7 +12,9 @@ export interface Postulacion {
   vacanteId: string;
   cargo: string;
   empresa: string;
-  lugar: string;
+  /** null en las remotas que no dicen ciudad. */
+  ciudad: string | null;
+  modalidad: Modalidad;
   tipo: TipoVacantePostulada;
   /** ISO 8601 del último clic. */
   ultimoClicEn: string;

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal, viewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 import { Adaptacion } from '../../../../core/adaptacion/adaptacion.modelos';
@@ -28,7 +27,6 @@ export class PanelAccion {
   private readonly adaptaciones = inject(AdaptacionServicio);
   private readonly postulaciones = inject(PostulacionesServicio);
   private readonly toast = inject(ToastServicio);
-  private readonly router = inject(Router);
   private readonly i18n = inject(TranslocoService);
 
   readonly vacanteId = input.required<string>();
@@ -91,35 +89,20 @@ export class PanelAccion {
   }
 
   // ----- Postular -----
+  /**
+   * Sin hoja adaptada no hay nada que elegir: se va directo a la oferta original. Con hoja adaptada se
+   * pregunta con cuál ir. En ambos casos la pestaña se abre dentro del clic para que el navegador no la bloquee.
+   */
   protected preguntarHoja(): void {
-    this.dialogoPostular().abrir();
+    if (this.adaptacion()) this.dialogoPostular().abrir();
+    else this.postularCon('base');
   }
 
-  /** Se llama dentro del clic de «Postular»: la pestaña se abre ya y se completa al llegar la respuesta. */
   protected postularCon(hoja: HojaUsada): void {
-    this.registrarYAbrir(hoja, abrirEnBlanco());
+    this.postulaciones.postularEnVacante(this.vacanteId(), hoja, abrirEnBlanco());
   }
 
   protected postularConAdaptada(pestana: PestanaPendiente): void {
-    this.registrarYAbrir('adaptada', pestana);
-  }
-
-  private registrarYAbrir(hoja: HojaUsada, pestana: PestanaPendiente): void {
-    this.postulaciones.clicEnVacante(this.vacanteId(), hoja).subscribe({
-      next: (c) => {
-        if (!pestana.completar(c.urlOriginal)) {
-          this.toast.mostrar(this.i18n.translate('postulaciones.errorAbrir'));
-          return;
-        }
-        this.toast.mostrar(this.i18n.translate('vacantes.postular.guardado'), {
-          etiqueta: this.i18n.translate('vacantes.postular.verHistorial'),
-          alHacer: () => void this.router.navigate(['/postulaciones']),
-        });
-      },
-      error: () => {
-        pestana.cancelar();
-        this.toast.mostrar(this.i18n.translate('vacantes.postular.error'));
-      },
-    });
+    this.postulaciones.postularEnVacante(this.vacanteId(), 'adaptada', pestana);
   }
 }

@@ -76,4 +76,11 @@ public final class ModelosVacante {
 
     /** Vacantes abiertas y cuáles tiene guardadas la persona. */
     public record ListaVacantes(List<VacanteResumen> vacantes, Set<UUID> guardadas) {}
+
+    /**
+     * Lo que otro módulo necesita para registrar una postulación: los datos a mostrar y la página original de
+     * la oferta (solo http/https, ya validada al guardarla).
+     */
+    public record VacanteParaPostular(
+            UUID id, String cargo, String empresa, String ciudad, Modalidad modalidad, TipoVacante tipo, String url) {}
 }
