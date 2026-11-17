@@ -7,7 +7,7 @@ import { TipoObservacion } from '../../../core/hoja-de-vida/hoja-de-vida.modelos
 import { HojaDeVidaServicio } from '../../../core/hoja-de-vida/hoja-de-vida.servicio';
 import { FechaCortaPipe } from '../../../shared/fecha-corta/fecha-corta.pipe';
 import { Icono } from '../../../shared/icono/icono';
-import { AvisoError } from '../componentes/aviso-error';
+import { AvisoError } from '../../../shared/aviso-error/aviso-error';
 import { MiniaturaPlantilla } from '../componentes/miniatura-plantilla';
 import { TarjetaPuntaje } from '../componentes/tarjeta-puntaje';
 

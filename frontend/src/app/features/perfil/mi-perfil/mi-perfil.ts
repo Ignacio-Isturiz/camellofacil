@@ -66,7 +66,6 @@ export class MiPerfil {
   }
 
   protected cerrarSesion(): void {
-    this.perfil.olvidar();
     void this.sesion.cerrar();
     void this.router.navigate(['/']);
   }

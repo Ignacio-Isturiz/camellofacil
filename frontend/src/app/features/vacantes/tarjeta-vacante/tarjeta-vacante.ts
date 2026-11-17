@@ -5,7 +5,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { abrirEnBlanco } from '../../../core/postulaciones/pestana-externa';
 import { PostulacionesServicio } from '../../../core/postulaciones/postulaciones.servicio';
 import { Icono } from '../../../shared/icono/icono';
-import { Vacante } from '../vacante';
+import { Vacante } from '../../../core/vacantes/vacantes.modelos';
 
 /**
  * Una vacante en la lista: etiquetas, cargo, empresa, datos clave y acciones. El cargo lleva al detalle;

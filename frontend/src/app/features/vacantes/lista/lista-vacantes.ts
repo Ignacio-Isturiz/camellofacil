@@ -4,8 +4,8 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { Icono } from '../../../shared/icono/icono';
 import { EsqueletoVacante } from '../esqueleto/esqueleto-vacante';
 import { TarjetaVacante } from '../tarjeta-vacante/tarjeta-vacante';
-import { CARRERAS, Modalidad, MODALIDADES, Vacante } from '../vacante';
-import { VacantesServicio } from '../vacantes-servicio';
+import { CARRERAS, Modalidad, MODALIDADES, Vacante } from '../../../core/vacantes/vacantes.modelos';
+import { VacantesServicio } from '../../../core/vacantes/vacantes.servicio';
 
 type Fecha = 'cualquiera' | 'hoy' | 'semana' | 'mes';
 type Orden = 'relevantes' | 'recientes';

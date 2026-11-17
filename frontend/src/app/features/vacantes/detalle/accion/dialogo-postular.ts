@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, input, output, signal, viewChild } 
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { HojaUsada } from '../../../../core/postulaciones/postulaciones.modelos';
-import { Dialogo } from '../../../hoja-de-vida/componentes/dialogo';
+import { Dialogo } from '../../../../shared/dialogo/dialogo';
 
 /** Pregunta con qué hoja ir: la adaptada (si existe) o la hoja base. */
 @Component({

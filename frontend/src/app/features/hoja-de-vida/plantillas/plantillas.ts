@@ -5,17 +5,17 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import {
   CategoriaPlantilla,
   DocumentoHoja,
-  EstadoCarga,
   IdiomaHoja,
   Plantilla,
 } from '../../../core/hoja-de-vida/hoja-de-vida.modelos';
 import { HojaDeVidaServicio } from '../../../core/hoja-de-vida/hoja-de-vida.servicio';
 import { Icono } from '../../../shared/icono/icono';
-import { AvisoError } from '../componentes/aviso-error';
-import { Dialogo } from '../componentes/dialogo';
-import { DocumentoHojaComponente } from '../componentes/documento-hoja';
+import { AvisoError } from '../../../shared/aviso-error/aviso-error';
+import { Dialogo } from '../../../shared/dialogo/dialogo';
+import { DocumentoHojaComponente } from '../../../shared/documento-hoja/documento-hoja';
 import { MigasHoja } from '../componentes/migas-hoja';
 import { MiniaturaPlantilla } from '../componentes/miniatura-plantilla';
+import { EstadoCarga } from '../../../core/http/estado-carga';
 
 type Filtro = 'todas' | CategoriaPlantilla;
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, input, output, viewChild } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 
-import { Icono } from '../../../shared/icono/icono';
+import { Icono } from '../icono/icono';
 
 /**
  * Ventana de diálogo sobre el `<dialog>` nativo (foco atrapado, Esc para cerrar y fondo inerte sin código extra).

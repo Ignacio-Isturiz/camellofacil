@@ -9,7 +9,7 @@ import { OrdenPostulaciones, Postulacion } from '../../core/postulaciones/postul
 import { PostulacionesServicio } from '../../core/postulaciones/postulaciones.servicio';
 import { Icono } from '../../shared/icono/icono';
 import { ToastServicio } from '../../shared/toast/toast.servicio';
-import { AvisoError } from '../hoja-de-vida/componentes/aviso-error';
+import { AvisoError } from '../../shared/aviso-error/aviso-error';
 import { FilaPostulacion } from './fila-postulacion';
 
 /** /postulaciones — historial de las vacantes en las que la persona dio clic en «Postular». */
@@ -71,7 +71,6 @@ export class Postulaciones {
   protected quitar(p: Postulacion): void {
     this.servicio.quitar(p.id).subscribe({
       next: () => {
-        this.servicio.items.update((l) => l.filter((x) => x.id !== p.id));
         this.toast.mostrar(this.i18n.translate('postulaciones.quitada'), {
           etiqueta: this.i18n.translate('postulaciones.deshacer'),
           alHacer: () => this.deshacer(p),

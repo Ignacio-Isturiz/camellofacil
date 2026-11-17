@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { ApiConfiguration } from '../api/api-configuration';
+import { API_SESION } from './sesion.api';
 
 export interface Usuario {
   correo: string;
@@ -17,7 +17,7 @@ interface UsuarioApi {
 }
 
 /** Ruta de «quién soy»: un 401 aquí solo significa «no hay sesión», no que haya vencido. */
-export const RUTA_YO = '/api/v1/auth/me';
+export const RUTA_YO = API_SESION.yo;
 
 /**
  * Sesión de quien entró con su cuenta Microsoft de UNAULA (único medio de ingreso).
@@ -28,7 +28,6 @@ export const RUTA_YO = '/api/v1/auth/me';
 @Injectable({ providedIn: 'root' })
 export class Sesion {
   private readonly http = inject(HttpClient);
-  private readonly api = inject(ApiConfiguration);
 
   private readonly actual = signal<Usuario | null>(null);
   /** Consulta a /me en vuelo o ya respondida en esta visita (se comparte entre guardas). */
@@ -39,12 +38,12 @@ export class Sesion {
 
   /** URL a la que se navega (página completa) para entrar con Microsoft. */
   get urlMicrosoft(): string {
-    return `${this.api.rootUrl}/oauth2/authorization/microsoft`;
+    return API_SESION.ingresoMicrosoft;
   }
 
   /** Pregunta al backend si hay sesión (cookie). Devuelve true si la hay. */
   restaurar(): Promise<boolean> {
-    this.consulta = firstValueFrom(this.http.get<UsuarioApi>(`${this.api.rootUrl}${RUTA_YO}`)).then(
+    this.consulta = firstValueFrom(this.http.get<UsuarioApi>(API_SESION.yo)).then(
       (datos) => {
         this.actual.set(construir(datos.correo, datos.nombre));
         return true;
@@ -75,7 +74,7 @@ export class Sesion {
   async cerrar(): Promise<void> {
     this.olvidar();
     try {
-      await firstValueFrom(this.http.post(`${this.api.rootUrl}/api/v1/auth/logout`, null));
+      await firstValueFrom(this.http.post(API_SESION.salir, null));
     } catch {
       /* si falla, la sesión del servidor vence sola */
     }

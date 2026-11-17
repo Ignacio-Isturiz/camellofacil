@@ -7,7 +7,7 @@ import { map } from 'rxjs';
 import { Icono } from '../../../shared/icono/icono';
 import { EsqueletoDetalle } from '../esqueleto/esqueleto-detalle';
 import { PanelAccion } from './accion/panel-accion';
-import { VacantesServicio } from '../vacantes-servicio';
+import { VacantesServicio } from '../../../core/vacantes/vacantes.servicio';
 
 /** /vacantes/:id — detalle de una vacante, por qué se recomienda y la acción de postular. */
 @Component({
@@ -49,8 +49,7 @@ export class DetalleVacante {
   }
 
   protected reintentar(): void {
-    this.servicio.detalle.set(null);
-    this.servicio.cargarDetalle(this.id());
+    this.servicio.cargarDetalle(this.id(), true);
   }
 
   protected guardar(): void {

@@ -8,7 +8,6 @@ import {
   CambioPropuesto,
   DatosExtraidos,
   DocumentoHoja,
-  EstadoCarga,
   Plantilla,
   PlantillaDetalle,
   PropuestaReorganizacion,
@@ -19,6 +18,7 @@ import {
   ValoresHoja,
   Version,
 } from './hoja-de-vida.modelos';
+import { EstadoCarga } from '../http/estado-carga';
 
 /** Si la primera respuesta tarda más que esto, se avisa «Preparando tu espacio…» (el servidor gratuito despierta lento). */
 const ESPERA_ARRANQUE_MS = 4000;
@@ -32,19 +32,28 @@ const ESPERA_ARRANQUE_MS = 4000;
 export class HojaDeVidaServicio {
   private readonly http = inject(HttpClient);
 
-  readonly resumen = signal<ResumenHojaDeVida | null>(null);
-  readonly estadoResumen = signal<EstadoCarga>('cargando');
+  readonly #resumen = signal<ResumenHojaDeVida | null>(null);
+  readonly resumen = this.#resumen.asReadonly();
+  readonly #estadoResumen = signal<EstadoCarga>('cargando');
+  readonly estadoResumen = this.#estadoResumen.asReadonly();
   /** Verdadero cuando la primera respuesta se está demorando. */
-  readonly despertando = signal(false);
+  readonly #despertando = signal(false);
+  readonly despertando = this.#despertando.asReadonly();
 
-  readonly plantillas = signal<readonly Plantilla[]>([]);
-  readonly estadoPlantillas = signal<EstadoCarga>('cargando');
+  readonly #plantillas = signal<readonly Plantilla[]>([]);
+  readonly plantillas = this.#plantillas.asReadonly();
+  readonly #estadoPlantillas = signal<EstadoCarga>('cargando');
+  readonly estadoPlantillas = this.#estadoPlantillas.asReadonly();
 
-  readonly versiones = signal<readonly Version[]>([]);
-  readonly estadoVersiones = signal<EstadoCarga>('cargando');
+  readonly #versiones = signal<readonly Version[]>([]);
+  readonly versiones = this.#versiones.asReadonly();
+  readonly #estadoVersiones = signal<EstadoCarga>('cargando');
+  readonly estadoVersiones = this.#estadoVersiones.asReadonly();
 
-  readonly puntajeAts = signal<PuntajeAts | null>(null);
-  readonly estadoPuntajeAts = signal<EstadoCarga>('listo');
+  readonly #puntajeAts = signal<PuntajeAts | null>(null);
+  readonly puntajeAts = this.#puntajeAts.asReadonly();
+  readonly #estadoPuntajeAts = signal<EstadoCarga>('listo');
+  readonly estadoPuntajeAts = this.#estadoPuntajeAts.asReadonly();
 
   private resumenEnCurso: Subscription | null = null;
   private puntajeEnCurso: Subscription | null = null;
@@ -56,35 +65,37 @@ export class HojaDeVidaServicio {
   cargarResumen(forzar = false): void {
     if (!forzar && this.resumenEnCurso && !this.resumenEnCurso.closed) return;
     this.resumenEnCurso?.unsubscribe();
-    this.estadoResumen.set('cargando');
-    const aviso = setTimeout(() => this.despertando.set(true), ESPERA_ARRANQUE_MS);
+    this.#estadoResumen.set('cargando');
+    const aviso = setTimeout(() => this.#despertando.set(true), ESPERA_ARRANQUE_MS);
     this.resumenEnCurso = this.http.get<ResumenHojaDeVida>(API_HOJA_DE_VIDA.resumen).subscribe({
       next: (r) => {
         clearTimeout(aviso);
-        this.despertando.set(false);
-        this.resumen.set(r);
-        this.puntajeAts.set(r.hoja?.ats ?? null);
-        this.estadoResumen.set('listo');
+        this.#despertando.set(false);
+        this.#resumen.set(r);
+        this.#puntajeAts.set(r.hoja?.ats ?? null);
+        this.#estadoResumen.set('listo');
       },
       error: () => {
         clearTimeout(aviso);
-        this.despertando.set(false);
-        this.estadoResumen.set('error');
+        this.#despertando.set(false);
+        this.#estadoResumen.set('error');
       },
     });
   }
 
-  readonly datos = signal<DatosExtraidos | null>(null);
-  readonly estadoDatos = signal<EstadoCarga>('cargando');
+  readonly #datos = signal<DatosExtraidos | null>(null);
+  readonly datos = this.#datos.asReadonly();
+  readonly #estadoDatos = signal<EstadoCarga>('cargando');
+  readonly estadoDatos = this.#estadoDatos.asReadonly();
 
   cargarDatos(): void {
-    this.estadoDatos.set('cargando');
+    this.#estadoDatos.set('cargando');
     this.http.get<DatosExtraidos>(API_HOJA_DE_VIDA.datos).subscribe({
       next: (d) => {
-        this.datos.set(d);
-        this.estadoDatos.set('listo');
+        this.#datos.set(d);
+        this.#estadoDatos.set('listo');
       },
-      error: () => this.estadoDatos.set('error'),
+      error: () => this.#estadoDatos.set('error'),
     });
   }
 
@@ -98,37 +109,37 @@ export class HojaDeVidaServicio {
   /** Las plantillas casi no cambian: se piden una vez por visita (o al reintentar tras un error). */
   cargarPlantillas(): void {
     if (this.estadoPlantillas() === 'listo') return;
-    this.estadoPlantillas.set('cargando');
+    this.#estadoPlantillas.set('cargando');
     this.http.get<readonly Plantilla[]>(API_HOJA_DE_VIDA.plantillas).subscribe({
       next: (lista) => {
-        this.plantillas.set(lista);
-        this.estadoPlantillas.set('listo');
+        this.#plantillas.set(lista);
+        this.#estadoPlantillas.set('listo');
       },
-      error: () => this.estadoPlantillas.set('error'),
+      error: () => this.#estadoPlantillas.set('error'),
     });
   }
 
   cargarVersiones(): void {
-    this.estadoVersiones.set('cargando');
+    this.#estadoVersiones.set('cargando');
     this.http.get<readonly Version[]>(API_HOJA_DE_VIDA.versiones).subscribe({
       next: (lista) => {
-        this.versiones.set(lista);
-        this.estadoVersiones.set('listo');
+        this.#versiones.set(lista);
+        this.#estadoVersiones.set('listo');
       },
-      error: () => this.estadoVersiones.set('error'),
+      error: () => this.#estadoVersiones.set('error'),
     });
   }
 
   /** Recalcula el puntaje ATS con otra opción de evaluación. */
   evaluarAts(opcionId: string): void {
-    this.estadoPuntajeAts.set('cargando');
+    this.#estadoPuntajeAts.set('cargando');
     this.puntajeEnCurso?.unsubscribe();
     this.puntajeEnCurso = this.http.get<PuntajeAts>(API_HOJA_DE_VIDA.puntajeAts(opcionId)).subscribe({
       next: (p) => {
-        this.puntajeAts.set(p);
-        this.estadoPuntajeAts.set('listo');
+        this.#puntajeAts.set(p);
+        this.#estadoPuntajeAts.set('listo');
       },
-      error: () => this.estadoPuntajeAts.set('error'),
+      error: () => this.#estadoPuntajeAts.set('error'),
     });
   }
 

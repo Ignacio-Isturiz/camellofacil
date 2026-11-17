@@ -10,16 +10,17 @@ export interface Toast {
 @Injectable({ providedIn: 'root' })
 export class ToastServicio {
   private contador = 0;
-  readonly toasts = signal<readonly Toast[]>([]);
+  readonly #toasts = signal<readonly Toast[]>([]);
+  readonly toasts = this.#toasts.asReadonly();
 
   /** `duracionMs`: más largo cuando hay una acción (p. ej. «Deshacer») para dar tiempo a pulsarla. */
   mostrar(texto: string, accion: Toast['accion'] = null, duracionMs = accion ? 8000 : 5000): void {
     const id = ++this.contador;
-    this.toasts.update((l) => [...l, { id, texto, accion }]);
+    this.#toasts.update((l) => [...l, { id, texto, accion }]);
     setTimeout(() => this.cerrar(id), duracionMs);
   }
 
   cerrar(id: number): void {
-    this.toasts.update((l) => l.filter((t) => t.id !== id));
+    this.#toasts.update((l) => l.filter((t) => t.id !== id));
   }
 }

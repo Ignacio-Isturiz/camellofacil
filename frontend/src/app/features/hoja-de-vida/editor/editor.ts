@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { catchError, debounceTime, EMPTY, switchMap, tap } from 'rxjs';
@@ -9,57 +9,31 @@ import {
   Borrador,
   CampoExtraido,
   DocumentoHoja,
-  EstadoCarga,
   PlantillaDetalle,
   ValoresHoja,
 } from '../../../core/hoja-de-vida/hoja-de-vida.modelos';
 import { HojaDeVidaServicio } from '../../../core/hoja-de-vida/hoja-de-vida.servicio';
 import { rangoMeses } from '../../../shared/fechas/fechas';
 import { Icono } from '../../../shared/icono/icono';
-import { AvisoError } from '../componentes/aviso-error';
+import { AvisoError } from '../../../shared/aviso-error/aviso-error';
 import { CampoExtraidoComponente } from '../componentes/campo-extraido';
-import { Dialogo } from '../componentes/dialogo';
-import { DocumentoHojaComponente } from '../componentes/documento-hoja';
+import { Dialogo } from '../../../shared/dialogo/dialogo';
+import { DocumentoHojaComponente } from '../../../shared/documento-hoja/documento-hoja';
 import { MigasHoja } from '../componentes/migas-hoja';
+import { EstadoCarga } from '../../../core/http/estado-carga';
+import {
+  FormularioHoja,
+  crearFormularioHoja,
+  educacionVacia,
+  experienciaVacia,
+  grupoEducacion,
+  grupoExperiencia,
+} from '../formulario-hoja';
 
 const ESPERA_GUARDADO_MS = 1500;
 /** Todo dato del editor es «leído»: aquí la persona escribe, no revisa. */
 const CAMPO: CampoExtraido = { valor: '', estado: 'leido', ayuda: null };
 
-const texto = (valor: string, max = 200) =>
-  new FormControl(valor, { nonNullable: true, validators: [Validators.maxLength(max)] });
-
-const grupoExperiencia = (e: ValoresHoja['experiencia'][number]) =>
-  new FormGroup({
-    id: new FormControl(e.id, { nonNullable: true }),
-    cargo: texto(e.cargo),
-    organizacion: texto(e.organizacion),
-    inicio: texto(e.inicio, 7),
-    fin: texto(e.fin, 7),
-    descripcion: texto(e.descripcion, 1000),
-  });
-
-const grupoEducacion = (e: ValoresHoja['educacion'][number]) =>
-  new FormGroup({
-    id: new FormControl(e.id, { nonNullable: true }),
-    titulo: texto(e.titulo),
-    institucion: texto(e.institucion),
-    inicio: texto(e.inicio, 7),
-    fin: texto(e.fin, 7),
-  });
-
-const crearFormulario = (v: ValoresHoja) =>
-  new FormGroup({
-    nombre: texto(v.nombre),
-    telefono: texto(v.telefono, 30),
-    ciudad: texto(v.ciudad, 100),
-    perfil: texto(v.perfil, 1500),
-    habilidades: texto(v.habilidades, 1000),
-    experiencia: new FormArray(v.experiencia.map(grupoExperiencia)),
-    educacion: new FormArray(v.educacion.map(grupoEducacion)),
-  });
-
-type FormularioEditor = ReturnType<typeof crearFormulario>;
 type Seccion = 'contacto' | 'perfil' | 'experiencia' | 'educacion' | 'habilidades';
 type EstadoGuardado = 'al-dia' | 'pendiente' | 'guardando' | 'error';
 
@@ -84,7 +58,7 @@ export class Editor {
   protected readonly estado = signal<EstadoCarga>('cargando');
   protected readonly borrador = signal<Borrador | null>(null);
   protected readonly plantilla = signal<PlantillaDetalle | null>(null);
-  protected readonly formulario = signal<FormularioEditor | null>(null);
+  protected readonly formulario = signal<FormularioHoja | null>(null);
   private readonly valores = signal<ValoresHoja | null>(null);
 
   protected readonly guardado = signal<EstadoGuardado>('al-dia');
@@ -136,7 +110,7 @@ export class Editor {
   }
 
   private armar(b: Borrador): void {
-    const f = crearFormulario(b.valores);
+    const f = crearFormularioHoja(b.valores);
     this.borrador.set(b);
     this.guardadoEn.set(b.guardadoEn);
     this.formulario.set(f);
@@ -188,7 +162,7 @@ export class Editor {
 
   protected agregarExperiencia(): void {
     this.formulario()?.controls.experiencia.push(
-      grupoExperiencia({ id: `nueva-${++this.contador}`, cargo: '', organizacion: '', inicio: '', fin: '', descripcion: '' }),
+      grupoExperiencia(experienciaVacia(`nueva-${++this.contador}`)),
     );
   }
 
@@ -198,7 +172,7 @@ export class Editor {
 
   protected agregarEducacion(): void {
     this.formulario()?.controls.educacion.push(
-      grupoEducacion({ id: `nueva-${++this.contador}`, titulo: '', institucion: '', inicio: '', fin: '' }),
+      grupoEducacion(educacionVacia(`nueva-${++this.contador}`)),
     );
   }
 

@@ -121,7 +121,7 @@ export const routes: Routes = [
   {
     path: '',
     canActivate: [exigirSesion],
-    loadComponent: () => import('./shared/marco-aplicacion/marco-aplicacion').then((m) => m.MarcoAplicacion),
+    loadComponent: () => import('./marco-aplicacion/marco-aplicacion').then((m) => m.MarcoAplicacion),
     children: pantallasConSesion,
   },
   // Aún no existe /contacto: vuelve al inicio. Quitar al agregarla.

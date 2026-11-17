@@ -95,9 +95,6 @@ export interface Version {
   motivoNoEliminable: string | null;
 }
 
-/** Estado de cada petición que alimenta una pantalla. */
-export type EstadoCarga = 'cargando' | 'listo' | 'error';
-
 // ---------- Subida y análisis ----------
 
 /** `error`: el análisis falló varias veces de nuestro lado (no es culpa del archivo). */

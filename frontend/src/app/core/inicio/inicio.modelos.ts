@@ -1,4 +1,4 @@
-import { Vacante, VacanteApi } from '../../features/vacantes/vacante';
+import { Vacante, VacanteApi } from '../vacantes/vacantes.modelos';
 
 /** Contratos de Inicio. Solo tipos: aquí no hay datos. */
 
@@ -36,5 +36,3 @@ export interface CupoAdaptaciones {
   usadas: number;
   limite: number;
 }
-
-export type EstadoBloque = 'cargando' | 'listo' | 'error';

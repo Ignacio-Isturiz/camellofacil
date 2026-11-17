@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
@@ -13,45 +13,11 @@ import {
 } from '../../../core/hoja-de-vida/hoja-de-vida.modelos';
 import { HojaDeVidaServicio } from '../../../core/hoja-de-vida/hoja-de-vida.servicio';
 import { Icono } from '../../../shared/icono/icono';
-import { AvisoError } from '../componentes/aviso-error';
+import { AvisoError } from '../../../shared/aviso-error/aviso-error';
 import { CampoExtraidoComponente } from '../componentes/campo-extraido';
 import { MigasHoja } from '../componentes/migas-hoja';
 import { VistaPreviaHoja } from '../componentes/vista-previa-hoja';
-
-const texto = (valor: string, max = 200) =>
-  new FormControl(valor, { nonNullable: true, validators: [Validators.maxLength(max)] });
-
-const grupoExperiencia = (e: ExperienciaExtraida) =>
-  new FormGroup({
-    id: new FormControl(e.id, { nonNullable: true }),
-    cargo: texto(e.cargo.valor),
-    organizacion: texto(e.organizacion.valor),
-    inicio: texto(e.inicio.valor, 7),
-    fin: texto(e.fin.valor, 7),
-    descripcion: texto(e.descripcion.valor, 1000),
-  });
-
-const grupoEducacion = (e: EducacionExtraida) =>
-  new FormGroup({
-    id: new FormControl(e.id, { nonNullable: true }),
-    titulo: texto(e.titulo.valor),
-    institucion: texto(e.institucion.valor),
-    inicio: texto(e.inicio.valor, 7),
-    fin: texto(e.fin.valor, 7),
-  });
-
-const crearFormulario = (d: DatosExtraidos) =>
-  new FormGroup({
-    nombre: texto(d.contacto.nombre.valor),
-    telefono: texto(d.contacto.telefono.valor, 30),
-    ciudad: texto(d.contacto.ciudad.valor, 100),
-    perfil: texto(d.perfil.valor, 1500),
-    habilidades: texto(d.habilidades.valor, 1000),
-    experiencia: new FormArray(d.experiencia.map(grupoExperiencia)),
-    educacion: new FormArray(d.educacion.map(grupoEducacion)),
-  });
-
-type FormularioHoja = ReturnType<typeof crearFormulario>;
+import { FormularioHoja, crearFormularioHoja, experienciaVacia, grupoExperiencia, valoresLeidos } from '../formulario-hoja';
 
 const CAMPO_VACIO: CampoExtraido = { valor: '', estado: 'leido', ayuda: null };
 
@@ -150,7 +116,7 @@ export class Revisar {
   }
 
   private armar(d: DatosExtraidos): void {
-    const f = crearFormulario(d);
+    const f = crearFormularioHoja(valoresLeidos(d));
     this.resueltos.set(new Set());
     this.correoSoloLectura.setValue(d.contacto.correo.valor);
     this.metaExperiencia.set(d.experiencia);
@@ -176,7 +142,7 @@ export class Revisar {
       fin: CAMPO_VACIO,
       descripcion: CAMPO_VACIO,
     };
-    f.controls.experiencia.push(grupoExperiencia(nueva));
+    f.controls.experiencia.push(grupoExperiencia(experienciaVacia(id)));
     this.metaExperiencia.update((l) => [...l, nueva]);
   }
 

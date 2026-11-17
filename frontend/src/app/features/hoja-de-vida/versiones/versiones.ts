@@ -5,14 +5,15 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { Observable } from 'rxjs';
 
 import { API_HOJA_DE_VIDA } from '../../../core/hoja-de-vida/hoja-de-vida.api';
-import { DocumentoHoja, EstadoCarga, Version } from '../../../core/hoja-de-vida/hoja-de-vida.modelos';
+import { DocumentoHoja, Version } from '../../../core/hoja-de-vida/hoja-de-vida.modelos';
 import { HojaDeVidaServicio } from '../../../core/hoja-de-vida/hoja-de-vida.servicio';
 import { FechaCortaPipe } from '../../../shared/fecha-corta/fecha-corta.pipe';
 import { Icono } from '../../../shared/icono/icono';
-import { AvisoError } from '../componentes/aviso-error';
-import { Dialogo } from '../componentes/dialogo';
-import { DocumentoHojaComponente } from '../componentes/documento-hoja';
+import { AvisoError } from '../../../shared/aviso-error/aviso-error';
+import { Dialogo } from '../../../shared/dialogo/dialogo';
+import { DocumentoHojaComponente } from '../../../shared/documento-hoja/documento-hoja';
 import { MigasHoja } from '../componentes/migas-hoja';
+import { EstadoCarga } from '../../../core/http/estado-carga';
 
 type Filtro = 'todas' | 'base' | 'adaptadas';
 type Accion = 'menu' | 'renombrar' | 'eliminar';

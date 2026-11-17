@@ -7,9 +7,9 @@ import { InicioServicio } from '../../core/inicio/inicio.servicio';
 import { Sesion } from '../../core/sesion/sesion';
 import { Icono } from '../../shared/icono/icono';
 import { ToastServicio } from '../../shared/toast/toast.servicio';
-import { AvisoError } from '../hoja-de-vida/componentes/aviso-error';
-import { Dialogo } from '../hoja-de-vida/componentes/dialogo';
-import { VacantesServicio } from '../vacantes/vacantes-servicio';
+import { AvisoError } from '../../shared/aviso-error/aviso-error';
+import { Dialogo } from '../../shared/dialogo/dialogo';
+import { VacantesServicio } from '../../core/vacantes/vacantes.servicio';
 import { TarjetaRecomendada } from './tarjeta-recomendada';
 
 const MAX_ETIQUETAS = 8;
