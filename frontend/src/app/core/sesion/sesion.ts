@@ -8,8 +8,6 @@ export interface Usuario {
   correo: string;
   nombre: string;
   iniciales: string;
-  /** Clave de la carrera (la misma de `landing.carreras.nombres.*`). */
-  carrera: string;
 }
 
 /** Respuesta de GET /api/v1/auth/me. */
@@ -74,6 +72,5 @@ function construir(correo: string, nombreCompleto: string): Usuario {
   const partes = nombre.split(/[\s._-]+/).filter(Boolean);
   const iniciales =
     partes.length > 1 ? (partes[0][0] + partes[1][0]).toUpperCase() : (partes[0] ?? 'E').slice(0, 2).toUpperCase();
-  // Pendiente: la carrera llegará del módulo de perfil.
-  return { correo, nombre, iniciales, carrera: 'datos' };
+  return { correo, nombre, iniciales };
 }

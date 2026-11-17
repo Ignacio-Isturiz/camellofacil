@@ -61,10 +61,6 @@ export class VacantesServicio {
     });
   }
 
-  porId(id: string): Vacante | undefined {
-    return this.todas().find((v) => v.id === id);
-  }
-
   alternarGuardada(id: string): void {
     const estaba = this.guardadas().has(id);
     this.guardadas.update((actual) => alternar(actual, id));

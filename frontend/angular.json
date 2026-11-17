@@ -28,9 +28,22 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "*-latin{,-ext}-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/inter/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "*-latin{,-ext}-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/plus-jakarta-sans/files",
+                "output": "fonts"
               }
             ],
-            "styles": ["src/styles.scss"]
+            "styles": ["src/styles.scss"],
+            "security": {
+              "autoCsp": true
+            }
           },
           "configurations": {
             "production": {
