@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { diffWords } from 'diff';
 
-import { DocumentoHoja, EstiloPlantilla } from '../../../core/hoja-de-vida/hoja-de-vida.modelos';
+import { DocumentoHoja, EstiloPlantilla } from '../../core/hoja-de-vida/hoja-de-vida.modelos';
 
 interface Trozo {
   texto: string;

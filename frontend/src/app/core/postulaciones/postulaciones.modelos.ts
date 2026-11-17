@@ -1,6 +1,6 @@
 /** Contratos de postulaciones. Solo tipos: aquí no hay datos. */
 
-import { Modalidad } from '../../features/vacantes/vacante';
+import { Modalidad } from '../vacantes/vacantes.modelos';
 
 export type TipoVacantePostulada = 'practica' | 'profesional';
 export type HojaUsada = 'base' | 'adaptada';

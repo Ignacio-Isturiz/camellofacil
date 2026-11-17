@@ -7,8 +7,8 @@ import { Adaptacion, CambioAdaptacion } from '../../../../core/adaptacion/adapta
 import { AdaptacionServicio } from '../../../../core/adaptacion/adaptacion.servicio';
 import { PestanaPendiente, abrirEnBlanco } from '../../../../core/postulaciones/pestana-externa';
 import { Icono, NombreIcono } from '../../../../shared/icono/icono';
-import { Dialogo } from '../../../hoja-de-vida/componentes/dialogo';
-import { DocumentoHojaComponente } from '../../../hoja-de-vida/componentes/documento-hoja';
+import { Dialogo } from '../../../../shared/dialogo/dialogo';
+import { DocumentoHojaComponente } from '../../../../shared/documento-hoja/documento-hoja';
 
 type EstadoDialogo = 'adaptando' | 'listo' | 'error' | 'limite';
 

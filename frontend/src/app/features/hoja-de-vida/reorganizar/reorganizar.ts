@@ -5,7 +5,6 @@ import { TranslocoPipe } from '@jsverse/transloco';
 
 import {
   CambioPropuesto,
-  EstadoCarga,
   EstiloPlantilla,
   FormatoDestino,
   IdiomaHoja,
@@ -13,9 +12,10 @@ import {
 } from '../../../core/hoja-de-vida/hoja-de-vida.modelos';
 import { HojaDeVidaServicio } from '../../../core/hoja-de-vida/hoja-de-vida.servicio';
 import { Icono, NombreIcono } from '../../../shared/icono/icono';
-import { AvisoError } from '../componentes/aviso-error';
-import { DocumentoHojaComponente } from '../componentes/documento-hoja';
+import { AvisoError } from '../../../shared/aviso-error/aviso-error';
+import { DocumentoHojaComponente } from '../../../shared/documento-hoja/documento-hoja';
 import { MigasHoja } from '../componentes/migas-hoja';
+import { EstadoCarga } from '../../../core/http/estado-carga';
 
 type Vista = 'lado' | 'cambios';
 

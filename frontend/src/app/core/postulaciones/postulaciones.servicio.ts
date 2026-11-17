@@ -2,14 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 
 import { ToastServicio } from '../../shared/toast/toast.servicio';
 import { API_POSTULACIONES } from './postulaciones.api';
 import { ClicPostular, HojaUsada, ListaPostulaciones, OrdenPostulaciones, Postulacion } from './postulaciones.modelos';
 import { PestanaPendiente } from './pestana-externa';
-
-export type EstadoLista = 'cargando' | 'listo' | 'error';
+import { EstadoCarga } from '../http/estado-carga';
 
 /**
  * Historial de clics en «Postular». Todo viene del API real; sin backend la pantalla muestra su error.
@@ -22,26 +21,36 @@ export class PostulacionesServicio {
   private readonly router = inject(Router);
   private readonly i18n = inject(TranslocoService);
 
-  readonly items = signal<readonly Postulacion[]>([]);
-  readonly clics90 = signal<number | null>(null);
-  readonly estado = signal<EstadoLista>('cargando');
+  readonly #items = signal<readonly Postulacion[]>([]);
+  readonly items = this.#items.asReadonly();
+  readonly #clics90 = signal<number | null>(null);
+  readonly clics90 = this.#clics90.asReadonly();
+  readonly #estado = signal<EstadoCarga>('cargando');
+  readonly estado = this.#estado.asReadonly();
+
+  /** Búsqueda en vuelo: al escribir otra cosa se cancela, para que no la pise una respuesta vieja. */
+  private busquedaEnCurso: Subscription | null = null;
 
   cargar(texto: string, orden: OrdenPostulaciones): void {
-    this.estado.set('cargando');
+    this.#estado.set('cargando');
+    this.busquedaEnCurso?.unsubscribe();
     let params = new HttpParams().set('orden', orden);
     if (texto.trim()) params = params.set('q', texto.trim());
-    this.http.get<ListaPostulaciones>(API_POSTULACIONES.lista, { params }).subscribe({
+    this.busquedaEnCurso = this.http.get<ListaPostulaciones>(API_POSTULACIONES.lista, { params }).subscribe({
       next: (r) => {
-        this.items.set(r.items);
-        this.clics90.set(r.clicsUltimos90Dias);
-        this.estado.set('listo');
+        this.#items.set(r.items);
+        this.#clics90.set(r.clicsUltimos90Dias);
+        this.#estado.set('listo');
       },
-      error: () => this.estado.set('error'),
+      error: () => this.#estado.set('error'),
     });
   }
 
+  /** Quita la postulación del historial; si el servidor acepta, también sale de la lista en pantalla. */
   quitar(id: string): Observable<unknown> {
-    return this.http.delete(API_POSTULACIONES.postulacion(id));
+    return this.http
+      .delete(API_POSTULACIONES.postulacion(id))
+      .pipe(tap(() => this.#items.update((l) => l.filter((x) => x.id !== id))));
   }
 
   restaurar(id: string): Observable<unknown> {

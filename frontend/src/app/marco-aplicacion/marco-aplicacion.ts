@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
-import { PerfilServicio } from '../../core/perfil/perfil.servicio';
-import { Sesion } from '../../core/sesion/sesion';
-import { CompletarPerfil } from '../../features/perfil/completar-perfil/completar-perfil';
-import { Icono } from '../icono/icono';
-import { Logo } from '../logo/logo';
-import { Toasts } from '../toast/toasts';
+import { PerfilServicio } from '../core/perfil/perfil.servicio';
+import { Sesion } from '../core/sesion/sesion';
+import { CompletarPerfil } from '../features/perfil/completar-perfil/completar-perfil';
+import { Icono } from '../shared/icono/icono';
+import { Logo } from '../shared/logo/logo';
+import { Toasts } from '../shared/toast/toasts';
 
 /**
  * Marco de las pantallas de quien ya inició sesión: encabezado con navegación, contenido y aviso legal.
@@ -35,7 +35,6 @@ export class MarcoAplicacion {
 
   protected cerrarSesion(): void {
     this.menuAbierto.set(false);
-    this.perfil.olvidar();
     void this.sesion.cerrar();
     void this.router.navigate(['/']);
   }

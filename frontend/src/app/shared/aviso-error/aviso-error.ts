@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 
-import { UltimoError } from '../../../core/http/ultimo-error';
-import { Icono } from '../../../shared/icono/icono';
+import { UltimoError } from '../../core/http/ultimo-error';
+import { Icono } from '../icono/icono';
 
 /** Mensaje de error de una carga, con el botón para reintentar. */
 @Component({

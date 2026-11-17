@@ -77,14 +77,17 @@
   }
 </div>
 
-<app-dialogo-adaptar
-  #dlgAdaptar
-  [vacanteId]="vacanteId()"
-  [existente]="adaptacion()"
-  [restantes]="restantes()"
-  (cupo)="restantes.set($event)"
-  (guardada)="alGuardarAdaptacion($event)"
-  (descartada)="alDescartar()"
-  (postular)="postularConAdaptada($event)"
-/>
+<!-- La comparación de la adaptación (y la librería de diferencias) se descarga solo cuando se pide. -->
+@defer (when adaptarPedido()) {
+  <app-dialogo-adaptar
+    #dlgAdaptar
+    [vacanteId]="vacanteId()"
+    [existente]="adaptacion()"
+    [restantes]="restantes()"
+    (cupo)="restantes.set($event)"
+    (guardada)="alGuardarAdaptacion($event)"
+    (descartada)="alDescartar()"
+    (postular)="postularConAdaptada($event)"
+  />
+}
 <app-dialogo-postular #dlgPostular [tieneAdaptada]="!!adaptacion()" (elegir)="postularCon($event)" />

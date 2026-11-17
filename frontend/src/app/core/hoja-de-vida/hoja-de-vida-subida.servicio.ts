@@ -24,15 +24,19 @@ export class HojaDeVidaSubidaServicio {
   private readonly http = inject(HttpClient);
   private peticion: Subscription | null = null;
 
-  readonly estado = signal<EstadoSubida>('reposo');
-  readonly progreso = signal(0);
-  readonly error = signal<ErrorSubida | null>(null);
-  readonly nombreArchivo = signal<string | null>(null);
+  readonly #estado = signal<EstadoSubida>('reposo');
+  readonly estado = this.#estado.asReadonly();
+  readonly #progreso = signal(0);
+  readonly progreso = this.#progreso.asReadonly();
+  readonly #error = signal<ErrorSubida | null>(null);
+  readonly error = this.#error.asReadonly();
+  readonly #nombreArchivo = signal<string | null>(null);
+  readonly nombreArchivo = this.#nombreArchivo.asReadonly();
 
   /** Valida en el cliente y, si pasa, sube el archivo. Devuelve false si lo rechazó sin enviarlo. */
   subir(archivo: File, autorizado: boolean): boolean {
     if (!autorizado) return false;
-    this.nombreArchivo.set(archivo.name);
+    this.#nombreArchivo.set(archivo.name);
 
     const nombre = archivo.name.toLowerCase();
     if (!EXTENSIONES.some((e) => nombre.endsWith(e))) return this.fallar('formato');
@@ -40,9 +44,9 @@ export class HojaDeVidaSubidaServicio {
     if (archivo.size === 0) return this.fallar('ilegible');
 
     this.cancelar();
-    this.error.set(null);
-    this.progreso.set(0);
-    this.estado.set('subiendo');
+    this.#error.set(null);
+    this.#progreso.set(0);
+    this.#estado.set('subiendo');
 
     const cuerpo = new FormData();
     cuerpo.append('archivo', archivo, archivo.name);
@@ -52,7 +56,7 @@ export class HojaDeVidaSubidaServicio {
       .subscribe({
         next: (evento) => {
           if (evento.type === HttpEventType.UploadProgress && evento.total) {
-            this.progreso.set(Math.round((evento.loaded / evento.total) * 100));
+            this.#progreso.set(Math.round((evento.loaded / evento.total) * 100));
           } else if (evento.type === HttpEventType.Response) {
             this.seguirAnalisis();
           }
@@ -70,14 +74,14 @@ export class HojaDeVidaSubidaServicio {
 
   reiniciar(): void {
     this.cancelar();
-    this.estado.set('reposo');
-    this.progreso.set(0);
-    this.error.set(null);
-    this.nombreArchivo.set(null);
+    this.#estado.set('reposo');
+    this.#progreso.set(0);
+    this.#error.set(null);
+    this.#nombreArchivo.set(null);
   }
 
   private seguirAnalisis(): void {
-    this.estado.set('analizando');
+    this.#estado.set('analizando');
     const inicio = Date.now();
     this.peticion = timer(0, INTERVALO_ANALISIS_MS)
       .pipe(
@@ -90,7 +94,7 @@ export class HojaDeVidaSubidaServicio {
       )
       .subscribe({
         next: (a) =>
-          a.estado === 'listo' ? this.estado.set('listo') : void this.fallar(a.estado === 'error' ? 'servidor' : 'ilegible'),
+          a.estado === 'listo' ? this.#estado.set('listo') : void this.fallar(a.estado === 'error' ? 'servidor' : 'ilegible'),
         error: (e: unknown) => this.fallar(e instanceof HttpErrorResponse ? this.clasificar(e) : 'servidor'),
       });
   }
@@ -114,8 +118,8 @@ export class HojaDeVidaSubidaServicio {
 
   private fallar(tipo: ErrorSubida): false {
     this.cancelar();
-    this.error.set(tipo);
-    this.estado.set('error');
+    this.#error.set(tipo);
+    this.#estado.set('error');
     return false;
   }
 }

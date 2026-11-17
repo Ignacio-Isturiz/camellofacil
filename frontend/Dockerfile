@@ -10,5 +10,6 @@ RUN npx ng build
 # Etapa 2: servir los archivos estáticos con nginx (y reenviar /api al backend)
 FROM nginx:alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY seguridad.inc /etc/nginx/seguridad.inc
 COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
 EXPOSE 80

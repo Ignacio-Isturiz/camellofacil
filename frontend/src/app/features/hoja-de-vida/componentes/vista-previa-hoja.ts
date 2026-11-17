@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 import { ValoresHoja } from '../../../core/hoja-de-vida/hoja-de-vida.modelos';
+import { rangoMeses } from '../../../shared/fechas/fechas';
 
 /**
  * Vista previa de la hoja con lo que hay en el formulario (sin agregar nada). Lo que aún hay que revisar
@@ -26,19 +27,7 @@ export class VistaPreviaHoja {
     return this.marcas().has(clave);
   }
 
-  /** `AAAA-MM` → «ene 2024» en el idioma activo. Vacío si no hay fecha. */
-  protected mes(valor: string): string {
-    const m = /^(\d{4})-(\d{2})$/.exec(valor);
-    if (!m) return '';
-    const fecha = new Date(Number(m[1]), Number(m[2]) - 1, 1);
-    return new Intl.DateTimeFormat(this.i18n.getActiveLang(), { month: 'short', year: 'numeric' })
-      .format(fecha)
-      .replace(/\./g, '');
-  }
-
   protected rango(inicio: string, fin: string): string {
-    const a = this.mes(inicio);
-    const b = this.mes(fin);
-    return a && b ? `${a} – ${b}` : a || b;
+    return rangoMeses(inicio, fin, this.i18n.getActiveLang());
   }
 }

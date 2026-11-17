@@ -81,8 +81,11 @@
 
 <app-toasts />
 
+<!-- El modal del primer ingreso (y los formularios de Angular que usa) solo se descarga si hace falta. -->
 @if (perfil.faltaCompletar()) {
-  <app-completar-perfil (salir)="cerrarSesion()" />
+  @defer (on immediate) {
+    <app-completar-perfil (salir)="cerrarSesion()" />
+  }
 }
 
 <footer class="legal contenedor">

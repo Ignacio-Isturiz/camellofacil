@@ -7,5 +7,5 @@ import { Sesion } from './sesion';
 export const irAInicioConSesion: CanActivateFn = async () => {
   const sesion = inject(Sesion);
   const router = inject(Router);
-  return sesion.activa() || (await sesion.restaurar()) ? router.createUrlTree(['/inicio']) : true;
+  return sesion.activa() || (await sesion.comprobar()) ? router.createUrlTree(['/inicio']) : true;
 };

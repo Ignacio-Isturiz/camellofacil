@@ -66,10 +66,6 @@ a.nav__enlace:hover {
   color: var(--rojo);
   font-weight: 600;
 }
-.nav__enlace--apagado {
-  color: var(--gris-600);
-  cursor: default;
-}
 
 .barra__acciones {
   display: flex;
@@ -171,9 +167,6 @@ a.nav__enlace:hover {
   background: var(--rojo-50);
   color: var(--rojo);
   font-weight: 700;
-}
-.inferior__item--apagado {
-  opacity: 0.7;
 }
 
 @media (min-width: 768px) {

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { HojaDeVidaServicio } from '../../../core/hoja-de-vida/hoja-de-vida.servicio';
-import { AvisoError } from '../componentes/aviso-error';
+import { AvisoError } from '../../../shared/aviso-error/aviso-error';
 import { EsqueletoHoja } from '../componentes/esqueleto-hoja';
 import { Principal } from '../principal/principal';
 import { PrimeraVez } from '../primera-vez/primera-vez';
