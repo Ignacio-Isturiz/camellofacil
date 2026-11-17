@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, output } f
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 import { Postulacion } from '../../core/postulaciones/postulaciones.modelos';
+import { formatoFecha } from '../../shared/fechas/fechas';
 import { Icono } from '../../shared/icono/icono';
 
 /** Una fila del historial: la vacante, la marca «Diste clic en postular», la hoja que llevó y sus acciones. */
@@ -43,13 +44,13 @@ export class FilaPostulacion {
     if (Number.isNaN(d.getTime())) return '';
     // es-CO da la hora en formato 12 horas («3:40 p. m.»), como en el diseño.
     const lang = this.i18n.getActiveLang() === 'es' ? 'es-CO' : 'en-US';
-    const hora = new Intl.DateTimeFormat(lang, { hour: 'numeric', minute: '2-digit' }).format(d);
+    const hora = formatoFecha(lang, { hour: 'numeric', minute: '2-digit' }).format(d);
     const hoy = new Date();
     const inicio = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
     const dias = Math.round((inicio(hoy) - inicio(d)) / 86_400_000);
     if (dias === 0) return `${this.i18n.translate('postulaciones.hoy')}, ${hora}`;
     if (dias === 1) return `${this.i18n.translate('postulaciones.ayer')}, ${hora}`;
-    const dia = new Intl.DateTimeFormat(lang, { day: 'numeric', month: 'short' }).format(d).replace(/\./g, '');
+    const dia = formatoFecha(lang, { day: 'numeric', month: 'short' }).format(d).replace(/\./g, '');
     return `${dia}, ${hora}`;
   });
 }

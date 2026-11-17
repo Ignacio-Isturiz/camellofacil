@@ -3,65 +3,26 @@ import { Routes } from '@angular/router';
 import { exigirSesion } from './core/sesion/exigir-sesion';
 import { irAInicioConSesion } from './core/sesion/ir-a-inicio-con-sesion';
 
-// Una carpeta features/ por módulo del backend, con carga diferida por función.
-export const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    canActivate: [irAInicioConSesion],
-    title: 'Camello Fácil · Prácticas y empleo para la comunidad UNAULA',
-    loadComponent: () => import('./features/landing/landing').then((m) => m.Landing),
-  },
-  {
-    path: 'conexion',
-    loadComponent: () => import('./features/conexion/conexion').then((m) => m.Conexion),
-  },
-  // Único ingreso: la cuenta Microsoft de UNAULA (no hay registro ni contraseñas propias).
-  {
-    path: 'login',
-    canActivate: [irAInicioConSesion],
-    title: 'Inicia sesión · Camello Fácil',
-    loadComponent: () => import('./features/autenticacion/login/login').then((m) => m.Login),
-  },
-  // Enlaces viejos a /registro llevan al ingreso con Microsoft.
-  { path: 'registro', redirectTo: 'login' },
-  // Inicio de quien ya inició sesión.
+/** Pantallas de quien ya inició sesión, todas dentro del mismo marco (encabezado, navegación y aviso legal). */
+const pantallasConSesion: Routes = [
   {
     path: 'inicio',
-    canActivate: [exigirSesion],
-    loadComponent: () => import('./shared/marco-aplicacion/marco-aplicacion').then((m) => m.MarcoAplicacion),
-    children: [
-      {
-        path: '',
-        title: 'Inicio · Camello Fácil',
-        loadComponent: () => import('./features/inicio/inicio').then((m) => m.Inicio),
-      },
-    ],
+    title: 'Inicio · Camello Fácil',
+    loadComponent: () => import('./features/inicio/inicio').then((m) => m.Inicio),
   },
-  // Pantallas de quien inició sesión.
   {
     path: 'vacantes',
-    canActivate: [exigirSesion],
-    loadComponent: () => import('./shared/marco-aplicacion/marco-aplicacion').then((m) => m.MarcoAplicacion),
-    children: [
-      {
-        path: '',
-        title: 'Vacantes · Camello Fácil',
-        loadComponent: () => import('./features/vacantes/lista/lista-vacantes').then((m) => m.ListaVacantes),
-      },
-      {
-        path: ':id',
-        title: 'Detalle de la vacante · Camello Fácil',
-        loadComponent: () => import('./features/vacantes/detalle/detalle-vacante').then((m) => m.DetalleVacante),
-      },
-    ],
+    title: 'Vacantes · Camello Fácil',
+    loadComponent: () => import('./features/vacantes/lista/lista-vacantes').then((m) => m.ListaVacantes),
   },
-  // Módulo «Hoja de vida». Las demás pantallas (subir, revisar, reorganizar, plantillas, versiones, editor)
-  // se agregan como hijas de esta ruta, dentro del mismo marco.
+  {
+    path: 'vacantes/:id',
+    title: 'Detalle de la vacante · Camello Fácil',
+    loadComponent: () => import('./features/vacantes/detalle/detalle-vacante').then((m) => m.DetalleVacante),
+  },
+  // Módulo «Hoja de vida».
   {
     path: 'hoja-de-vida',
-    canActivate: [exigirSesion],
-    loadComponent: () => import('./shared/marco-aplicacion/marco-aplicacion').then((m) => m.MarcoAplicacion),
     children: [
       {
         path: '',
@@ -104,21 +65,44 @@ export const routes: Routes = [
   // Mi perfil: datos, lo que falta completar (hoja de vida base) y privacidad.
   {
     path: 'perfil',
-    canActivate: [exigirSesion],
-    loadComponent: () => import('./shared/marco-aplicacion/marco-aplicacion').then((m) => m.MarcoAplicacion),
-    children: [
-      {
-        path: '',
-        title: 'Mi perfil · Camello Fácil',
-        loadComponent: () => import('./features/perfil/mi-perfil/mi-perfil').then((m) => m.MiPerfil),
-      },
-      {
-        path: 'editar',
-        title: 'Editar perfil · Camello Fácil',
-        loadComponent: () => import('./features/perfil/editar-perfil/editar-perfil').then((m) => m.EditarPerfil),
-      },
-    ],
+    title: 'Mi perfil · Camello Fácil',
+    loadComponent: () => import('./features/perfil/mi-perfil/mi-perfil').then((m) => m.MiPerfil),
   },
+  {
+    path: 'perfil/editar',
+    title: 'Editar perfil · Camello Fácil',
+    loadComponent: () => import('./features/perfil/editar-perfil/editar-perfil').then((m) => m.EditarPerfil),
+  },
+  // Historial de clics en «Postular».
+  {
+    path: 'postulaciones',
+    title: 'Mis postulaciones · Camello Fácil',
+    loadComponent: () => import('./features/postulaciones/postulaciones').then((m) => m.Postulaciones),
+  },
+];
+
+// Una carpeta features/ por módulo del backend, con carga diferida por función.
+export const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    canActivate: [irAInicioConSesion],
+    title: 'Camello Fácil · Prácticas y empleo para la comunidad UNAULA',
+    loadComponent: () => import('./features/landing/landing').then((m) => m.Landing),
+  },
+  {
+    path: 'conexion',
+    loadComponent: () => import('./features/conexion/conexion').then((m) => m.Conexion),
+  },
+  // Único ingreso: la cuenta Microsoft de UNAULA (no hay registro ni contraseñas propias).
+  {
+    path: 'login',
+    canActivate: [irAInicioConSesion],
+    title: 'Inicia sesión · Camello Fácil',
+    loadComponent: () => import('./features/autenticacion/login/login').then((m) => m.Login),
+  },
+  // Enlaces viejos a /registro llevan al ingreso con Microsoft.
+  { path: 'registro', redirectTo: 'login' },
   // Documentos legales (públicos). Borrador 1.0, pendiente de revisión legal.
   {
     path: 'terminos',
@@ -132,18 +116,13 @@ export const routes: Routes = [
     data: { documento: 'privacidad' },
     loadComponent: () => import('./features/legal/documento-legal').then((m) => m.DocumentoLegal),
   },
-  // Historial de clics en «Postular».
+  // Un solo marco para todas las pantallas con sesión: al pasar de una sección a otra no se vuelve a crear
+  // (no se repinta el encabezado ni se vuelve a pedir el perfil). La guarda corre una vez al entrar al marco.
   {
-    path: 'postulaciones',
+    path: '',
     canActivate: [exigirSesion],
     loadComponent: () => import('./shared/marco-aplicacion/marco-aplicacion').then((m) => m.MarcoAplicacion),
-    children: [
-      {
-        path: '',
-        title: 'Mis postulaciones · Camello Fácil',
-        loadComponent: () => import('./features/postulaciones/postulaciones').then((m) => m.Postulaciones),
-      },
-    ],
+    children: pantallasConSesion,
   },
   // Aún no existe /contacto: vuelve al inicio. Quitar al agregarla.
   { path: '**', redirectTo: '' },

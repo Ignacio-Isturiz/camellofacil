@@ -37,7 +37,7 @@ export class Subir implements OnDestroy {
     // Cuando el análisis termina, se pasa a revisar lo que se leyó.
     effect(() => {
       if (this.subida.estado() === 'listo') {
-        this.resumen.cargarResumen();
+        this.resumen.cargarResumen(true);
         void this.router.navigate(['/hoja-de-vida/revisar']);
       }
     });

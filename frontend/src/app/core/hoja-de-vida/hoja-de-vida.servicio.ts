@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, Subscription, switchMap } from 'rxjs';
 
 import { API_HOJA_DE_VIDA } from './hoja-de-vida.api';
 import {
@@ -46,10 +46,19 @@ export class HojaDeVidaServicio {
   readonly puntajeAts = signal<PuntajeAts | null>(null);
   readonly estadoPuntajeAts = signal<EstadoCarga>('listo');
 
-  cargarResumen(): void {
+  private resumenEnCurso: Subscription | null = null;
+  private puntajeEnCurso: Subscription | null = null;
+
+  /**
+   * Varias pantallas lo piden al entrar (Mi perfil, Hoja de vida): si ya hay una petición en vuelo, se reutiliza.
+   * `forzar` (tras guardar algo que lo cambia) cancela la que esté en vuelo y pide de nuevo.
+   */
+  cargarResumen(forzar = false): void {
+    if (!forzar && this.resumenEnCurso && !this.resumenEnCurso.closed) return;
+    this.resumenEnCurso?.unsubscribe();
     this.estadoResumen.set('cargando');
     const aviso = setTimeout(() => this.despertando.set(true), ESPERA_ARRANQUE_MS);
-    this.http.get<ResumenHojaDeVida>(API_HOJA_DE_VIDA.resumen).subscribe({
+    this.resumenEnCurso = this.http.get<ResumenHojaDeVida>(API_HOJA_DE_VIDA.resumen).subscribe({
       next: (r) => {
         clearTimeout(aviso);
         this.despertando.set(false);
@@ -86,7 +95,9 @@ export class HojaDeVidaServicio {
       .pipe(switchMap(() => this.http.post<void>(API_HOJA_DE_VIDA.confirmarDatos, {})));
   }
 
+  /** Las plantillas casi no cambian: se piden una vez por visita (o al reintentar tras un error). */
   cargarPlantillas(): void {
+    if (this.estadoPlantillas() === 'listo') return;
     this.estadoPlantillas.set('cargando');
     this.http.get<readonly Plantilla[]>(API_HOJA_DE_VIDA.plantillas).subscribe({
       next: (lista) => {
@@ -111,7 +122,8 @@ export class HojaDeVidaServicio {
   /** Recalcula el puntaje ATS con otra opción de evaluación. */
   evaluarAts(opcionId: string): void {
     this.estadoPuntajeAts.set('cargando');
-    this.http.get<PuntajeAts>(API_HOJA_DE_VIDA.puntajeAts(opcionId)).subscribe({
+    this.puntajeEnCurso?.unsubscribe();
+    this.puntajeEnCurso = this.http.get<PuntajeAts>(API_HOJA_DE_VIDA.puntajeAts(opcionId)).subscribe({
       next: (p) => {
         this.puntajeAts.set(p);
         this.estadoPuntajeAts.set('listo');

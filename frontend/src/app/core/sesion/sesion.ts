@@ -31,6 +31,8 @@ export class Sesion {
   private readonly api = inject(ApiConfiguration);
 
   private readonly actual = signal<Usuario | null>(null);
+  /** Consulta a /me en vuelo o ya respondida en esta visita (se comparte entre guardas). */
+  private consulta: Promise<boolean> | null = null;
 
   readonly usuario = this.actual.asReadonly();
   readonly activa = computed(() => this.actual() !== null);
@@ -41,20 +43,33 @@ export class Sesion {
   }
 
   /** Pregunta al backend si hay sesión (cookie). Devuelve true si la hay. */
-  async restaurar(): Promise<boolean> {
-    try {
-      const datos = await firstValueFrom(this.http.get<UsuarioApi>(`${this.api.rootUrl}${RUTA_YO}`));
-      this.actual.set(construir(datos.correo, datos.nombre));
-      return true;
-    } catch {
-      this.actual.set(null);
-      return false;
-    }
+  restaurar(): Promise<boolean> {
+    this.consulta = firstValueFrom(this.http.get<UsuarioApi>(`${this.api.rootUrl}${RUTA_YO}`)).then(
+      (datos) => {
+        this.actual.set(construir(datos.correo, datos.nombre));
+        return true;
+      },
+      () => {
+        this.actual.set(null);
+        return false;
+      },
+    );
+    return this.consulta;
+  }
+
+  /**
+   * Como `restaurar`, pero reutiliza la respuesta si ya se preguntó en esta visita. Lo usan la landing y /login
+   * para no volver a preguntar en cada ida y vuelta entre ellas. Entrar con Microsoft recarga la página
+   * completa, así que una respuesta «sin sesión» guardada nunca oculta un ingreso nuevo.
+   */
+  comprobar(): Promise<boolean> {
+    return this.consulta ?? this.restaurar();
   }
 
   /** Olvida la sesión en memoria (p. ej. cuando el backend responde que venció). */
   olvidar(): void {
     this.actual.set(null);
+    this.consulta = Promise.resolve(false);
   }
 
   async cerrar(): Promise<void> {

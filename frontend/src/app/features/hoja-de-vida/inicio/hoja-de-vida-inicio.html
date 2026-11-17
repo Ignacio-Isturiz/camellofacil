@@ -11,13 +11,22 @@
     <app-aviso-error (reintentar)="reintentar()" />
   }
   @default {
+    <!-- Cada persona ve solo una de las dos pantallas: cada una se descarga cuando se necesita. -->
     @if (confirmada()) {
-      <app-principal />
+      @defer (on immediate) {
+        <app-principal />
+      } @placeholder {
+        <app-esqueleto-hoja />
+      }
     } @else {
-      <app-primera-vez
-        [sinConfirmar]="resumen()?.estado === 'sin_confirmar'"
-        [pendientes]="resumen()?.pendientesRevision ?? null"
-      />
+      @defer (on immediate) {
+        <app-primera-vez
+          [sinConfirmar]="resumen()?.estado === 'sin_confirmar'"
+          [pendientes]="resumen()?.pendientesRevision ?? null"
+        />
+      } @placeholder {
+        <app-esqueleto-hoja />
+      }
     }
   }
 }

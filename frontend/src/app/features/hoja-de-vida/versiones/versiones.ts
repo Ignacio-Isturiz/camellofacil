@@ -128,7 +128,7 @@ export class Versiones {
   protected usarComoBase(): void {
     const v = this.seleccionada();
     if (!v) return;
-    this.ejecutar(this.servicio.usarVersionComoBase(v.id), () => this.servicio.cargarResumen());
+    this.ejecutar(this.servicio.usarVersionComoBase(v.id), () => this.servicio.cargarResumen(true));
   }
 
   protected eliminar(): void {

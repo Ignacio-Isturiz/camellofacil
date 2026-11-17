@@ -1,5 +1,19 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Injector,
+  afterNextRender,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { EMPTY, catchError, filter, switchMap, tap } from 'rxjs';
 
 import { Adaptacion } from '../../../../core/adaptacion/adaptacion.modelos';
 import { AdaptacionServicio } from '../../../../core/adaptacion/adaptacion.servicio';
@@ -28,6 +42,7 @@ export class PanelAccion {
   private readonly postulaciones = inject(PostulacionesServicio);
   private readonly toast = inject(ToastServicio);
   private readonly i18n = inject(TranslocoService);
+  private readonly injector = inject(Injector);
 
   readonly vacanteId = input.required<string>();
   /** Verdadero cuando la vacante ya cargó; antes, los botones están apagados. */
@@ -35,8 +50,12 @@ export class PanelAccion {
   readonly guardada = input(false);
   readonly guardar = output<void>();
 
-  private readonly dialogoAdaptar = viewChild.required<DialogoAdaptar>('dlgAdaptar');
+  /** El diálogo de adaptar se carga diferido (@defer): no existe hasta que se pide por primera vez. */
+  private readonly dialogoAdaptar = viewChild<DialogoAdaptar>('dlgAdaptar');
   private readonly dialogoPostular = viewChild.required<DialogoPostular>('dlgPostular');
+  /** Lo que se pidió abrir mientras el diálogo terminaba de cargar. */
+  private readonly aperturaPendiente = signal<'nueva' | 'ver' | null>(null);
+  protected readonly adaptarPedido = computed(() => this.aperturaPendiente() !== null || !!this.dialogoAdaptar());
 
   protected readonly cargando = signal(true);
   protected readonly fallo = signal(false);
@@ -46,22 +65,39 @@ export class PanelAccion {
 
   constructor() {
     // Cuando la vacante carga, se consulta si ya hay una hoja adaptada y cuántas adaptaciones quedan hoy.
-    effect(() => {
-      if (!this.lista()) return;
-      const id = this.vacanteId();
-      this.cargando.set(true);
-      this.fallo.set(false);
-      this.adaptaciones.estado(id).subscribe({
-        next: (e) => {
-          this.adaptacion.set(e.adaptacion);
-          this.restantes.set(e.restantesHoy);
-          this.cargando.set(false);
-        },
-        error: () => {
-          this.fallo.set(true);
-          this.cargando.set(false);
-        },
+    // switchMap: si se cambia de vacante antes de que responda, la consulta anterior se cancela.
+    toObservable(computed(() => (this.lista() ? this.vacanteId() : null)))
+      .pipe(
+        filter((id): id is string => id !== null),
+        tap(() => {
+          this.cargando.set(true);
+          this.fallo.set(false);
+        }),
+        switchMap((id) =>
+          this.adaptaciones.estado(id).pipe(
+            catchError(() => {
+              this.fallo.set(true);
+              this.cargando.set(false);
+              return EMPTY;
+            }),
+          ),
+        ),
+        takeUntilDestroyed(),
+      )
+      .subscribe((e) => {
+        this.adaptacion.set(e.adaptacion);
+        this.restantes.set(e.restantesHoy);
+        this.cargando.set(false);
       });
+
+    // En cuanto el diálogo diferido existe, se abre con lo que se había pedido. Se espera a que termine su
+    // primer pintado: antes de eso todavía no tiene sus entradas (vacanteId, existente…).
+    effect(() => {
+      const modo = this.aperturaPendiente();
+      const dialogo = this.dialogoAdaptar();
+      if (!modo || !dialogo) return;
+      this.aperturaPendiente.set(null);
+      afterNextRender(() => dialogo.abrir(modo), { injector: this.injector });
     });
   }
 
@@ -72,11 +108,17 @@ export class PanelAccion {
 
   // ----- Adaptar -----
   protected adaptar(): void {
-    this.dialogoAdaptar().abrir('nueva');
+    this.abrirAdaptar('nueva');
   }
 
   protected verAdaptada(): void {
-    this.dialogoAdaptar().abrir('ver');
+    this.abrirAdaptar('ver');
+  }
+
+  private abrirAdaptar(modo: 'nueva' | 'ver'): void {
+    const dialogo = this.dialogoAdaptar();
+    if (dialogo) dialogo.abrir(modo);
+    else this.aperturaPendiente.set(modo);
   }
 
   protected alGuardarAdaptacion(a: Adaptacion): void {

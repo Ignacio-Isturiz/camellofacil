@@ -14,6 +14,7 @@ import {
   ValoresHoja,
 } from '../../../core/hoja-de-vida/hoja-de-vida.modelos';
 import { HojaDeVidaServicio } from '../../../core/hoja-de-vida/hoja-de-vida.servicio';
+import { rangoMeses } from '../../../shared/fechas/fechas';
 import { Icono } from '../../../shared/icono/icono';
 import { AvisoError } from '../componentes/aviso-error';
 import { CampoExtraidoComponente } from '../componentes/campo-extraido';
@@ -178,9 +179,12 @@ export class Editor {
     });
   }
 
-  protected guia(s: Seccion) {
-    return this.plantilla()?.guias.find((g) => g.seccion === s) ?? null;
-  }
+  /** Guía de cada sección según la plantilla (se calcula una vez, no en cada revisión de la vista). */
+  protected readonly guias = computed(() => {
+    const guias = this.plantilla()?.guias ?? [];
+    const de = (s: Seccion) => guias.find((g) => g.seccion === s) ?? null;
+    return { contacto: de('contacto'), perfil: de('perfil'), experiencia: de('experiencia'), educacion: de('educacion'), habilidades: de('habilidades') };
+  });
 
   protected agregarExperiencia(): void {
     this.formulario()?.controls.experiencia.push(
@@ -202,7 +206,10 @@ export class Editor {
     this.formulario()?.controls.educacion.removeAt(i);
   }
 
+  protected readonly previaAbierta = signal(false);
+
   protected verPrevia(): void {
+    this.previaAbierta.set(true);
     this.dialogoPrevia()?.abrir();
   }
 
@@ -218,7 +225,7 @@ export class Editor {
       .pipe(switchMap(() => this.servicio.guardarBorradorComoVersion(b.id)))
       .subscribe({
         next: () => {
-          this.servicio.cargarResumen();
+          this.servicio.cargarResumen(true);
           this.servicio.cargarVersiones();
           void this.router.navigate(['/hoja-de-vida/versiones']);
         },
@@ -238,20 +245,6 @@ export class Editor {
     }
   }
 
-  private mes(valor: string): string {
-    const m = /^(\d{4})-(\d{2})$/.exec(valor);
-    if (!m) return '';
-    return new Intl.DateTimeFormat(this.i18n.getActiveLang(), { month: 'short', year: 'numeric' })
-      .format(new Date(Number(m[1]), Number(m[2]) - 1, 1))
-      .replace(/\./g, '');
-  }
-
-  private rango(inicio: string, fin: string): string {
-    const a = this.mes(inicio);
-    const b = this.mes(fin);
-    return a && b ? `${a} – ${b}` : a || b;
-  }
-
   /** Arma el documento de la vista previa solo con lo que la persona escribió (no agrega nada). */
   private aDocumento(v: ValoresHoja, correo: string): DocumentoHoja {
     const t = (clave: string) => this.i18n.translate(`hoja.revisar.secciones.${clave}`);
@@ -263,7 +256,7 @@ export class Editor {
       .filter((e) => e.cargo || e.organizacion || e.descripcion)
       .map((e) => {
         const cabecera = [e.cargo, e.organizacion].filter(Boolean).join(', ');
-        const fechas = this.rango(e.inicio, e.fin);
+        const fechas = rangoMeses(e.inicio, e.fin, this.i18n.getActiveLang());
         return [fechas ? `${cabecera} · ${fechas}` : cabecera, e.descripcion].filter(Boolean).join(' — ');
       });
     if (exp.length) secciones.push({ id: 'experiencia', titulo: t('experiencia'), bloques: exp });
@@ -272,7 +265,7 @@ export class Editor {
       .filter((e) => e.titulo || e.institucion)
       .map((e) => {
         const base = [e.institucion, e.titulo].filter(Boolean).join(' · ');
-        const fechas = this.rango(e.inicio, e.fin);
+        const fechas = rangoMeses(e.inicio, e.fin, this.i18n.getActiveLang());
         return fechas ? `${base} · ${fechas}` : base;
       });
     if (edu.length) secciones.push({ id: 'educacion', titulo: t('educacion'), bloques: edu });

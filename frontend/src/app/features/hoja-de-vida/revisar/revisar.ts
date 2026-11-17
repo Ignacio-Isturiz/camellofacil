@@ -194,7 +194,7 @@ export class Revisar {
     this.errorGuardar.set(false);
     this.servicio.guardarYConfirmar(f.getRawValue()).subscribe({
       next: () => {
-        this.servicio.cargarResumen();
+        this.servicio.cargarResumen(true);
         void this.router.navigate(['/hoja-de-vida']);
       },
       error: () => {

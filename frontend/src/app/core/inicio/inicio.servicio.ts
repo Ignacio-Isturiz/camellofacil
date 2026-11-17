@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { desdeApi } from '../../features/vacantes/vacante';
 import { ListaPostulaciones, Postulacion } from '../postulaciones/postulaciones.modelos';
@@ -27,6 +27,9 @@ export class InicioServicio {
   readonly ultimas = signal<readonly Postulacion[]>([]);
   readonly estadoUltimas = signal<EstadoBloque>('cargando');
 
+  /** Página de recomendadas en vuelo: si se pide otra, esta se cancela (no llegan respuestas desordenadas). */
+  private paginaEnCurso: Subscription | null = null;
+
   cargarTodo(): void {
     this.cargarResumen();
     this.cargarCupo();
@@ -38,7 +41,8 @@ export class InicioServicio {
     if (this.resumen() && this.estadoResumen() === 'listo') this.cambiandoPagina.set(true);
     else this.estadoResumen.set('cargando');
     const params = new HttpParams().set('pagina', pagina);
-    this.http.get<ResumenInicioApi>(API_INICIO.resumen, { params }).subscribe({
+    this.paginaEnCurso?.unsubscribe();
+    this.paginaEnCurso = this.http.get<ResumenInicioApi>(API_INICIO.resumen, { params }).subscribe({
       next: (r) => {
         const ahora = Date.now();
         this.resumen.set({

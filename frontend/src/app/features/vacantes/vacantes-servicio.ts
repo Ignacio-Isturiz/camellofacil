@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { DetalleVacanteApi, ListaVacantesApi, Vacante, VacanteDetalle, desdeApi } from './vacante';
 import { API_VACANTES } from './vacantes.api';
@@ -26,12 +27,18 @@ export class VacantesServicio {
   readonly estadoDetalle = signal<EstadoCarga | 'no-encontrada'>('cargando');
 
   private cargadaEn = 0;
+  /** Lista en vuelo: Inicio y la lista pueden pedirla a la vez; se hace una sola petición. */
+  private listaEnCurso: Subscription | null = null;
+  /** Detalle en vuelo: al abrir otra vacante, la petición anterior se cancela. */
+  private detalleEnCurso: Subscription | null = null;
 
   /** Carga la lista si nunca se cargó o si ya está vieja. */
   cargar(forzar = false): void {
     if (!forzar && this.estado() === 'listo' && Date.now() - this.cargadaEn < VIGENCIA_MS) return;
+    if (!forzar && this.listaEnCurso && !this.listaEnCurso.closed) return;
     if (this.estado() !== 'listo') this.estado.set('cargando');
-    this.http.get<ListaVacantesApi>(API_VACANTES.lista).subscribe({
+    this.listaEnCurso?.unsubscribe();
+    this.listaEnCurso = this.http.get<ListaVacantesApi>(API_VACANTES.lista).subscribe({
       next: (r) => {
         const ahora = Date.now();
         this.todas.set(r.vacantes.map((v) => desdeApi(v, ahora)));
@@ -47,7 +54,8 @@ export class VacantesServicio {
     if (this.detalle()?.id === id) return;
     this.detalle.set(null);
     this.estadoDetalle.set('cargando');
-    this.http.get<DetalleVacanteApi>(API_VACANTES.vacante(id)).subscribe({
+    this.detalleEnCurso?.unsubscribe();
+    this.detalleEnCurso = this.http.get<DetalleVacanteApi>(API_VACANTES.vacante(id)).subscribe({
       next: (d) => {
         this.detalle.set({
           ...desdeApi(d.vacante),

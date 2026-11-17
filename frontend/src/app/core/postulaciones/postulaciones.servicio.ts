@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { ToastServicio } from '../../shared/toast/toast.servicio';
 import { API_POSTULACIONES } from './postulaciones.api';
@@ -26,11 +26,15 @@ export class PostulacionesServicio {
   readonly clics90 = signal<number | null>(null);
   readonly estado = signal<EstadoLista>('cargando');
 
+  /** Búsqueda en vuelo: al escribir otra cosa se cancela, para que no la pise una respuesta vieja. */
+  private busquedaEnCurso: Subscription | null = null;
+
   cargar(texto: string, orden: OrdenPostulaciones): void {
     this.estado.set('cargando');
+    this.busquedaEnCurso?.unsubscribe();
     let params = new HttpParams().set('orden', orden);
     if (texto.trim()) params = params.set('q', texto.trim());
-    this.http.get<ListaPostulaciones>(API_POSTULACIONES.lista, { params }).subscribe({
+    this.busquedaEnCurso = this.http.get<ListaPostulaciones>(API_POSTULACIONES.lista, { params }).subscribe({
       next: (r) => {
         this.items.set(r.items);
         this.clics90.set(r.clicsUltimos90Dias);

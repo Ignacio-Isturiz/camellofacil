@@ -37,7 +37,7 @@
           <details class="seccion tarjeta" [open]="abiertas().has('contacto')" (toggle)="alternar('contacto', $event)">
             <summary>{{ 'hoja.revisar.secciones.contacto' | transloco }}</summary>
             <div class="seccion__cuerpo">
-              @if (guia('contacto'); as g) {
+              @if (guias().contacto; as g) {
                 <p class="guia"><strong>{{ g.que }}</strong> <span>{{ 'hoja.editor.ejemplo' | transloco }}: {{ g.ejemplo }}</span></p>
               }
               <div class="rejilla">
@@ -52,7 +52,7 @@
           <details class="seccion tarjeta" [open]="abiertas().has('perfil')" (toggle)="alternar('perfil', $event)">
             <summary>{{ 'hoja.revisar.secciones.perfil' | transloco }}</summary>
             <div class="seccion__cuerpo">
-              @if (guia('perfil'); as g) {
+              @if (guias().perfil; as g) {
                 <p class="guia"><strong>{{ g.que }}</strong> <span>{{ 'hoja.editor.ejemplo' | transloco }}: {{ g.ejemplo }}</span></p>
               }
               <app-campo-extraido [control]="f.controls.perfil" [campo]="campoLeido" [etiqueta]="'hoja.revisar.secciones.perfil' | transloco" idCampo="ed-perfil" tipo="textarea" />
@@ -63,7 +63,7 @@
           <details class="seccion tarjeta" [open]="abiertas().has('experiencia')" (toggle)="alternar('experiencia', $event)">
             <summary>{{ 'hoja.revisar.secciones.experiencia' | transloco }}</summary>
             <div class="seccion__cuerpo">
-              @if (guia('experiencia'); as g) {
+              @if (guias().experiencia; as g) {
                 <p class="guia"><strong>{{ g.que }}</strong> <span>{{ 'hoja.editor.ejemplo' | transloco }}: {{ g.ejemplo }}</span></p>
               }
               @for (g of f.controls.experiencia.controls; track g.controls.id.value; let i = $index) {
@@ -88,7 +88,7 @@
           <details class="seccion tarjeta" [open]="abiertas().has('educacion')" (toggle)="alternar('educacion', $event)">
             <summary>{{ 'hoja.revisar.secciones.educacion' | transloco }}</summary>
             <div class="seccion__cuerpo">
-              @if (guia('educacion'); as g) {
+              @if (guias().educacion; as g) {
                 <p class="guia"><strong>{{ g.que }}</strong> <span>{{ 'hoja.editor.ejemplo' | transloco }}: {{ g.ejemplo }}</span></p>
               }
               @for (g of f.controls.educacion.controls; track g.controls.id.value; let i = $index) {
@@ -112,7 +112,7 @@
           <details class="seccion tarjeta" [open]="abiertas().has('habilidades')" (toggle)="alternar('habilidades', $event)">
             <summary>{{ 'hoja.revisar.secciones.habilidades' | transloco }}</summary>
             <div class="seccion__cuerpo">
-              @if (guia('habilidades'); as g) {
+              @if (guias().habilidades; as g) {
                 <p class="guia"><strong>{{ g.que }}</strong> <span>{{ 'hoja.editor.ejemplo' | transloco }}: {{ g.ejemplo }}</span></p>
               }
               <app-campo-extraido [control]="f.controls.habilidades" [campo]="campoLeido" [etiqueta]="'hoja.revisar.secciones.habilidades' | transloco" idCampo="ed-habilidades" tipo="textarea" />
@@ -141,8 +141,9 @@
       </div>
 
       <!-- Vista previa (móvil: hoja desde abajo) -->
-      <app-dialogo #dialogoPrevia [titulo]="'hoja.revisar.vistaPrevia' | transloco">
-        @if (documento(); as d) {
+      <!-- Solo se dibuja abierta: si no, se volvería a pintar en cada tecla aunque nadie la vea. -->
+      <app-dialogo #dialogoPrevia [titulo]="'hoja.revisar.vistaPrevia' | transloco" (cerrado)="previaAbierta.set(false)">
+        @if (previaAbierta() && documento(); as d) {
           <app-documento-hoja [documento]="d" [estilo]="plantilla()?.estilo ?? 'harvard'" />
         }
       </app-dialogo>
