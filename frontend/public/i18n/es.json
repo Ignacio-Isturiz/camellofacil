@@ -670,22 +670,16 @@
   },
   "inicio": {
     "hola": "Hola, {{ nombre }}",
-    "nuevas": "Tienes {{ n }} vacantes nuevas que coinciden con tu búsqueda y tu hoja de vida.",
-    "nuevasUna": "Tienes 1 vacante nueva que coincide con tu búsqueda y tu hoja de vida.",
+    "nuevas": "Esta semana hay {{ n }} vacantes nuevas de tu carrera.",
+    "nuevasUna": "Esta semana hay 1 vacante nueva de tu carrera.",
     "cargando": "Cargando tu resumen…",
     "recomendadasHoy": "Recomendadas hoy",
     "verTodas": "Ver todas las vacantes",
     "nueva": "Nueva",
-    "porQue": "Por qué:",
-    "teSirvio": "¿Te sirvió?",
-    "si": "Sí",
-    "no": "No",
-    "gracias": "Gracias por tu respuesta",
-    "errorVoto": "No pudimos guardar tu respuesta. Inténtalo de nuevo.",
     "sinDatos": "No pudimos cargar esto ahora.",
-    "vacioTitulo": "Aún no hay recomendaciones para hoy",
-    "vacioDetalle": "Cuando tu hoja de vida esté lista, aquí verás las vacantes que mejor coinciden contigo.",
-    "vacioBoton": "Ir a mi hoja de vida",
+    "vacioTitulo": "Hoy no hay vacantes de tu carrera",
+    "vacioDetalle": "Recomendamos según la carrera de tu perfil. Mientras llegan nuevas, revisa todas las vacantes.",
+    "vacioBoton": "Ver todas las vacantes",
     "busqueda": {
       "titulo": "¿Qué estás buscando?",
       "editar": "Editar",
@@ -705,6 +699,14 @@
       "titulo": "Últimas postulaciones",
       "verTodos": "Ver todos",
       "vacio": "Aún no has dado clic en «Postular»."
+    },
+    "nuevasNinguna": "Esta semana no hay vacantes nuevas de tu carrera. Te avisamos aquí cuando lleguen.",
+    "paginas": {
+      "aria": "Páginas de recomendadas",
+      "anterior": "Página anterior",
+      "siguiente": "Página siguiente",
+      "ir": "Ir a la página {{ n }}",
+      "resumen": "{{ desde }}–{{ hasta }} de {{ total }} recomendadas"
     }
   },
   "perfil": {

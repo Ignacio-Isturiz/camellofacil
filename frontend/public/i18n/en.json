@@ -670,22 +670,16 @@
   },
   "inicio": {
     "hola": "Hi, {{ nombre }}",
-    "nuevas": "You have {{ n }} new jobs that match your search and your résumé.",
-    "nuevasUna": "You have 1 new job that matches your search and your résumé.",
+    "nuevas": "There are {{ n }} new jobs for your degree this week.",
+    "nuevasUna": "There is 1 new job for your degree this week.",
     "cargando": "Loading your summary…",
     "recomendadasHoy": "Recommended today",
     "verTodas": "See all jobs",
     "nueva": "New",
-    "porQue": "Why:",
-    "teSirvio": "Was it useful?",
-    "si": "Yes",
-    "no": "No",
-    "gracias": "Thanks for your answer",
-    "errorVoto": "We could not save your answer. Please try again.",
     "sinDatos": "We could not load this right now.",
-    "vacioTitulo": "No recommendations for today yet",
-    "vacioDetalle": "When your résumé is ready, you will see the jobs that match you best here.",
-    "vacioBoton": "Go to my résumé",
+    "vacioTitulo": "No jobs for your degree today",
+    "vacioDetalle": "We recommend based on the degree in your profile. While new ones arrive, browse all jobs.",
+    "vacioBoton": "See all jobs",
     "busqueda": {
       "titulo": "What are you looking for?",
       "editar": "Edit",
@@ -705,6 +699,14 @@
       "titulo": "Latest applications",
       "verTodos": "See all",
       "vacio": "You have not clicked “Apply” yet."
+    },
+    "nuevasNinguna": "No new jobs for your degree this week. They will show up here when they arrive.",
+    "paginas": {
+      "aria": "Recommendation pages",
+      "anterior": "Previous page",
+      "siguiente": "Next page",
+      "ir": "Go to page {{ n }}",
+      "resumen": "{{ desde }}–{{ hasta }} of {{ total }} recommendations"
     }
   },
   "perfil": {

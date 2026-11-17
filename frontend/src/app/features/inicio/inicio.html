@@ -10,7 +10,7 @@
       @case ('listo') {
         @if (servicio.resumen(); as r) {
           <p class="banner__bajada">
-            {{ (r.vacantesNuevas === 1 ? 'inicio.nuevasUna' : 'inicio.nuevas') | transloco: { n: r.vacantesNuevas } }}
+            {{ (r.vacantesNuevas === 0 ? 'inicio.nuevasNinguna' : r.vacantesNuevas === 1 ? 'inicio.nuevasUna' : 'inicio.nuevas') | transloco: { n: r.vacantesNuevas } }}
           </p>
         }
       }
@@ -43,21 +43,61 @@
         </div>
       }
       @case ('error') {
-        <app-aviso-error (reintentar)="servicio.cargarResumen()" />
+        <app-aviso-error (reintentar)="servicio.cargarResumen(servicio.resumen()?.pagina ?? 0)" />
       }
       @case ('listo') {
-        @if (servicio.resumen()?.recomendadas?.length) {
-          <div class="tarjetas">
-            @for (v of servicio.resumen()?.recomendadas; track v.id) {
+        @if (servicio.resumen(); as r) {
+        @if (r.recomendadas.length) {
+          <div class="tarjetas" [class.tarjetas--cambiando]="servicio.cambiandoPagina()" [attr.aria-busy]="servicio.cambiandoPagina()">
+            @for (v of r.recomendadas; track v.id) {
               <app-tarjeta-recomendada [vacante]="v" [guardada]="guardadas().has(v.id)" (guardar)="alternarGuardada(v.id)" />
             }
           </div>
+          @if (r.totalPaginas > 1) {
+            <nav class="paginas" [attr.aria-label]="'inicio.paginas.aria' | transloco">
+              <button
+                type="button"
+                class="paginas__boton"
+                [disabled]="r.pagina === 0 || servicio.cambiandoPagina()"
+                [attr.aria-label]="'inicio.paginas.anterior' | transloco"
+                (click)="irAPagina(r.pagina - 1)"
+              >
+                <app-icono nombre="chevron-izq" style="--tam: 16px" />
+              </button>
+              @for (n of numerosDePagina(); track n) {
+                <button
+                  type="button"
+                  class="paginas__boton"
+                  [class.paginas__boton--actual]="n === r.pagina"
+                  [attr.aria-current]="n === r.pagina ? 'page' : null"
+                  [attr.aria-label]="'inicio.paginas.ir' | transloco: { n: n + 1 }"
+                  [disabled]="servicio.cambiandoPagina()"
+                  (click)="irAPagina(n)"
+                >
+                  {{ n + 1 }}
+                </button>
+              }
+              <button
+                type="button"
+                class="paginas__boton"
+                [disabled]="r.pagina >= r.totalPaginas - 1 || servicio.cambiandoPagina()"
+                [attr.aria-label]="'inicio.paginas.siguiente' | transloco"
+                (click)="irAPagina(r.pagina + 1)"
+              >
+                <app-icono nombre="chevron-der" style="--tam: 16px" />
+              </button>
+            </nav>
+            <p class="paginas__resumen" aria-live="polite">
+              {{ 'inicio.paginas.resumen' | transloco: { desde: r.pagina * 4 + 1, hasta: r.pagina * 4 + r.recomendadas.length, total: r.total } }}
+            </p>
+          }
         } @else {
           <div class="tarjeta vacio">
             <h3>{{ 'inicio.vacioTitulo' | transloco }}</h3>
             <p>{{ 'inicio.vacioDetalle' | transloco }}</p>
-            <a routerLink="/hoja-de-vida" class="boton boton--borde boton--pequeno">{{ 'inicio.vacioBoton' | transloco }}</a>
+            <a routerLink="/vacantes" class="boton boton--borde boton--pequeno">{{ 'inicio.vacioBoton' | transloco }}</a>
           </div>
+        }
         }
       }
     }

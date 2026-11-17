@@ -3,7 +3,13 @@
 
   <div class="vacante">
     <h3>{{ postulacion().cargo }}</h3>
-    <p class="vacante__detalle">{{ postulacion().empresa }} · {{ postulacion().lugar }}</p>
+    <p class="vacante__detalle">
+      {{ postulacion().empresa }} ·
+      @if (postulacion().ciudad) {
+        {{ postulacion().ciudad }} ·
+      }
+      {{ 'vacantes.modalidad.' + postulacion().modalidad | transloco }}
+    </p>
     <span class="etiqueta">{{ 'postulaciones.tipo.' + postulacion().tipo | transloco }}</span>
   </div>
 

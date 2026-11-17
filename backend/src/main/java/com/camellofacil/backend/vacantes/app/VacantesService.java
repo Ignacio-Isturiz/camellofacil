@@ -4,6 +4,7 @@ import com.camellofacil.backend.vacantes.app.ModelosVacante.ListaVacantes;
 import com.camellofacil.backend.vacantes.app.ModelosVacante.Modalidad;
 import com.camellofacil.backend.vacantes.app.ModelosVacante.TipoVacante;
 import com.camellofacil.backend.vacantes.app.ModelosVacante.VacanteDetalle;
+import com.camellofacil.backend.vacantes.app.ModelosVacante.VacanteParaPostular;
 import com.camellofacil.backend.vacantes.app.ModelosVacante.VacanteResumen;
 import com.camellofacil.backend.vacantes.persistence.MarcaVacante;
 import com.camellofacil.backend.vacantes.persistence.MarcaVacanteRepository;
@@ -45,10 +46,13 @@ public class VacantesService {
 
     @Transactional(readOnly = true)
     public ListaVacantes listar(UUID usuarioId) {
-        List<VacanteResumen> abiertas = vacantes.abiertas(Limit.of(MAXIMO_LISTA)).stream()
-                .map(VacantesService::resumen)
-                .toList();
-        return new ListaVacantes(abiertas, new HashSet<>(marcas.vacantesMarcadas(usuarioId, GUARDADA)));
+        return new ListaVacantes(abiertas(), new HashSet<>(marcas.vacantesMarcadas(usuarioId, GUARDADA)));
+    }
+
+    /** Las abiertas más recientes (hasta {@value #MAXIMO_LISTA}), de la más nueva a la más antigua. */
+    @Transactional(readOnly = true)
+    public List<VacanteResumen> abiertas() {
+        return vacantes.abiertas(Limit.of(MAXIMO_LISTA)).stream().map(VacantesService::resumen).toList();
     }
 
     /** Detalle de una vacante (también de una cerrada: la persona puede tenerla guardada). */
@@ -56,6 +60,19 @@ public class VacantesService {
     public Optional<VacanteDetalle> detalle(UUID vacanteId) {
         return vacantes.findById(vacanteId).map(v -> new VacanteDetalle(
                 resumen(v), v.getDescripcion(), lista(v.getResponsabilidades()), lista(v.getRequisitos())));
+    }
+
+    /** Para el módulo de postulaciones: los datos de la vacante y su página original (también si está cerrada). */
+    @Transactional(readOnly = true)
+    public Optional<VacanteParaPostular> paraPostular(UUID vacanteId) {
+        return vacantes.findById(vacanteId).map(v -> new VacanteParaPostular(
+                v.getId(),
+                v.getCargo(),
+                v.getEmpresa(),
+                v.getCiudad(),
+                Modalidad.valueOf(v.getModalidad()),
+                TipoVacante.valueOf(v.getTipo()),
+                v.getUrlPostulacion()));
     }
 
     @Transactional

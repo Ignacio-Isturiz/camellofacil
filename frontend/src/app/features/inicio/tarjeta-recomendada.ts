@@ -1,13 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 
-import { InicioServicio } from '../../core/inicio/inicio.servicio';
 import { Recomendada } from '../../core/inicio/inicio.modelos';
+import { abrirEnBlanco } from '../../core/postulaciones/pestana-externa';
+import { PostulacionesServicio } from '../../core/postulaciones/postulaciones.servicio';
 import { Icono } from '../../shared/icono/icono';
-import { ToastServicio } from '../../shared/toast/toast.servicio';
 
-/** Una recomendación de hoy: datos clave, «por qué» y «¿Te sirvió?». */
+/**
+ * Una recomendación de hoy: datos clave y «Ver y postular». El cargo lleva al detalle; el botón lleva
+ * directo a la oferta original (y queda en «Mis postulaciones»), igual que en la lista de vacantes.
+ */
 @Component({
   selector: 'app-tarjeta-recomendada',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,10 +20,12 @@ import { ToastServicio } from '../../shared/toast/toast.servicio';
       <div class="rec__tope">
         <div class="rec__etiquetas">
           <span class="etiqueta">{{ 'vacantes.tarjeta.' + vacante().tipo | transloco }}</span>
-          <span class="etiqueta etiqueta--exito">
-            <app-icono nombre="check" style="--tam: 13px" />
-            {{ 'vacantes.tarjeta.coincidencia' | transloco: { n: vacante().coincidencia } }}
-          </span>
+          @if (vacante().coincidencia !== null) {
+            <span class="etiqueta etiqueta--exito">
+              <app-icono nombre="check" style="--tam: 13px" />
+              {{ 'vacantes.tarjeta.coincidencia' | transloco: { n: vacante().coincidencia } }}
+            </span>
+          }
         </div>
         @if (vacante().nueva) {
           <span class="rec__nueva">{{ 'inicio.nueva' | transloco }}</span>
@@ -43,7 +48,13 @@ import { ToastServicio } from '../../shared/toast/toast.servicio';
       <p class="rec__empresa">{{ vacante().empresa }}</p>
 
       <ul class="rec__datos">
-        <li><app-icono nombre="pin" style="--tam: 14px" />{{ vacante().ciudad }} · {{ 'vacantes.modalidad.' + vacante().modalidad | transloco }}</li>
+        <li>
+          <app-icono nombre="pin" style="--tam: 14px" />
+          @if (vacante().ciudad) {
+            {{ vacante().ciudad }} ·
+          }
+          {{ 'vacantes.modalidad.' + vacante().modalidad | transloco }}
+        </li>
         <li>
           <app-icono nombre="reloj" style="--tam: 14px" />
           @switch (vacante().dias) {
@@ -54,55 +65,26 @@ import { ToastServicio } from '../../shared/toast/toast.servicio';
         </li>
       </ul>
 
-      @if (vacante().razones[0]; as razon) {
-        <p class="rec__porque"><strong>{{ 'inicio.porQue' | transloco }}</strong> {{ razon.texto }}</p>
-      }
-
       <div class="rec__pie">
-        @if (voto() === null) {
-          <span class="rec__sirvio" id="sirvio-{{ vacante().id }}">{{ 'inicio.teSirvio' | transloco }}</span>
-          <div class="rec__votos" role="group" [attr.aria-labelledby]="'sirvio-' + vacante().id">
-            <button type="button" class="rec__voto" [disabled]="enviando()" (click)="votar(true)">{{ 'inicio.si' | transloco }}</button>
-            <button type="button" class="rec__voto" [disabled]="enviando()" (click)="votar(false)">{{ 'inicio.no' | transloco }}</button>
-          </div>
-        } @else {
-          <span class="rec__gracias" role="status">{{ 'inicio.gracias' | transloco }}</span>
-        }
-        <a
-          class="rec__ir"
-          [routerLink]="['/vacantes', vacante().id]"
-          [attr.aria-label]="'vacantes.tarjeta.verYPostular' | transloco"
-        >
-          <app-icono nombre="flecha" style="--tam: 18px" />
-        </a>
+        <button type="button" class="boton boton--primario boton--pequeno rec__postular" (click)="postular()">
+          {{ 'vacantes.tarjeta.verYPostular' | transloco }}
+          <app-icono nombre="externo" style="--tam: 16px" />
+          <span class="solo-lectores">{{ 'postulaciones.nuevaPestana' | transloco }}</span>
+        </button>
       </div>
     </article>
   `,
   styleUrl: './tarjeta-recomendada.scss',
 })
 export class TarjetaRecomendada {
-  private readonly inicio = inject(InicioServicio);
-  private readonly toast = inject(ToastServicio);
-  private readonly i18n = inject(TranslocoService);
+  private readonly postulaciones = inject(PostulacionesServicio);
 
   readonly vacante = input.required<Recomendada>();
   readonly guardada = input(false);
   readonly guardar = output<void>();
 
-  protected readonly voto = signal<boolean | null>(null);
-  protected readonly enviando = signal(false);
-
-  protected votar(sirvio: boolean): void {
-    this.enviando.set(true);
-    this.inicio.enviarUtilidad(this.vacante().id, sirvio).subscribe({
-      next: () => {
-        this.voto.set(sirvio);
-        this.enviando.set(false);
-      },
-      error: () => {
-        this.enviando.set(false);
-        this.toast.mostrar(this.i18n.translate('inicio.errorVoto'));
-      },
-    });
+  /** La pestaña se abre dentro del clic (si no, el navegador la bloquea) y se completa con la URL del backend. */
+  protected postular(): void {
+    this.postulaciones.postularEnVacante(this.vacante().id, 'base', abrirEnBlanco());
   }
 }

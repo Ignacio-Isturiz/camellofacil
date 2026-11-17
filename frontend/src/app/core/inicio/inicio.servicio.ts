@@ -2,10 +2,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { desdeApi } from '../../features/vacantes/vacante';
 import { ListaPostulaciones, Postulacion } from '../postulaciones/postulaciones.modelos';
 import { API_POSTULACIONES } from '../postulaciones/postulaciones.api';
 import { API_INICIO } from './inicio.api';
-import { Busqueda, CupoAdaptaciones, EstadoBloque, ResumenInicio } from './inicio.modelos';
+import { Busqueda, CupoAdaptaciones, EstadoBloque, ResumenInicio, ResumenInicioApi } from './inicio.modelos';
 
 /**
  * Datos de Inicio. Cada bloque (resumen, cupo, últimas postulaciones) se pide por separado y falla por separado:
@@ -17,6 +18,8 @@ export class InicioServicio {
 
   readonly resumen = signal<ResumenInicio | null>(null);
   readonly estadoResumen = signal<EstadoBloque>('cargando');
+  /** Se está trayendo otra página de recomendadas: las tarjetas actuales siguen a la vista. */
+  readonly cambiandoPagina = signal(false);
 
   readonly cupo = signal<CupoAdaptaciones | null>(null);
   readonly estadoCupo = signal<EstadoBloque>('cargando');
@@ -30,14 +33,29 @@ export class InicioServicio {
     this.cargarUltimas();
   }
 
-  cargarResumen(): void {
-    this.estadoResumen.set('cargando');
-    this.http.get<ResumenInicio>(API_INICIO.resumen).subscribe({
+  /** Recomendadas de a 4: la primera carga muestra el esqueleto; al cambiar de página se conserva lo que hay. */
+  cargarResumen(pagina = 0): void {
+    if (this.resumen() && this.estadoResumen() === 'listo') this.cambiandoPagina.set(true);
+    else this.estadoResumen.set('cargando');
+    const params = new HttpParams().set('pagina', pagina);
+    this.http.get<ResumenInicioApi>(API_INICIO.resumen, { params }).subscribe({
       next: (r) => {
-        this.resumen.set(r);
+        const ahora = Date.now();
+        this.resumen.set({
+          vacantesNuevas: r.vacantesNuevas,
+          busqueda: r.busqueda,
+          pagina: r.pagina,
+          totalPaginas: r.totalPaginas,
+          total: r.total,
+          recomendadas: r.recomendadas.map((x) => ({ ...desdeApi(x.vacante, ahora), nueva: x.nueva })),
+        });
+        this.cambiandoPagina.set(false);
         this.estadoResumen.set('listo');
       },
-      error: () => this.estadoResumen.set('error'),
+      error: () => {
+        this.cambiandoPagina.set(false);
+        this.estadoResumen.set('error');
+      },
     });
   }
 
@@ -62,10 +80,6 @@ export class InicioServicio {
       },
       error: () => this.estadoUltimas.set('error'),
     });
-  }
-
-  enviarUtilidad(vacanteId: string, sirvio: boolean): Observable<unknown> {
-    return this.http.post(API_INICIO.utilidad(vacanteId), { sirvio });
   }
 
   guardarBusqueda(busqueda: Busqueda): Observable<Busqueda> {
