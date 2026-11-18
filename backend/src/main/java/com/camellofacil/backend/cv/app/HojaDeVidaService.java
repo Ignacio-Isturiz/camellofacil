@@ -99,6 +99,22 @@ public class HojaDeVidaService {
         return new HojaConDatos(info(h), leer(h));
     }
 
+    /** Los datos de la hoja confirmada como valores de texto, listos para armar documentos (plantillas, versiones). */
+    @Transactional(readOnly = true)
+    public ValoresHoja valores(UUID usuarioId) {
+        DatosHoja d = leer(conDatos(usuarioId));
+        return new ValoresHoja(
+                d.contacto().nombre().valor(), d.contacto().telefono().valor(), d.contacto().ciudad().valor(),
+                d.perfil().valor(), d.habilidades().valor(),
+                lista(d.experiencia()).stream()
+                        .map(x -> new ValorExperiencia(
+                                x.id(), x.cargo().valor(), x.organizacion().valor(), x.inicio().valor(), x.fin().valor(), x.descripcion().valor()))
+                        .toList(),
+                lista(d.educacion()).stream()
+                        .map(x -> new ValorEducacion(x.id(), x.titulo().valor(), x.institucion().valor(), x.inicio().valor(), x.fin().valor()))
+                        .toList());
+    }
+
     /** Guarda lo que la persona corrigió. Desde aquí, todo queda como «leído»: lo confirmó ella. */
     @Transactional
     public void corregir(UUID usuarioId, ValoresHoja v) {

@@ -64,3 +64,21 @@
 .campo__ayuda app-icono {
   margin-top: 1px;
 }
+
+.campo__curso {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  font-size: 0.875rem;
+  color: var(--gris-700, inherit);
+  cursor: pointer;
+}
+
+.campo__curso-valor {
+  margin: 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px dashed var(--gris-300, #ccc);
+  border-radius: 0.6rem;
+  color: var(--gris-600);
+}

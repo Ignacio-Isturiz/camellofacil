@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-/** Marca: cuadrado rojo con la "M" del camello + nombre. `claro` es para fondos rojos. */
+/** Marca: el camello con sudadera roja + nombre. `claro` es para fondos rojos. */
 @Component({
   selector: 'app-logo',
   changeDetection: ChangeDetectionStrategy.OnPush,

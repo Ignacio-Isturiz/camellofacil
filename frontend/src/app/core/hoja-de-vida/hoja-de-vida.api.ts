@@ -20,6 +20,8 @@ export const API_HOJA_DE_VIDA = {
   datos: '/api/v1/hoja-de-vida/datos',
   /** Confirma los datos revisados y dispara el análisis Harvard / ATS (POST). */
   confirmarDatos: '/api/v1/hoja-de-vida/datos/confirmacion',
+  /** POST: pide las recomendaciones de la IA (tardan unos segundos) y devuelve el resumen con ellas. */
+  recomendacionesIa: '/api/v1/hoja-de-vida/recomendaciones-ia',
   plantillas: '/api/v1/plantillas',
   /** Detalle de una plantilla, con la guía de qué va en cada sección. */
   plantilla: (id: string) => `/api/v1/plantillas/${encodeURIComponent(id)}`,

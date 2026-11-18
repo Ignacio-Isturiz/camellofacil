@@ -325,7 +325,8 @@
       "tipo": {
         "base": "Base",
         "reorganizada": "Reorganizada",
-        "adaptada": "Adaptada"
+        "adaptada": "Adaptada",
+        "editada": "Editada"
       }
     },
     "subir": {
@@ -487,7 +488,7 @@
       "opcionAts": "Opción ATS a evaluar",
       "errorAts": "No pudimos recalcular el puntaje con esa opción.",
       "queMejorar": "Qué mejorar",
-      "queMejorarDetalle": "Recomendaciones basadas solo en lo que ya está en tu hoja.",
+      "queMejorarDetalle": "Reglas de formato y recomendaciones de la IA, basadas solo en lo que ya está en tu hoja.",
       "sinObservaciones": "Nada por aquí.",
       "reorganizar": "Reorganizar en formato Harvard",
       "hacerloYo": "Hacerlo yo con una plantilla",
@@ -500,7 +501,13 @@
       "versiones": "Mis versiones",
       "gestionar": "Gestionar versiones",
       "sinVersiones": "Aún no tienes versiones guardadas.",
-      "analisisPendiente": "El análisis Harvard y ATS estará disponible pronto."
+      "analisisPendiente": "El análisis Harvard y ATS estará disponible pronto.",
+      "iaGenerando": "Generando recomendaciones con IA… puedes seguir usando la página.",
+      "iaError": "No pudimos generar las recomendaciones de la IA ahora.",
+      "iaReintentar": "Reintentar",
+      "iaLimite": "Ya generaste recomendaciones de IA cinco veces hoy. Mañana podrás pedir otras.",
+      "iaEtiqueta": "IA",
+      "iaEtiquetaAyuda": "Recomendación escrita por la IA con base en tu hoja"
     },
     "revisar": {
       "migas": "Revisar datos",
@@ -553,7 +560,10 @@
       "sinPendientes": "No quedan datos por revisar",
       "confirmar": "Confirmar y analizar",
       "enviando": "Guardando…",
-      "errorGuardar": "No pudimos guardar tus cambios. Inténtalo de nuevo."
+      "errorGuardar": "No pudimos guardar tus cambios. Inténtalo de nuevo.",
+      "actual": "Actual",
+      "trabajoActual": "Trabajo actual",
+      "enCurso": "En curso (sigo estudiando)"
     },
     "dialogo": {
       "cerrar": "Cerrar"

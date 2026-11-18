@@ -2,8 +2,11 @@ package com.camellofacil.backend.cv.web;
 
 import com.camellofacil.backend.auth.app.SesionActual;
 import com.camellofacil.backend.auth.app.UsuarioActual;
+import com.camellofacil.backend.cv.app.AnalisisFormatoService;
 import com.camellofacil.backend.cv.app.HojaDeVidaService;
 import com.camellofacil.backend.cv.app.HojaException;
+import com.camellofacil.backend.cv.app.ModelosAnalisis.Analisis;
+import com.camellofacil.backend.cv.app.ModelosAnalisis.PuntajeAts;
 import com.camellofacil.backend.cv.app.ModelosHoja.ArchivoInfo;
 import com.camellofacil.backend.cv.app.ModelosHoja.Campo;
 import com.camellofacil.backend.cv.app.ModelosHoja.DatosHoja;
@@ -28,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,21 +47,51 @@ public class HojaDeVidaController {
 
     private final SesionActual sesion;
     private final HojaDeVidaService hojas;
+    private final AnalisisFormatoService analisis;
 
-    public HojaDeVidaController(SesionActual sesion, HojaDeVidaService hojas) {
+    public HojaDeVidaController(SesionActual sesion, HojaDeVidaService hojas, AnalisisFormatoService analisis) {
         this.sesion = sesion;
         this.hojas = hojas;
+        this.analisis = analisis;
     }
 
     @GetMapping
     public ResumenRespuesta resumen() {
-        return hojas.resumen(id())
+        UUID usuarioId = id();
+        return hojas.resumen(usuarioId)
                 .filter(r -> r.estado() == EstadoHoja.SIN_CONFIRMAR || r.estado() == EstadoHoja.CONFIRMADA)
-                .map(r -> new ResumenRespuesta(
-                        r.estado() == EstadoHoja.CONFIRMADA ? "confirmada" : "sin_confirmar",
-                        new HojaRespuesta(archivo(r.archivo()), null, null, List.of(), List.of()),
-                        r.pendientesRevision()))
+                .map(r -> {
+                    // El análisis Harvard / ATS solo existe con la hoja confirmada.
+                    Analisis a = r.estado() == EstadoHoja.CONFIRMADA ? analisis.analizar(usuarioId) : null;
+                    HojaRespuesta hoja = a == null
+                            ? new HojaRespuesta(archivo(r.archivo()), null, null, List.of(), List.of(), "no_disponible")
+                            : new HojaRespuesta(archivo(r.archivo()), a.harvard(), a.ats(), a.opcionesAts(), a.observaciones(), a.recomendacionesIa());
+                    return new ResumenRespuesta(
+                            r.estado() == EstadoHoja.CONFIRMADA ? "confirmada" : "sin_confirmar", hoja, r.pendientesRevision());
+                })
                 .orElseGet(() -> new ResumenRespuesta("sin_hoja", null, null));
+    }
+
+    /** El puntaje ATS con otra opción de evaluación (404 si la opción no existe). */
+    @GetMapping("/puntajes/ats/{opcionId}")
+    public PuntajeAts puntajeAts(@PathVariable String opcionId) {
+        return analisis.puntajeAts(id(), opcionId)
+                .orElseThrow(() -> new HojaException(HojaException.Motivo.SIN_HOJA, "Esa opción de evaluación no existe"));
+    }
+
+    /**
+     * Pide las recomendaciones de la IA (tardan unos segundos) y devuelve el resumen ya con ellas. Si la hoja no cambió
+     * desde la última vez, devuelve las guardadas sin llamar a la IA.
+     */
+    @PostMapping("/recomendaciones-ia")
+    public ResumenRespuesta recomendacionesIa() {
+        UUID usuarioId = id();
+        Analisis a = analisis.generarRecomendaciones(usuarioId);
+        ArchivoInfo archivo = hojas.resumen(usuarioId).orElseThrow().archivo();
+        return new ResumenRespuesta(
+                "confirmada",
+                new HojaRespuesta(archivo(archivo), a.harvard(), a.ats(), a.opcionesAts(), a.observaciones(), a.recomendacionesIa()),
+                null);
     }
 
     /** Sube o reemplaza la hoja base (RF-13, RF-16). Responde 202: el análisis sigue en segundo plano. */

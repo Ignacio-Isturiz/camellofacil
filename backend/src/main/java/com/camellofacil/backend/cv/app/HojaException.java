@@ -15,7 +15,11 @@ public class HojaException extends RuntimeException {
         /** La operación no corresponde al estado actual (p. ej. confirmar mientras se analiza). */
         ESTADO_INVALIDO,
         /** Datos corregidos que no cumplen las reglas. */
-        DATOS_INVALIDOS
+        DATOS_INVALIDOS,
+        /** Se llegó al tope diario de una operación con IA. */
+        LIMITE,
+        /** El proveedor de IA no respondió bien. */
+        IA_NO_DISPONIBLE
     }
 
     private final Motivo motivo;

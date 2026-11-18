@@ -22,6 +22,8 @@ class HojaErrores {
             case SIN_HOJA -> HttpStatus.NOT_FOUND;
             case ESTADO_INVALIDO -> HttpStatus.CONFLICT;
             case DATOS_INVALIDOS -> HttpStatus.BAD_REQUEST;
+            case LIMITE -> HttpStatus.TOO_MANY_REQUESTS;
+            case IA_NO_DISPONIBLE -> HttpStatus.SERVICE_UNAVAILABLE;
         };
         ProblemDetail problema = ProblemDetail.forStatusAndDetail(estado, e.getMessage());
         problema.setProperty("codigo", e.motivo().name().toLowerCase());

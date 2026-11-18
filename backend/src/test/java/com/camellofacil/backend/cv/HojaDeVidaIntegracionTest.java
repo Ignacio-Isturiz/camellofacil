@@ -119,7 +119,7 @@ class HojaDeVidaIntegracionTest extends PruebaIntegracion {
 
         mockMvc.perform(get("/api/v1/hoja-de-vida").with(persona))
                 .andExpect(jsonPath("$.estado").value("confirmada"))
-                .andExpect(jsonPath("$.hoja.harvard").doesNotExist());
+                .andExpect(jsonPath("$.hoja.harvard.valor").isNumber());
         mockMvc.perform(get("/api/v1/hoja-de-vida/datos").with(persona))
                 .andExpect(jsonPath("$.experiencia.length()").value(1))
                 .andExpect(jsonPath("$.experiencia[0].cargo.estado").value("leido"));

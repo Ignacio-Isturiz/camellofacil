@@ -10,16 +10,7 @@
 .marca {
   width: 36px;
   height: 36px;
-}
-.fondo {
-  fill: var(--rojo);
-}
-.m {
-  fill: none;
-  stroke: var(--blanco);
-  stroke-width: 3.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  border-radius: 22%;
 }
 .nombre b {
   color: var(--rojo);
@@ -29,11 +20,9 @@
 :host(.claro) {
   color: var(--blanco);
 }
-:host(.claro) .fondo {
-  fill: var(--blanco);
-}
-:host(.claro) .m {
-  stroke: var(--rojo);
+:host(.claro) .marca {
+  /* Sobre fondo rojo, el borde rojo del ícono se perdería: un aro blanco lo separa. */
+  box-shadow: 0 0 0 2px var(--blanco);
 }
 :host(.claro) .nombre b {
   color: var(--blanco);

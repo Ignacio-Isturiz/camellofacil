@@ -72,7 +72,7 @@
                     <app-campo-extraido [control]="g.controls.cargo" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.cargo' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-cargo'" />
                     <app-campo-extraido [control]="g.controls.organizacion" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.organizacion' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-org'" />
                     <app-campo-extraido [control]="g.controls.inicio" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.inicio' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-ini'" tipo="month" />
-                    <app-campo-extraido [control]="g.controls.fin" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.fin' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-fin'" tipo="month" />
+                    <app-campo-extraido [control]="g.controls.fin" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.fin' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-fin'" [etiquetaEnCurso]="'hoja.revisar.trabajoActual' | transloco" tipo="month" />
                   </div>
                   <app-campo-extraido [control]="g.controls.descripcion" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.descripcion' | transloco" [idCampo]="'ed-exp-' + g.controls.id.value + '-desc'" tipo="textarea" />
                   <button type="button" class="enlace" (click)="quitarExperiencia(i)">{{ 'hoja.revisar.quitar' | transloco }}</button>
@@ -97,7 +97,7 @@
                     <app-campo-extraido [control]="g.controls.titulo" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.titulo' | transloco" [idCampo]="'ed-edu-' + g.controls.id.value + '-tit'" />
                     <app-campo-extraido [control]="g.controls.institucion" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.institucion' | transloco" [idCampo]="'ed-edu-' + g.controls.id.value + '-inst'" />
                     <app-campo-extraido [control]="g.controls.inicio" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.inicio' | transloco" [idCampo]="'ed-edu-' + g.controls.id.value + '-ini'" tipo="month" />
-                    <app-campo-extraido [control]="g.controls.fin" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.fin' | transloco" [idCampo]="'ed-edu-' + g.controls.id.value + '-fin'" tipo="month" />
+                    <app-campo-extraido [control]="g.controls.fin" [campo]="campoLeido" [etiqueta]="'hoja.revisar.campos.fin' | transloco" [idCampo]="'ed-edu-' + g.controls.id.value + '-fin'" [etiquetaEnCurso]="'hoja.revisar.enCurso' | transloco" tipo="month" />
                   </div>
                   <button type="button" class="enlace" (click)="quitarEducacion(i)">{{ 'hoja.revisar.quitar' | transloco }}</button>
                 </div>

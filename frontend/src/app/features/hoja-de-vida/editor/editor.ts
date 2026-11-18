@@ -89,13 +89,22 @@ export class Editor {
   protected cargar(): void {
     this.estado.set('cargando');
     const p = this.ruta.snapshot.queryParamMap;
-    this.servicio
-      .crearBorrador({
-        plantillaId: p.get('plantilla') ?? undefined,
-        versionId: p.get('version') ?? undefined,
-        adaptacionId: p.get('adaptacion') ?? undefined,
-        idioma: (p.get('idioma') as 'es' | 'en' | null) ?? undefined,
-      })
+    const existente = p.get('borrador');
+    // Con `borrador` en la dirección se reabre ese mismo borrador; así recargar no crea otro ni pierde lo guardado.
+    const origen = existente
+      ? this.servicio.obtenerBorrador(existente)
+      : this.servicio
+          .crearBorrador({
+            plantillaId: p.get('plantilla') ?? undefined,
+            versionId: p.get('version') ?? undefined,
+            adaptacionId: p.get('adaptacion') ?? undefined,
+            idioma: (p.get('idioma') as 'es' | 'en' | null) ?? undefined,
+          })
+          .pipe(
+            // La dirección pasa a apuntar al borrador creado (sin añadir una entrada al historial).
+            tap((b) => void this.router.navigate([], { relativeTo: this.ruta, queryParams: { borrador: b.id }, replaceUrl: true })),
+          );
+    origen
       .pipe(
         tap((b) => this.armar(b)),
         switchMap((b) => this.servicio.plantillaDetalle(b.plantillaId)),

@@ -57,7 +57,13 @@
 </header>
 
 <main id="contenido-app" class="contenedor principal">
-  <router-outlet />
+  <!--
+    Mientras el modal del primer ingreso está abierto la API responde 403, así que la pantalla de fondo no se monta:
+    se crea recién al completar el perfil y pide sus datos entonces (por ejemplo, las vacantes de Inicio).
+  -->
+  @if (!perfil.faltaCompletar()) {
+    <router-outlet />
+  }
 </main>
 
 <!-- Móvil: la navegación principal va abajo, al alcance del pulgar. -->

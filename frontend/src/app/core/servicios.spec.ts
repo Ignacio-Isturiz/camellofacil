@@ -150,6 +150,44 @@ describe('HojaDeVidaServicio', () => {
   });
 });
 
+describe('HojaDeVidaServicio · recomendaciones de la IA', () => {
+  const resumenCon = (ia: string, extra: object[] = []) => ({
+    estado: 'confirmada',
+    hoja: { harvard: { valor: 80, nivel: 'alto', detalle: '' }, ats: null, opcionesAts: [], observaciones: extra, recomendacionesIa: ia },
+    pendientesRevision: null,
+  });
+
+  it('las pide una vez, deja el resumen con ellas y no toca el puntaje ATS elegido', () => {
+    const s = TestBed.inject(HojaDeVidaServicio);
+    s.cargarResumen();
+    ctrl.expectOne('/api/v1/hoja-de-vida').flush(resumenCon('pendiente'));
+    s.evaluarAts('palabras-clave');
+    ctrl.expectOne('/api/v1/hoja-de-vida/puntajes/ats/palabras-clave').flush({ valor: 61, nivel: 'medio', detalle: '', opcionId: 'palabras-clave' });
+
+    s.generarRecomendacionesIa();
+    s.generarRecomendacionesIa(); // ya hay una en vuelo: no se repite
+    expect(s.estadoIa()).toBe('generando');
+    ctrl
+      .expectOne({ method: 'POST', url: '/api/v1/hoja-de-vida/recomendaciones-ia' })
+      .flush(resumenCon('lista', [{ id: 'ia-1', tipo: 'mejorar', titulo: 'Agrega cifras', detalle: '...', origen: 'ia' }]));
+
+    expect(s.estadoIa()).toBe('inactivo');
+    expect(s.resumen()?.hoja?.observaciones[0].origen).toBe('ia');
+    expect(s.puntajeAts()?.opcionId).toBe('palabras-clave');
+  });
+
+  it('si falla queda en «error» y si ya usó las de hoy, en «limite»', () => {
+    const s = TestBed.inject(HojaDeVidaServicio);
+    s.generarRecomendacionesIa();
+    ctrl.expectOne('/api/v1/hoja-de-vida/recomendaciones-ia').flush({}, { status: 503, statusText: 'No disponible' });
+    expect(s.estadoIa()).toBe('error');
+
+    s.generarRecomendacionesIa();
+    ctrl.expectOne('/api/v1/hoja-de-vida/recomendaciones-ia').flush({}, { status: 429, statusText: 'Demasiadas' });
+    expect(s.estadoIa()).toBe('limite');
+  });
+});
+
 describe('PerfilServicio', () => {
   it('las carreras se piden una vez; si falla, se puede reintentar', async () => {
     const s = TestBed.inject(PerfilServicio);

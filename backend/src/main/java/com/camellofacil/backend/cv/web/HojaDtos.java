@@ -1,5 +1,9 @@
 package com.camellofacil.backend.cv.web;
 
+import com.camellofacil.backend.cv.app.ModelosAnalisis.Observacion;
+import com.camellofacil.backend.cv.app.ModelosAnalisis.OpcionAts;
+import com.camellofacil.backend.cv.app.ModelosAnalisis.Puntaje;
+import com.camellofacil.backend.cv.app.ModelosAnalisis.PuntajeAts;
 import com.camellofacil.backend.cv.app.ModelosHoja.Campo;
 import com.camellofacil.backend.cv.app.ModelosHoja.Educacion;
 import com.camellofacil.backend.cv.app.ModelosHoja.Experiencia;
@@ -17,11 +21,12 @@ final class HojaDtos {
     record ArchivoRespuesta(String nombre, Instant actualizadaEn, String idioma, int paginas) {}
 
     /**
-     * `harvard`, `ats` y `observaciones` llegan con el análisis Harvard / ATS (siguiente etapa); por ahora
-     * van vacíos y la interfaz muestra el análisis como pendiente.
+     * El análisis Harvard / ATS solo existe con la hoja confirmada; antes va vacío y la interfaz lo muestra como
+     * pendiente. `recomendacionesIa`: lista | pendiente | no_disponible.
      */
     record HojaRespuesta(
-            ArchivoRespuesta archivo, Object harvard, Object ats, List<Object> opcionesAts, List<Object> observaciones) {}
+            ArchivoRespuesta archivo, Puntaje harvard, PuntajeAts ats, List<OpcionAts> opcionesAts, List<Observacion> observaciones,
+            String recomendacionesIa) {}
 
     /** estado: sin_hoja | sin_confirmar | confirmada. */
     record ResumenRespuesta(String estado, HojaRespuesta hoja, Integer pendientesRevision) {}
