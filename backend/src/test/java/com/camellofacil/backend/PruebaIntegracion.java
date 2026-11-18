@@ -24,7 +24,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
     "camellofacil.vacantes.jsearch.api-key=",
     "camellofacil.vacantes.jooble.api-key="
 })
-@Import({ExtractorIaDePrueba.class, FuenteDePrueba.class})
+@Import({ExtractorIaDePrueba.class, AdaptadorIaDePrueba.class, FuenteDePrueba.class})
 @AutoConfigureMockMvc
 public abstract class PruebaIntegracion {
 

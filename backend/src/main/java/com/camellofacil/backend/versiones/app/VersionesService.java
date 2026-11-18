@@ -108,9 +108,27 @@ public class VersionesService {
     @Transactional
     public VersionResumen crear(
             UUID usuarioId, String nombre, String plantillaId, String idioma, ValoresHoja valores, DocumentoHoja documento) {
+        return guardarNueva(usuarioId, nombre, "BASE", null, plantillaId, idioma, valores, documento);
+    }
+
+    /** Guarda como versión una hoja adaptada a una vacante (la usa el módulo adaptaciones). */
+    @Transactional
+    public VersionResumen crearAdaptada(
+            UUID usuarioId, String nombre, String nota, String plantillaId, String idioma, ValoresHoja valores, DocumentoHoja documento) {
+        return guardarNueva(usuarioId, nombre, "ADAPTADA", nota, plantillaId, idioma, valores, documento);
+    }
+
+    @Transactional(readOnly = true)
+    public VersionResumen resumen(UUID usuarioId, UUID id) {
+        return resumen(buscar(usuarioId, id));
+    }
+
+    private VersionResumen guardarNueva(
+            UUID usuarioId, String nombre, String tipo, String nota, String plantillaId, String idioma, ValoresHoja valores,
+            DocumentoHoja documento) {
         verificarCupo(usuarioId);
         VersionHoja v = new VersionHoja(
-                usuarioId, nombre, "BASE", idioma, plantillaId, false, null,
+                usuarioId, nombre, tipo, idioma, plantillaId, false, nota,
                 json.writeValueAsString(documento), json.writeValueAsString(valores), Instant.now());
         return resumen(versiones.save(v));
     }
