@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslocoPipe } from '@jsverse/transloco';
 
@@ -22,7 +22,9 @@ import { Icono } from '../../../shared/icono/icono';
         }
       </label>
 
-      @if (tipo() === 'textarea') {
+      @if (enCurso()) {
+        <p class="campo__curso-valor" [id]="idCampo()">{{ 'hoja.revisar.actual' | transloco }}</p>
+      } @else if (tipo() === 'textarea') {
         <textarea
           class="entrada entrada--area"
           rows="3"
@@ -45,7 +47,14 @@ import { Icono } from '../../../shared/icono/icono';
         />
       }
 
-      @if (ayudaVisible(); as ayuda) {
+      @if (etiquetaEnCurso(); as etiquetaCurso) {
+        <label class="campo__curso">
+          <input type="checkbox" [checked]="enCurso()" (change)="alternarEnCurso($any($event.target).checked)" />
+          {{ etiquetaCurso }}
+        </label>
+      }
+
+      @if (!enCurso() && ayudaVisible(); as ayuda) {
         <p class="campo__ayuda">
           <app-icono nombre="info" style="--tam: 14px" />
           {{ ayuda }}
@@ -67,6 +76,17 @@ export class CampoExtraidoComponente {
   /** Texto de ayuda para un dato no encontrado (ya traducido). */
   readonly ayudaNoEncontrado = input('');
 
+  /**
+   * Para fechas de fin: texto de la casilla «En curso» / «Trabajo actual» (ya traducido). Marcarla deja el fin
+   * vacío, que en el documento se escribe «Actual». Sin este texto no hay casilla.
+   */
+  readonly etiquetaEnCurso = input<string | null>(null);
+
+  /** Empieza marcada si el fin ya estaba vacío por decisión de la hoja (no cuando simplemente no se encontró). */
+  protected readonly enCurso = linkedSignal(
+    () => this.etiquetaEnCurso() !== null && this.control().value === '' && this.campo().estado !== 'no_encontrado',
+  );
+
   /** Se emite la primera vez que la persona toca el campo. */
   readonly resuelto = output<void>();
 
@@ -81,6 +101,12 @@ export class CampoExtraidoComponente {
     if (c.estado === 'no_encontrado') return c.ayuda ?? this.ayudaNoEncontrado();
     return null;
   });
+
+  protected alternarEnCurso(marcada: boolean): void {
+    this.enCurso.set(marcada);
+    if (marcada) this.control().setValue('');
+    this.alEditar();
+  }
 
   protected alEditar(): void {
     if (this.editado()) return;

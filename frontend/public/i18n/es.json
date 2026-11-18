@@ -553,7 +553,10 @@
       "sinPendientes": "No quedan datos por revisar",
       "confirmar": "Confirmar y analizar",
       "enviando": "Guardando…",
-      "errorGuardar": "No pudimos guardar tus cambios. Inténtalo de nuevo."
+      "errorGuardar": "No pudimos guardar tus cambios. Inténtalo de nuevo.",
+      "actual": "Actual",
+      "trabajoActual": "Trabajo actual",
+      "enCurso": "En curso (sigo estudiando)"
     },
     "dialogo": {
       "cerrar": "Cerrar"

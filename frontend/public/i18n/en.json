@@ -553,7 +553,10 @@
       "sinPendientes": "Nothing left to review",
       "confirmar": "Confirm and analyze",
       "enviando": "Saving…",
-      "errorGuardar": "We could not save your changes. Please try again."
+      "errorGuardar": "We could not save your changes. Please try again.",
+      "actual": "Present",
+      "trabajoActual": "Current job",
+      "enCurso": "In progress (still studying)"
     },
     "dialogo": {
       "cerrar": "Close"

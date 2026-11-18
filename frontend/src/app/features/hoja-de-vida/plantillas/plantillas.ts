@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
@@ -53,9 +53,13 @@ export class Plantillas {
     // Si se llega con ?vista=<id> (desde la pantalla principal), se abre esa vista previa.
     const pedida = this.ruta.snapshot.queryParamMap.get('vista');
     if (pedida) {
-      effect(() => {
+      // Se abre una sola vez: si se volviera a evaluar al cerrar, la vista previa reaparecería sin dejar salir.
+      const abrir = effect(() => {
         const p = this.servicio.plantillas().find((x) => x.id === pedida);
-        if (p && !this.elegida() && this.dialogo()) this.verPrevia(p);
+        if (p && this.dialogo()) {
+          untracked(() => this.verPrevia(p));
+          abrir.destroy();
+        }
       });
     }
   }
