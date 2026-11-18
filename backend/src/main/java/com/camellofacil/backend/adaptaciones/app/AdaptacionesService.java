@@ -21,12 +21,15 @@ import com.camellofacil.backend.plantillas.app.PlantillasService;
 import com.camellofacil.backend.vacantes.app.ModelosVacante.VacanteDetalle;
 import com.camellofacil.backend.vacantes.app.VacantesService;
 import com.camellofacil.backend.versiones.app.ModelosVersion.VersionResumen;
+import com.camellofacil.backend.versiones.app.OrigenAdaptacion;
 import com.camellofacil.backend.versiones.app.VersionesService;
+import com.camellofacil.backend.versiones.app.VersionesService.ContenidoVersion;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,7 +42,7 @@ import tools.jackson.databind.json.JsonMapper;
  * la IA y se deshace si ella falla, porque todo ocurre en una sola transacción.
  */
 @Service
-public class AdaptacionesService {
+public class AdaptacionesService implements OrigenAdaptacion {
 
     /** La adaptación usa una plantilla ATS: es la que mejor leen los sistemas de selección. */
     static final String PLANTILLA = "ats-clasica";
@@ -162,6 +165,14 @@ public class AdaptacionesService {
                 json.readValue(a.getValores(), ValoresHoja.class), json.readValue(a.getAdaptada(), DocumentoHoja.class));
         a.guardadaComoVersion(UUID.fromString(version.id()));
         return version;
+    }
+
+    /** Para abrir el editor sobre la hoja adaptada (la pide el módulo versiones). */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ContenidoVersion> contenido(UUID usuarioId, UUID adaptacionId) {
+        return adaptaciones.findByIdAndUsuarioId(adaptacionId, usuarioId).map(a -> new ContenidoVersion(
+                a.getPlantillaId(), a.getIdioma(), json.readValue(a.getValores(), ValoresHoja.class)));
     }
 
     private AdaptacionInfo info(AdaptacionHoja a, int restantes) {

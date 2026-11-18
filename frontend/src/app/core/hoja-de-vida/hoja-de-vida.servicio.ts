@@ -196,6 +196,11 @@ export class HojaDeVidaServicio {
     return this.http.post<Borrador>(API_HOJA_DE_VIDA.borradores, solicitud);
   }
 
+  /** Vuelve a abrir un borrador ya creado (al recargar el editor). */
+  obtenerBorrador(id: string): Observable<Borrador> {
+    return this.http.get<Borrador>(API_HOJA_DE_VIDA.borrador(id));
+  }
+
   guardarBorrador(id: string, valores: ValoresHoja): Observable<Borrador> {
     return this.http.put<Borrador>(API_HOJA_DE_VIDA.borrador(id), valores);
   }

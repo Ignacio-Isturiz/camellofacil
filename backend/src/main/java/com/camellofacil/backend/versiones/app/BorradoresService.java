@@ -35,18 +35,21 @@ public class BorradoresService {
     private final PlantillasService plantillas;
     private final HojaDeVidaService hojas;
     private final JsonMapper json;
+    private final List<OrigenAdaptacion> origenesAdaptacion;
 
     public BorradoresService(
             BorradorHojaRepository borradores,
             VersionesService versiones,
             PlantillasService plantillas,
             HojaDeVidaService hojas,
-            JsonMapper json) {
+            JsonMapper json,
+            List<OrigenAdaptacion> origenesAdaptacion) {
         this.borradores = borradores;
         this.versiones = versiones;
         this.plantillas = plantillas;
         this.hojas = hojas;
         this.json = json;
+        this.origenesAdaptacion = origenesAdaptacion;
     }
 
     @Transactional
@@ -54,7 +57,17 @@ public class BorradoresService {
         String plantillaId;
         String idioma;
         ValoresHoja valores;
-        if (solicitud.versionId() != null && !solicitud.versionId().isBlank()) {
+        if (solicitud.adaptacionId() != null && !solicitud.adaptacionId().isBlank()) {
+            UUID adaptacionId = uuid(solicitud.adaptacionId());
+            ContenidoVersion c = origenesAdaptacion.stream()
+                    .map(o -> o.contenido(usuarioId, adaptacionId))
+                    .flatMap(java.util.Optional::stream)
+                    .findFirst()
+                    .orElseThrow(() -> new VersionException(Motivo.NO_ENCONTRADA, "No encontramos esa adaptación"));
+            plantillaId = c.plantillaId();
+            idioma = c.idioma();
+            valores = c.valores();
+        } else if (solicitud.versionId() != null && !solicitud.versionId().isBlank()) {
             ContenidoVersion c = versiones.contenido(usuarioId, uuid(solicitud.versionId()));
             plantillaId = c.plantillaId();
             idioma = c.idioma();
@@ -71,6 +84,12 @@ public class BorradoresService {
         BorradorHoja b = borradores.save(
                 new BorradorHoja(usuarioId, plantillaId, idioma, json.writeValueAsString(valores), Instant.now()));
         return info(b, correo);
+    }
+
+    /** Vuelve a abrir un borrador (recargar el editor no debe crear otro ni perder lo guardado). */
+    @Transactional(readOnly = true)
+    public BorradorInfo obtener(UUID usuarioId, String correo, UUID id) {
+        return info(buscar(usuarioId, id), correo);
     }
 
     @Transactional

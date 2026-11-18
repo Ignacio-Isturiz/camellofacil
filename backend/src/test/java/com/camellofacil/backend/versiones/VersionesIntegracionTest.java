@@ -51,6 +51,7 @@ class VersionesIntegracionTest extends PruebaIntegracion {
     @Autowired HojaDeVidaService hojas;
     @Autowired AnalisisHojaService analisis;
     @Autowired JsonMapper json;
+    @Autowired org.springframework.jdbc.core.JdbcTemplate jdbc;
 
     private record Persona(UUID id, RequestPostProcessor sesion) {}
 
@@ -264,5 +265,28 @@ class VersionesIntegracionTest extends PruebaIntegracion {
         mockMvc.perform(get("/api/v1/hoja-de-vida/versiones/" + id + "/descarga").with(intrusa.sesion()))
                 .andExpect(status().isNotFound());
         mockMvc.perform(get("/api/v1/hoja-de-vida/versiones/" + id + "/descarga")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void unBorradorSeVuelveAAbrirConLoGuardado_sinCrearOtro_ySoloSuDuena() throws Exception {
+        Persona dueña = nuevaPersona(true);
+        Persona intrusa = nuevaPersona(true);
+        String id = leer(mockMvc.perform(post("/api/v1/hoja-de-vida/borradores").with(dueña.sesion()).with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"plantillaId\":\"harvard-clasica\"}")).andReturn())
+                .get("id").asString();
+        mockMvc.perform(put("/api/v1/hoja-de-vida/borradores/" + id).with(dueña.sesion()).with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON).content(VALORES.replace("Estudiante de datos", "Perfil que escribí")))
+                .andExpect(status().isOk());
+
+        // Recargar el editor: se pide el mismo borrador y llega con lo que se había guardado.
+        mockMvc.perform(get("/api/v1/hoja-de-vida/borradores/" + id).with(dueña.sesion()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.valores.perfil").value("Perfil que escribí"))
+                .andExpect(jsonPath("$.guardadoEn").isNotEmpty());
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM borrador_hoja WHERE usuario_id = ?", Integer.class, dueña.id())).isEqualTo(1);
+
+        mockMvc.perform(get("/api/v1/hoja-de-vida/borradores/" + id).with(intrusa.sesion())).andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/v1/hoja-de-vida/borradores/" + id)).andExpect(status().isUnauthorized());
     }
 }

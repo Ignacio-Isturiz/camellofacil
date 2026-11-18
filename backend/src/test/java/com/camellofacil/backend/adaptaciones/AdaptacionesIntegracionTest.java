@@ -227,4 +227,26 @@ class AdaptacionesIntegracionTest extends PruebaIntegracion {
         mockMvc.perform(delete("/api/v1/adaptaciones/" + id).with(dueña.sesion()).with(csrf())).andExpect(status().isNoContent());
         mockMvc.perform(get("/api/v1/adaptaciones/cupo")).andExpect(status().isUnauthorized());
     }
+
+    @Test
+    void elEditorSeAbreSobreLaHojaAdaptada_soloParaSuDuena() throws Exception {
+        Persona dueña = nuevaPersona(true);
+        Persona intrusa = nuevaPersona(true);
+        String id = leer(adaptar(dueña)).get("id").asString();
+
+        mockMvc.perform(post("/api/v1/hoja-de-vida/borradores").with(dueña.sesion()).with(csrf())
+                        .contentType("application/json").content("{\"adaptacionId\":\"" + id + "\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.plantillaId").value("ats-clasica"))
+                // Trae lo adaptado (SQL primero), no la hoja base.
+                .andExpect(jsonPath("$.valores.habilidades").value("SQL, Python, Excel"))
+                .andExpect(jsonPath("$.valores.perfil").value("Estudiante de datos enfocada en análisis con Python."));
+
+        mockMvc.perform(post("/api/v1/hoja-de-vida/borradores").with(intrusa.sesion()).with(csrf())
+                        .contentType("application/json").content("{\"adaptacionId\":\"" + id + "\"}"))
+                .andExpect(status().isNotFound());
+        mockMvc.perform(post("/api/v1/hoja-de-vida/borradores").with(dueña.sesion()).with(csrf())
+                        .contentType("application/json").content("{\"adaptacionId\":\"" + UUID.randomUUID() + "\"}"))
+                .andExpect(status().isNotFound());
+    }
 }

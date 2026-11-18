@@ -13,7 +13,7 @@ public final class ModelosVersion {
             String id, String nombre, String tipo, Instant creadaEn, String idioma, Integer puntajeHarvard, Integer puntajeAts,
             String nota, boolean eliminable, String motivoNoEliminable) {}
 
-    public record SolicitudBorrador(String plantillaId, String versionId, String idioma) {}
+    public record SolicitudBorrador(String plantillaId, String versionId, String adaptacionId, String idioma) {}
 
     public record BorradorInfo(String id, String plantillaId, String idioma, String correo, ValoresHoja valores, Instant guardadoEn) {}
 }

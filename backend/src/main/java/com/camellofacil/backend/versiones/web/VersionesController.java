@@ -97,8 +97,14 @@ public class VersionesController {
     @PostMapping("/borradores")
     public ResponseEntity<BorradorInfo> crearBorrador(@Valid @RequestBody BorradorSolicitud cuerpo) {
         UsuarioActual u = sesion.requerido();
-        BorradorInfo b = borradores.crear(u.id(), u.correo(), new SolicitudBorrador(cuerpo.plantillaId(), cuerpo.versionId(), cuerpo.idioma()));
+        BorradorInfo b = borradores.crear(u.id(), u.correo(), new SolicitudBorrador(cuerpo.plantillaId(), cuerpo.versionId(), cuerpo.adaptacionId(), cuerpo.idioma()));
         return ResponseEntity.status(HttpStatus.CREATED).body(b);
+    }
+
+    @GetMapping("/borradores/{id}")
+    public BorradorInfo borrador(@PathVariable UUID id) {
+        UsuarioActual u = sesion.requerido();
+        return borradores.obtener(u.id(), u.correo(), id);
     }
 
     @PutMapping("/borradores/{id}")

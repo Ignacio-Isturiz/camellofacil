@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, untracked, viewChild } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import {
@@ -30,6 +30,7 @@ type Filtro = 'todas' | CategoriaPlantilla;
 export class Plantillas {
   protected readonly servicio = inject(HojaDeVidaServicio);
   private readonly ruta = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   protected readonly filtros: readonly Filtro[] = ['todas', 'harvard', 'ats'];
   protected readonly filtro = signal<Filtro>('todas');
@@ -59,6 +60,8 @@ export class Plantillas {
         if (p && this.dialogo()) {
           untracked(() => this.verPrevia(p));
           abrir.destroy();
+          // El parámetro ya cumplió su función: se quita para que recargar la página no vuelva a abrirla sola.
+          void this.router.navigate([], { relativeTo: this.ruta, queryParams: { vista: null }, queryParamsHandling: 'merge', replaceUrl: true });
         }
       });
     }
