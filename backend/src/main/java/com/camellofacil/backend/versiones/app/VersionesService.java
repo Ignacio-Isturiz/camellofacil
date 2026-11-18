@@ -118,6 +118,13 @@ public class VersionesService {
         return guardarNueva(usuarioId, nombre, "ADAPTADA", nota, plantillaId, idioma, valores, documento);
     }
 
+    /** Guarda como versión una hoja reorganizada a otro formato (la usa el módulo reorganizaciones). */
+    @Transactional
+    public VersionResumen crearReorganizada(
+            UUID usuarioId, String nombre, String nota, String plantillaId, String idioma, ValoresHoja valores, DocumentoHoja documento) {
+        return guardarNueva(usuarioId, nombre, "REORGANIZADA", nota, plantillaId, idioma, valores, documento);
+    }
+
     @Transactional(readOnly = true)
     public VersionResumen resumen(UUID usuarioId, UUID id) {
         return resumen(buscar(usuarioId, id));

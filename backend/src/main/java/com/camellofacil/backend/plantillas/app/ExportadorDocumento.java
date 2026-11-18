@@ -114,6 +114,11 @@ public class ExportadorDocumento {
         return new Detalle(partes, "");
     }
 
+    /** Las viñetas en que se puede partir un texto (una por línea u oración); vacío si no hay dónde partirlo. */
+    public static List<String> dividirEnVinetas(String texto) {
+        return partirDetalle(texto).vinetas();
+    }
+
     private static boolean hayTexto(String s) {
         return s != null && !s.isBlank();
     }

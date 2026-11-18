@@ -39,6 +39,8 @@ h4 {
 }
 p {
   overflow-wrap: anywhere;
+  /* Los logros en viñetas llegan como líneas separadas dentro del mismo párrafo. */
+  white-space: pre-line;
 }
 
 /* Estilos de plantilla */
