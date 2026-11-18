@@ -156,9 +156,15 @@ public class VersionesService {
                 .orElseThrow(() -> new VersionException(Motivo.NO_ENCONTRADA, "No encontramos esa versión"));
     }
 
+    /** «base» es solo la hoja base; una versión que la persona armó en el editor es «editada». */
+    private static String tipoVisible(VersionHoja v) {
+        if (v.isEsBase()) return "base";
+        return "BASE".equals(v.getTipo()) ? "editada" : v.getTipo().toLowerCase(Locale.ROOT);
+    }
+
     private static VersionResumen resumen(VersionHoja v) {
         return new VersionResumen(
-                v.getId().toString(), v.getNombre(), v.getTipo().toLowerCase(Locale.ROOT), v.getCreadaEn(), v.getIdioma(), null, null,
+                v.getId().toString(), v.getNombre(), tipoVisible(v), v.getCreadaEn(), v.getIdioma(), null, null,
                 v.getNota(), !v.isEsBase(),
                 v.isEsBase() ? "Es tu hoja base. Elige otra como base para poder eliminarla." : null);
     }

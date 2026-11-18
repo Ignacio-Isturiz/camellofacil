@@ -392,3 +392,45 @@ h2 {
     display: grid;
   }
 }
+
+.ia-estado {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.6rem;
+  background: var(--crema, #f6f0e6);
+  color: var(--gris-700, inherit);
+  font-size: 0.9rem;
+}
+
+.ia-estado--error {
+  background: #fdeceb;
+  color: #8f1d1d;
+}
+
+.ia-estado__reintentar {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.obs__ia {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.4rem;
+  background: #ece6f7;
+  color: #4b3a7a;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}

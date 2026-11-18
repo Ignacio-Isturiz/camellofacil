@@ -98,12 +98,34 @@
         </div>
       </div>
 
+      @switch (servicio.estadoIa()) {
+        @case ('generando') {
+          <p class="ia-estado" role="status">
+            <app-icono nombre="info" style="--tam: 16px" />{{ 'hoja.principal.iaGenerando' | transloco }}
+          </p>
+        }
+        @case ('error') {
+          <p class="ia-estado ia-estado--error" role="alert">
+            {{ 'hoja.principal.iaError' | transloco }}
+            <button type="button" class="ia-estado__reintentar" (click)="reintentarIa()">{{ 'hoja.principal.iaReintentar' | transloco }}</button>
+          </p>
+        }
+        @case ('limite') {
+          <p class="ia-estado" role="status">{{ 'hoja.principal.iaLimite' | transloco }}</p>
+        }
+      }
+
       <ul class="observaciones" aria-live="polite">
         @for (o of observaciones(); track o.id) {
           <li class="obs" [class]="'obs obs--' + o.tipo">
             <app-icono [nombre]="o.tipo === 'bien' ? 'check' : o.tipo === 'falta' ? 'alerta' : 'info'" style="--tam: 18px" />
             <div>
-              <p class="obs__titulo">{{ o.titulo }}</p>
+              <p class="obs__titulo">
+                {{ o.titulo }}
+                @if (o.origen === 'ia') {
+                  <span class="obs__ia" [attr.title]="'hoja.principal.iaEtiquetaAyuda' | transloco">{{ 'hoja.principal.iaEtiqueta' | transloco }}</span>
+                }
+              </p>
               <p class="obs__detalle">{{ o.detalle }}</p>
             </div>
           </li>

@@ -131,7 +131,8 @@ class VersionesIntegracionTest extends PruebaIntegracion {
         // La versión base se crea sola con los datos confirmados y no se elimina.
         JsonNode lista = leer(mockMvc.perform(get("/api/v1/hoja-de-vida/versiones").with(p.sesion()))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].eliminable").value(false)).andReturn());
+                .andExpect(jsonPath("$[0].eliminable").value(false))
+                .andExpect(jsonPath("$[0].tipo").value("base")).andReturn());
         String baseId = lista.get(0).get("id").asString();
         mockMvc.perform(delete("/api/v1/hoja-de-vida/versiones/" + baseId).with(p.sesion()).with(csrf()))
                 .andExpect(status().isConflict())
@@ -153,7 +154,9 @@ class VersionesIntegracionTest extends PruebaIntegracion {
 
         JsonNode nueva = leer(mockMvc.perform(post("/api/v1/hoja-de-vida/borradores/" + borradorId + "/version")
                         .with(p.sesion()).with(csrf()))
-                .andExpect(status().isCreated()).andExpect(jsonPath("$.eliminable").value(true)).andReturn());
+                .andExpect(status().isCreated()).andExpect(jsonPath("$.eliminable").value(true))
+                // Lo que se arma en el editor no es «la base»: se ve como «editada».
+                .andExpect(jsonPath("$.tipo").value("editada")).andReturn());
         String nuevaId = nueva.get("id").asString();
         JsonNode doc = leer(mockMvc.perform(get("/api/v1/hoja-de-vida/versiones/" + nuevaId + "/documento").with(p.sesion()))
                 .andExpect(status().isOk()).andReturn());

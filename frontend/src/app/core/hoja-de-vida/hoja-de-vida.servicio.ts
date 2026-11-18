@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable, Subscription, switchMap } from 'rxjs';
 
@@ -55,6 +55,10 @@ export class HojaDeVidaServicio {
   readonly #estadoPuntajeAts = signal<EstadoCarga>('listo');
   readonly estadoPuntajeAts = this.#estadoPuntajeAts.asReadonly();
 
+  /** Recomendaciones de la IA: se piden aparte porque tardan unos segundos. `limite`: ya usó las de hoy. */
+  readonly #estadoIa = signal<'inactivo' | 'generando' | 'error' | 'limite'>('inactivo');
+  readonly estadoIa = this.#estadoIa.asReadonly();
+
   private resumenEnCurso: Subscription | null = null;
   private puntajeEnCurso: Subscription | null = null;
 
@@ -73,6 +77,7 @@ export class HojaDeVidaServicio {
         this.#despertando.set(false);
         this.#resumen.set(r);
         this.#puntajeAts.set(r.hoja?.ats ?? null);
+        if (this.#estadoIa() !== 'generando') this.#estadoIa.set('inactivo');
         this.#estadoResumen.set('listo');
       },
       error: () => {
@@ -127,6 +132,22 @@ export class HojaDeVidaServicio {
         this.#estadoVersiones.set('listo');
       },
       error: () => this.#estadoVersiones.set('error'),
+    });
+  }
+
+  /**
+   * Pide las recomendaciones de la IA. Trae el resumen ya con ellas; el puntaje ATS que la persona eligió no se toca.
+   * Si la hoja no cambió desde la última vez, el servidor devuelve las guardadas sin volver a llamar a la IA.
+   */
+  generarRecomendacionesIa(): void {
+    if (this.#estadoIa() === 'generando') return;
+    this.#estadoIa.set('generando');
+    this.http.post<ResumenHojaDeVida>(API_HOJA_DE_VIDA.recomendacionesIa, {}).subscribe({
+      next: (r) => {
+        this.#resumen.set(r);
+        this.#estadoIa.set('inactivo');
+      },
+      error: (e: HttpErrorResponse) => this.#estadoIa.set(e.status === 429 ? 'limite' : 'error'),
     });
   }
 

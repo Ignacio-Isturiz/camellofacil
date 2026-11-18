@@ -44,15 +44,21 @@ export interface Observacion {
   tipo: TipoObservacion;
   titulo: string;
   detalle: string;
+  /** `ia`: recomendación escrita por la IA; `reglas`: salió de las reglas de formato. */
+  origen?: 'reglas' | 'ia';
 }
+
+/** Estado de las recomendaciones de la IA: `pendiente` = hay que pedirlas, `no_disponible` = sin autorización de IA. */
+export type EstadoRecomendacionesIa = 'lista' | 'pendiente' | 'no_disponible';
 
 export interface HojaBase {
   archivo: ArchivoHoja;
-  /** null mientras no exista el análisis Harvard / ATS (llega en una etapa siguiente). */
+  /** null mientras la hoja no esté confirmada. */
   harvard: Puntaje | null;
   ats: PuntajeAts | null;
   opcionesAts: readonly OpcionAts[];
   observaciones: readonly Observacion[];
+  recomendacionesIa?: EstadoRecomendacionesIa;
 }
 
 export interface ResumenHojaDeVida {
@@ -78,7 +84,8 @@ export interface Plantilla {
   etiqueta: string | null;
 }
 
-export type TipoVersion = 'base' | 'reorganizada' | 'adaptada';
+/** `base` es solo la hoja base; `editada` es una versión guardada desde el editor. */
+export type TipoVersion = 'base' | 'editada' | 'reorganizada' | 'adaptada';
 
 export interface Version {
   id: string;

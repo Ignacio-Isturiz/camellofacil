@@ -325,7 +325,8 @@
       "tipo": {
         "base": "Base",
         "reorganizada": "Reorganized",
-        "adaptada": "Tailored"
+        "adaptada": "Tailored",
+        "editada": "Edited"
       }
     },
     "subir": {
@@ -487,7 +488,7 @@
       "opcionAts": "ATS option to evaluate",
       "errorAts": "We could not recalculate the score with that option.",
       "queMejorar": "What to improve",
-      "queMejorarDetalle": "Recommendations based only on what is already in your résumé.",
+      "queMejorarDetalle": "Format rules and AI recommendations, based only on what is already in your resume.",
       "sinObservaciones": "Nothing here.",
       "reorganizar": "Reorganize in Harvard format",
       "hacerloYo": "Do it myself with a template",
@@ -500,7 +501,13 @@
       "versiones": "My versions",
       "gestionar": "Manage versions",
       "sinVersiones": "You have no saved versions yet.",
-      "analisisPendiente": "The Harvard and ATS analysis will be available soon."
+      "analisisPendiente": "The Harvard and ATS analysis will be available soon.",
+      "iaGenerando": "Generating AI recommendations… you can keep using the page.",
+      "iaError": "We could not generate the AI recommendations right now.",
+      "iaReintentar": "Try again",
+      "iaLimite": "You already generated AI recommendations five times today. Come back tomorrow for more.",
+      "iaEtiqueta": "AI",
+      "iaEtiquetaAyuda": "Recommendation written by AI based on your resume"
     },
     "revisar": {
       "migas": "Review data",

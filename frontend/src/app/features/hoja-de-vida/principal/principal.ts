@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
@@ -52,6 +52,17 @@ export class Principal {
   constructor() {
     this.servicio.cargarPlantillas();
     this.servicio.cargarVersiones();
+    // Las recomendaciones de la IA se piden solas una vez por hoja: tardan unos segundos y no frenan lo demás.
+    // Si fallan, el estado pasa a «error» y no se reintenta en bucle: la persona decide con el botón.
+    effect(() => {
+      if (this.hoja()?.recomendacionesIa === 'pendiente' && this.servicio.estadoIa() === 'inactivo') {
+        untracked(() => this.servicio.generarRecomendacionesIa());
+      }
+    });
+  }
+
+  protected reintentarIa(): void {
+    this.servicio.generarRecomendacionesIa();
   }
 
   protected urlDescarga(id: string, formato: 'pdf' | 'docx'): string {
