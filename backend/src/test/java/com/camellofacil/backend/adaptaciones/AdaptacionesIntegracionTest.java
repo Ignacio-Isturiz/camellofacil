@@ -139,6 +139,16 @@ class AdaptacionesIntegracionTest extends PruebaIntegracion {
         mockMvc.perform(get("/api/v1/adaptaciones/cupo").with(p.sesion()))
                 .andExpect(jsonPath("$.usadas").value(1)).andExpect(jsonPath("$.limite").value(3));
 
+        // Se puede descargar sin haberla guardado antes: PDF y Word.
+        byte[] pdf = mockMvc.perform(get("/api/v1/adaptaciones/" + a.get("id").asString() + "/descarga?formato=pdf").with(p.sesion()))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header()
+                        .string("Content-Disposition", org.hamcrest.Matchers.containsString("hoja-de-vida-adaptada.pdf")))
+                .andReturn().getResponse().getContentAsByteArray();
+        assertThat(new String(pdf, 0, 4)).isEqualTo("%PDF");
+        mockMvc.perform(get("/api/v1/adaptaciones/" + a.get("id").asString() + "/descarga?formato=docx").with(p.sesion()))
+                .andExpect(status().isOk());
+
         // Aceptar la guarda como versión «adaptada»; aceptarla otra vez no duplica.
         String versionId = leer(mockMvc.perform(post("/api/v1/adaptaciones/" + a.get("id").asString() + "/aceptacion")
                         .with(p.sesion()).with(csrf()).contentType("application/json").content("{\"postular\":false}"))
@@ -211,6 +221,7 @@ class AdaptacionesIntegracionTest extends PruebaIntegracion {
         mockMvc.perform(get("/api/v1/vacantes/" + vacante + "/adaptacion").with(intrusa.sesion()))
                 .andExpect(jsonPath("$.adaptacion").doesNotExist())
                 .andExpect(jsonPath("$.restantesHoy").value(3));
+        mockMvc.perform(get("/api/v1/adaptaciones/" + id + "/descarga").with(intrusa.sesion())).andExpect(status().isNotFound());
         mockMvc.perform(delete("/api/v1/adaptaciones/" + id).with(intrusa.sesion()).with(csrf())).andExpect(status().isNotFound());
         mockMvc.perform(post("/api/v1/adaptaciones/" + id + "/aceptacion").with(intrusa.sesion()).with(csrf())).andExpect(status().isNotFound());
         mockMvc.perform(delete("/api/v1/adaptaciones/" + id).with(dueña.sesion()).with(csrf())).andExpect(status().isNoContent());

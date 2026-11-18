@@ -237,4 +237,32 @@ class VersionesIntegracionTest extends PruebaIntegracion {
         mockMvc.perform(get("/api/v1/hoja-de-vida/versiones").with(p.sesion()))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(1));
     }
+
+    @Test
+    void descargaUnaVersionEnPdfYWord_soloSuDuena() throws Exception {
+        Persona dueña = nuevaPersona(true);
+        Persona intrusa = nuevaPersona(true);
+        String id = leer(mockMvc.perform(get("/api/v1/hoja-de-vida/versiones").with(dueña.sesion())).andReturn()).get(0).get("id").asString();
+
+        byte[] pdf = mockMvc.perform(get("/api/v1/hoja-de-vida/versiones/" + id + "/descarga?formato=pdf").with(dueña.sesion()))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.content().contentType("application/pdf"))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header()
+                        .string("Content-Disposition", org.hamcrest.Matchers.containsString("hoja-de-vida.pdf")))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header()
+                        .string("Cache-Control", org.hamcrest.Matchers.containsString("no-store")))
+                .andReturn().getResponse().getContentAsByteArray();
+        assertThat(new String(pdf, 0, 4)).isEqualTo("%PDF");
+
+        byte[] docx = mockMvc.perform(get("/api/v1/hoja-de-vida/versiones/" + id + "/descarga?formato=docx").with(dueña.sesion()))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsByteArray();
+        assertThat(new String(docx, 0, 2)).isEqualTo("PK");
+
+        mockMvc.perform(get("/api/v1/hoja-de-vida/versiones/" + id + "/descarga?formato=exe").with(dueña.sesion()))
+                .andExpect(status().isBadRequest());
+        mockMvc.perform(get("/api/v1/hoja-de-vida/versiones/" + id + "/descarga").with(intrusa.sesion()))
+                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/v1/hoja-de-vida/versiones/" + id + "/descarga")).andExpect(status().isUnauthorized());
+    }
 }

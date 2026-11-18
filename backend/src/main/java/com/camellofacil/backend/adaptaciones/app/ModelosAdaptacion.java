@@ -18,4 +18,7 @@ public final class ModelosAdaptacion {
     public record EstadoAdaptacion(AdaptacionInfo adaptacion, int restantesHoy) {}
 
     public record CupoAdaptaciones(int usadas, int limite) {}
+
+    /** Lo necesario para descargar la hoja adaptada: el documento y la plantilla con que se armó. */
+    public record ContenidoDescarga(String plantillaId, DocumentoHoja documento) {}
 }

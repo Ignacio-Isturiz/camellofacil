@@ -16,11 +16,19 @@ public class PlantillasService {
     private final CatalogoPlantillas catalogo;
     private final RenderizadorDocumento renderizador;
     private final HojaDeVidaService hojas;
+    private final ExportadorDocumento exportador;
 
-    public PlantillasService(CatalogoPlantillas catalogo, RenderizadorDocumento renderizador, HojaDeVidaService hojas) {
+    public PlantillasService(
+            CatalogoPlantillas catalogo, RenderizadorDocumento renderizador, HojaDeVidaService hojas, ExportadorDocumento exportador) {
         this.catalogo = catalogo;
         this.renderizador = renderizador;
         this.hojas = hojas;
+        this.exportador = exportador;
+    }
+
+    /** El documento en PDF o Word, con la tipografía de la plantilla con que se armó. */
+    public ExportadorDocumento.Archivo exportar(String plantillaId, DocumentoHoja documento, ExportadorDocumento.Formato formato) {
+        return exportador.exportar(documento, detalle(plantillaId).estilo(), formato);
     }
 
     public List<Plantilla> listar() {

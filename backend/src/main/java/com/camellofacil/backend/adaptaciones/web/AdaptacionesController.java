@@ -6,6 +6,10 @@ import com.camellofacil.backend.adaptaciones.app.ModelosAdaptacion.CupoAdaptacio
 import com.camellofacil.backend.adaptaciones.app.ModelosAdaptacion.EstadoAdaptacion;
 import com.camellofacil.backend.auth.app.SesionActual;
 import com.camellofacil.backend.auth.app.UsuarioActual;
+import com.camellofacil.backend.adaptaciones.app.ModelosAdaptacion.ContenidoDescarga;
+import com.camellofacil.backend.plantillas.app.ExportadorDocumento.Formato;
+import com.camellofacil.backend.plantillas.app.PlantillasService;
+import com.camellofacil.backend.plantillas.web.Descargas;
 import com.camellofacil.backend.versiones.app.ModelosVersion.VersionResumen;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,10 +26,12 @@ public class AdaptacionesController {
 
     private final SesionActual sesion;
     private final AdaptacionesService adaptaciones;
+    private final PlantillasService plantillas;
 
-    public AdaptacionesController(SesionActual sesion, AdaptacionesService adaptaciones) {
+    public AdaptacionesController(SesionActual sesion, AdaptacionesService adaptaciones, PlantillasService plantillas) {
         this.sesion = sesion;
         this.adaptaciones = adaptaciones;
+        this.plantillas = plantillas;
     }
 
     /** La adaptación ya guardada para la vacante (si hay) y cuántas le quedan hoy. */
@@ -43,6 +50,14 @@ public class AdaptacionesController {
     @GetMapping("/api/v1/adaptaciones/cupo")
     public CupoAdaptaciones cupo() {
         return adaptaciones.cupo(sesion.requerido().id());
+    }
+
+    /** Descarga la hoja adaptada en PDF o Word (`formato=pdf|docx`), sin guardarla antes como versión. */
+    @GetMapping("/api/v1/adaptaciones/{id}/descarga")
+    public ResponseEntity<byte[]> descargar(@PathVariable UUID id, @RequestParam(defaultValue = "pdf") String formato) {
+        Formato elegido = Descargas.formato(formato);
+        ContenidoDescarga c = adaptaciones.paraDescargar(sesion.requerido().id(), id);
+        return Descargas.respuesta(plantillas.exportar(c.plantillaId(), c.documento(), elegido), "hoja-de-vida-adaptada");
     }
 
     @DeleteMapping("/api/v1/adaptaciones/{id}")

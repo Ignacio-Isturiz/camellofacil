@@ -6,6 +6,7 @@ import com.camellofacil.backend.adaptaciones.app.AdaptadorIa.PropuestaIa;
 import com.camellofacil.backend.adaptaciones.app.AdaptadorIa.VacanteIa;
 import com.camellofacil.backend.adaptaciones.app.ModelosAdaptacion.AdaptacionInfo;
 import com.camellofacil.backend.adaptaciones.app.ModelosAdaptacion.CambioAdaptacion;
+import com.camellofacil.backend.adaptaciones.app.ModelosAdaptacion.ContenidoDescarga;
 import com.camellofacil.backend.adaptaciones.app.ModelosAdaptacion.CupoAdaptaciones;
 import com.camellofacil.backend.adaptaciones.app.ModelosAdaptacion.EstadoAdaptacion;
 import com.camellofacil.backend.adaptaciones.persistence.AdaptacionHoja;
@@ -132,6 +133,12 @@ public class AdaptacionesService {
                 json.writeValueAsString(original), json.writeValueAsString(adaptada),
                 json.writeValueAsString(resultado.cambios()), json.writeValueAsString(resultado.avisos()), Instant.now()));
         return info(guardada, restantes(usuarioId));
+    }
+
+    @Transactional(readOnly = true)
+    public ContenidoDescarga paraDescargar(UUID usuarioId, UUID id) {
+        AdaptacionHoja a = buscar(usuarioId, id);
+        return new ContenidoDescarga(a.getPlantillaId(), json.readValue(a.getAdaptada(), DocumentoHoja.class));
     }
 
     @Transactional

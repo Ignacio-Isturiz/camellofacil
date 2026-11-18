@@ -5,7 +5,11 @@ import com.camellofacil.backend.auth.app.UsuarioActual;
 import com.camellofacil.backend.cv.app.ModelosHoja.ValorEducacion;
 import com.camellofacil.backend.cv.app.ModelosHoja.ValorExperiencia;
 import com.camellofacil.backend.cv.app.ModelosHoja.ValoresHoja;
+import com.camellofacil.backend.plantillas.app.ExportadorDocumento.Archivo;
+import com.camellofacil.backend.plantillas.app.ExportadorDocumento.Formato;
 import com.camellofacil.backend.plantillas.app.ModelosPlantilla.DocumentoHoja;
+import com.camellofacil.backend.plantillas.app.PlantillasService;
+import com.camellofacil.backend.plantillas.web.Descargas;
 import com.camellofacil.backend.versiones.app.BorradoresService;
 import com.camellofacil.backend.versiones.app.ModelosVersion.BorradorInfo;
 import com.camellofacil.backend.versiones.app.ModelosVersion.SolicitudBorrador;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,11 +41,14 @@ public class VersionesController {
     private final SesionActual sesion;
     private final VersionesService versiones;
     private final BorradoresService borradores;
+    private final PlantillasService plantillas;
 
-    public VersionesController(SesionActual sesion, VersionesService versiones, BorradoresService borradores) {
+    public VersionesController(
+            SesionActual sesion, VersionesService versiones, BorradoresService borradores, PlantillasService plantillas) {
         this.sesion = sesion;
         this.versiones = versiones;
         this.borradores = borradores;
+        this.plantillas = plantillas;
     }
 
     @GetMapping("/versiones")
@@ -52,6 +60,16 @@ public class VersionesController {
     @GetMapping("/versiones/{id}/documento")
     public DocumentoHoja documento(@PathVariable UUID id) {
         return versiones.documento(sesion.requerido().id(), id);
+    }
+
+    /** Descarga la versión en PDF o Word (`formato=pdf|docx`). Se arma al vuelo: no se guarda ningún archivo. */
+    @GetMapping("/versiones/{id}/descarga")
+    public ResponseEntity<byte[]> descargar(@PathVariable UUID id, @RequestParam(defaultValue = "pdf") String formato) {
+        Formato elegido = Descargas.formato(formato);
+        UUID usuarioId = sesion.requerido().id();
+        Archivo archivo = plantillas.exportar(
+                versiones.contenido(usuarioId, id).plantillaId(), versiones.documento(usuarioId, id), elegido);
+        return Descargas.respuesta(archivo, "hoja-de-vida");
     }
 
     @PatchMapping("/versiones/{id}")
