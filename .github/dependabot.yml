@@ -5,16 +5,36 @@ updates:
     directory: /backend
     schedule: { interval: weekly }
     open-pull-requests-limit: 5
+
   - package-ecosystem: npm
     directory: /frontend
     schedule: { interval: weekly }
     open-pull-requests-limit: 5
+    groups:
+      # Los paquetes de Angular (y TypeScript, que cada versión exige) solo funcionan si suben juntos: por separado
+      # npm no puede resolverlos (ERESOLVE) y el PR nunca pasa. Así llegan en un único PR que sí se puede probar.
+      angular:
+        patterns:
+          - "@angular/*"
+          - "@angular-devkit/*"
+          - "typescript"
+
+  # Las imágenes base siguen la versión del proyecto, no la última: Java 21 (LTS) en el backend y Node 24 en el
+  # frontend (el mismo que usa Render). Se actualizan parches y menores; un salto mayor se hace a propósito.
   - package-ecosystem: docker
     directory: /backend
     schedule: { interval: weekly }
+    ignore:
+      - dependency-name: "eclipse-temurin"
+        update-types: ["version-update:semver-major"]
+
   - package-ecosystem: docker
     directory: /frontend
     schedule: { interval: weekly }
+    ignore:
+      - dependency-name: "node"
+        update-types: ["version-update:semver-major"]
+
   - package-ecosystem: github-actions
     directory: /
     schedule: { interval: weekly }
