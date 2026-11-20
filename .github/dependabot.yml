@@ -18,6 +18,11 @@ updates:
           - "@angular/*"
           - "@angular-devkit/*"
           - "typescript"
+    ignore:
+      # El ejecutor de pruebas de Angular (@angular/build) exige la misma versión mayor de vitest: subirla sola rompe
+      # cualquier npm install (ERESOLVE) aunque el CI, que usa npm ci, no lo note.
+      - dependency-name: "vitest"
+        update-types: ["version-update:semver-major"]
 
   # Las imágenes base siguen la versión del proyecto, no la última: Java 21 (LTS) en el backend y Node 24 en el
   # frontend (el mismo que usa Render). Se actualizan parches y menores; un salto mayor se hace a propósito.
