@@ -202,11 +202,16 @@
   .lado__camello {
     position: absolute;
     z-index: 1;
-    right: 4%;
-    bottom: 0;
+    right: 6%;
+    bottom: 40px;
     display: block;
-    width: min(56%, 380px);
+    width: min(48%, 300px);
     height: auto;
+    /* El ícono lleva su propio fondo rojo: el aro blanco lo separa del panel. */
+    border-radius: 22%;
+    box-shadow:
+      0 0 0 4px rgb(255 255 255 / 92%),
+      0 16px 28px rgb(0 0 0 / 22%);
     pointer-events: none;
   }
 
