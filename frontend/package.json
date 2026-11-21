@@ -9,7 +9,8 @@
     "test": "ng test",
     "cap:sync": "ng build && cap sync android",
     "cap:abrir": "cap open android",
-    "cap:iconos": "capacitor-assets generate --android --iconBackgroundColor \"#960710\" --splashBackgroundColor \"#FAF6EE\""
+    "cap:iconos": "capacitor-assets generate --android --iconBackgroundColor \"#960710\" --splashBackgroundColor \"#FAF6EE\"",
+    "cap:preparar": "node scripts/preparar-android.mjs"
   },
   "private": true,
   "packageManager": "npm@11.9.0",

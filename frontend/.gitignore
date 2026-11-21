@@ -42,3 +42,6 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Proyecto de Android generado por Capacitor (se recrea con: npm run cap:preparar)
+/android
