@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <!-- Todo el tráfico va cifrado (https). -->
+    <!-- El tráfico va siempre cifrado (https). -->
     <base-config cleartextTrafficPermitted="false" />
     <!-- Excepción solo para probar en el emulador contra el servidor del computador (CAP_SERVER_URL=http://10.0.2.2:4200). -->
     <domain-config cleartextTrafficPermitted="true">
