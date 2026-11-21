@@ -105,3 +105,54 @@ Abre http://localhost:4200. Debe aparecer **"Conexión con el backend establecid
 | Los cambios de código no aparecen en Docker | Reconstruye con `docker compose up -d --build`. |
 | `The Angular CLI requires a minimum Node.js version` | Actualiza Node.js a la versión indicada arriba (solo Opción B). |
 | Puerto 5433 ocupado | Cambia el puerto en `docker-compose.yml` y en `DB_URL` del `.env`. |
+
+## App móvil (Android, con Capacitor)
+
+La app de Android es un envoltorio nativo (Capacitor) que abre **https://camellofacil.com**. Así la sesión, el CSRF y el inicio con Microsoft funcionan igual que en el navegador y el backend no cambia. La app se actualiza sola cuando se despliega el sitio; solo hay que volver a publicarla en Play Store si cambia el envoltorio (nombre, íconos, permisos o la versión de Capacitor).
+
+La configuración está en `frontend/capacitor.config.ts` y los íconos en `frontend/resources/`. El proyecto nativo (`frontend/android/`) **no se guarda en Git**: es código generado y se recrea con un comando. Así no hay que mantener ni revisar un proyecto de Android mientras nadie lo compile.
+
+### Requisitos
+
+| Herramienta | Para qué |
+|---|---|
+| [Android Studio](https://developer.android.com/studio) | Compilar, probar en emulador y generar el APK/AAB. Instala el SDK de Android. |
+| JDK 21 | Lo usa Gradle (el mismo del backend). |
+
+### Comandos (desde `frontend/`)
+
+```bash
+npm ci                 # dependencias
+npm run cap:preparar   # crea frontend/android/ (si no existe), aplica la configuración de seguridad,
+                       # genera íconos y pantalla de arranque y sincroniza la web
+npm run cap:sync       # después de un cambio en la web: recompila Angular y sincroniza
+npm run cap:abrir      # abre el proyecto en Android Studio
+```
+
+`cap:preparar` es seguro de repetir. La configuración de seguridad que aplica es: sin copias de seguridad de la app (`allowBackup=false`) y sin tráfico http, salvo hacia `10.0.2.2` para probar en el emulador.
+
+En Android Studio: elige un emulador o un teléfono con depuración USB y pulsa **Run**.
+
+### Probar contra tu Docker local
+
+En el emulador de Android el computador es `10.0.2.2`. Con el entorno de Docker arriba (`docker compose up -d`):
+
+```bash
+CAP_SERVER_URL=http://10.0.2.2:4200 npm run cap:preparar
+```
+
+Antes de publicar, vuelve a ejecutar `npm run cap:preparar` **sin** esa variable para que la app apunte a producción. Para el inicio con Microsoft contra `localhost` la redirect URI de Azure debe coincidir con lo que use el backend (`BACKEND_URL`).
+
+### Publicar en Play Store
+
+1. En Android Studio: **Build → Generate Signed Bundle / APK** → *Android App Bundle*. Crea y **guarda aparte** la llave de firma (keystore): sin ella no se puede actualizar la app.
+2. Sube el `.aab` en [Play Console](https://play.google.com/console) (cuenta de desarrollador de pago único).
+3. Identificador de la app: `com.camellofacil.app` (cámbialo en `capacitor.config.ts` **antes** de la primera publicación: después no se puede).
+4. Play Store pide la política de privacidad (Ley 1581) con la URL pública del sitio.
+
+### Límites conocidos
+
+- **Necesita internet**: abre el sitio publicado; no funciona sin conexión.
+- **Las ofertas de empleo** (enlaces a otros sitios) se abren en el navegador del teléfono, no dentro de la app (`allowNavigation` solo admite el sitio y el inicio de sesión de Microsoft).
+- **Sin compilar todavía**: el proyecto de Android se generó pero no se ha compilado ni probado en un emulador o teléfono. Al compilar por primera vez conviene generar el `gradle.lockfile` (`./gradlew dependencies --write-locks`) y guardarlo, para fijar las versiones de las dependencias.
+- **iOS**: no está agregado. Requiere un Mac, Xcode y una cuenta de Apple Developer (`npm i @capacitor/ios && npx cap add ios`). Apple suele rechazar apps que solo envuelven un sitio web: habría que añadir funciones nativas.
